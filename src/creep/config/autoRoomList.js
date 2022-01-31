@@ -412,14 +412,16 @@ export default function BuildRoomList(roomName, commonSuffix, opts = {}) {
     });
 
     // Worker
+    let doUpgrade = room.controller.level < 8;
+    let taskList = taskCommon.GetWorkerTasks(room, doUpgrade);
     confs.push({
         name: 'Worker',
         role: 'worker',
         body: bodyWorker,
-        require: room.storage.store[RESOURCE_ENERGY] >= util.constant.storageSafeEnergy ? 1 : 0,
+        require: room.storage.store[RESOURCE_ENERGY] >= util.constant.storageSafeEnergy && taskList.length > 0 ? 1 : 0,
         args: {
             sourceId: room.storage.id,
-            taskList: taskCommon.GetWorkerTasks(room)
+            taskList: taskList
         }
     });
 

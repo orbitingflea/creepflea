@@ -12,9 +12,10 @@ export default {
         })));
 
         // repair ramparts
-        taskList = taskList.concat(room.find(FIND_MY_STRUCTURES, {
+        taskList = taskList.concat(room.find(FIND_STRUCTURES, {
             filter: (structure) => {
-                return (structure.structureType == STRUCTURE_RAMPART && structure.hits < util.constant.hitsMaxRampart);
+                return ((structure.structureType === STRUCTURE_RAMPART && structure.my ||
+                         structure.structureType === STRUCTURE_WALL) && structure.hits < util.constant.hitsMaxRampart);
             }
         }).map((obj) => ({
             targetId: obj.id,

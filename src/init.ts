@@ -13,6 +13,8 @@ import 'prototypes/prototypeMain.js';
 import 'movement/moveMain.js';
 import 'cache/cacheMain.js';
 
+import 'service/load';
+
 // global.tickBeginHook.push(() => {
 //   console.log(`[INFO] Tick ${Game.time} is running`);
 // });
