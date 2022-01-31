@@ -1,4 +1,4 @@
-import { GetDangerZone, IsDangerZoneActive } from '@/skRoom.js';
+import { GetDangerZone, IsDangerZoneActive } from 'skRoom.js';
 
 Object.defineProperty(StructureKeeperLair.prototype, 'dangerZone', {
     configurable: true,

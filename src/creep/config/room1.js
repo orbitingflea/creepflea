@@ -1,7 +1,7 @@
 // config for room1
 
-import { BodyWCM } from '@/util.js';
-import { UpdateStructureStatus } from '@/CarrierSystem.js';
+import { BodyWCM } from 'util.js';
+import { UpdateStructureStatus } from 'CarrierSystem.js';
 import AutoRoomList from './autoRoomList.js';
 
 const roomName = 'E38S45';
@@ -48,6 +48,6 @@ export default function ConfigList() {
         confs[i].name = confs[i].name + commonSuffix;
         if (confs[i].spawn == null) confs[i].spawn = spawnList;
     }
-    
+
     return confs;
 }

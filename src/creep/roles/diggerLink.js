@@ -1,5 +1,5 @@
-import util from '@/util.js';
-import creepCommon from '@/creep.common.js';
+import util from 'util.js';
+import creepCommon from 'creep.common.js';
 
 export default (args) => ({
     // args: {sourceId, linkId, roomName, workingPosition}

@@ -2,9 +2,9 @@
  * 攻城狮，攻击 roomName 中的要塞
  */
 
-import util from '@/util.js';
-import creepCommon from '@/creep.common.js';
-import { skSoldierCallback } from '@/movement/callback';
+import util from 'util.js';
+import creepCommon from 'creep.common.js';
+import { skSoldierCallback } from 'movement/callback';
 
 export default (args) => ({
     // {roomName}

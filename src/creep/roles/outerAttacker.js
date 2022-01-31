@@ -1,7 +1,7 @@
 // OuterAttacker：拥有 Attack，用来拆掉 NPC 的建筑
 
-import util from '@/util.js';
-import creepCommon from '@/creep.common.js';
+import util from 'util.js';
+import creepCommon from 'creep.common.js';
 
 export default (args) => ({
     // {roomName}
@@ -12,7 +12,7 @@ export default (args) => ({
 
     target: creep => {
         const room = args.roomName ? Game.rooms[args.roomName] : creep.room;
-        
+
         // if there exist hostile creeps in the room, attack them
         let hostileCreeps = room.findHostileCreeps();
         if (hostileCreeps.length) {
@@ -40,7 +40,7 @@ export default (args) => ({
             creep.attack(target);
             return false;
         }
-        
+
         return true;
     },
 

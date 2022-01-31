@@ -1,6 +1,6 @@
-import util from '@/util.js';
-import creepCommon from '@/creep.common.js';
-import { CarrierTask } from '@/carrierManager.js';
+import util from 'util.js';
+import creepCommon from 'creep.common.js';
+import { CarrierTask } from 'carrierManager.js';
 
 function RunExtraTask(creep) {
     let task = new CarrierTask(creep.memory.currentTask);

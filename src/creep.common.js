@@ -1,4 +1,4 @@
-import util from '@/util.js';
+import util from 'util.js';
 
 export default {
     // 定义若干常用的方法

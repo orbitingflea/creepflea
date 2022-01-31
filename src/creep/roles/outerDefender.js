@@ -1,8 +1,8 @@
 // OuterDefender：拥有 Attack, Heal，可以抵御侵略小组的攻击。可以保护
 
-import util from '@/util.js';
-import creepCommon from '@/creep.common.js';
-import { skSoldierCallback } from '@/movement/callback';
+import util from 'util.js';
+import creepCommon from 'creep.common.js';
+import { skSoldierCallback } from 'movement/callback';
 
 export default (args) => ({
     // {roomName}
@@ -75,7 +75,7 @@ export default (args) => ({
             creep.attack(target);
             return false;
         }
-        
+
         return true;
     },
 

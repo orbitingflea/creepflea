@@ -2,13 +2,13 @@
  * 本文件是对于 action 概念的实践，用在 SK Mining 中。
  * 它需要处理小撤退和大撤退
  * args 包含 roomName, workingPosition, sourceId, retreatRoom
- * 
+ *
  * 先决条件 1：大撤退，当 RoomDanger
  */
 
-import util from '@/util.js';
-import creepCommon from '@/creep.common.js';
-import { RoomDanger, GetDangerZone, IsDangerZoneActive } from '@/skRoom.js';
+import util from 'util.js';
+import creepCommon from 'creep.common.js';
+import { RoomDanger, GetDangerZone, IsDangerZoneActive } from 'skRoom.js';
 
 const skWaitRange = 7;
 

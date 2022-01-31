@@ -3,13 +3,13 @@
  * args: {roomName, workingPosition, sourceId, retreatRoom}
  * 可以在没有视野的情况下寻路前往工作地点
  * 有工作模式和撤退模式
- * 
+ *
  * workingPosition 上可以有一个 container，也可以没有，资源会丢在地上
  */
 
-import util from '@/util.js';
-import creepCommon from '@/creep.common.js';
-import { RoomDanger, GetDangerZone, IsDangerZoneActive } from '@/skRoom.js';
+import util from 'util.js';
+import creepCommon from 'creep.common.js';
+import { RoomDanger, GetDangerZone, IsDangerZoneActive } from 'skRoom.js';
 
 // const skSafeRange = 5;
 const skWaitRange = 7;

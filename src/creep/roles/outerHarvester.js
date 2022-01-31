@@ -1,5 +1,5 @@
-import util from '@/util.js';
-import creepCommon from '@/creep.common.js';
+import util from 'util.js';
+import creepCommon from 'creep.common.js';
 
 const defaultEarlyStop = 500;
 
@@ -9,7 +9,7 @@ export default (args) => ({
 
     source: creep => {
         let source = Game.getObjectById(args.sourceId);
-        let predictedGain = (source && source.energy != null ? 
+        let predictedGain = (source && source.energy != null ?
             Math.min(source.energy, creep.getActiveBodyparts(WORK) * 2) : creep.getActiveBodyparts(WORK));
         let earlyStop = args.earlyStop != null ? args.earlyStop : defaultEarlyStop;
         if (creep.store.getUsedCapacity() + predictedGain > creep.store.getCapacity() || creep.ticksToLive < earlyStop) {

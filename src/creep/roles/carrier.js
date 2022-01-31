@@ -1,5 +1,5 @@
-import util from '@/util.js';
-import creepCommon from '@/creep.common.js';
+import util from 'util.js';
+import creepCommon from 'creep.common.js';
 
 function carrierTargetPriority(obj) {
     if (obj.structureType) {
@@ -65,7 +65,7 @@ export default (args) => ({
             creep.driveTo(target, {range: 1});
             return false;
         }
-        
+
         if (creep.transfer(target, RESOURCE_ENERGY) == OK) {
             let nextTarget;
             if (creep.store[RESOURCE_ENERGY] > target.store.getFreeCapacity(RESOURCE_ENERGY)) {

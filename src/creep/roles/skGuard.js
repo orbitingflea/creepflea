@@ -1,17 +1,17 @@
 /**
  * 专门为 Source Keeper 房间设计的杀手
- * 
+ *
  * 在当前房间内索敌，记在内存中
  * 战斗模式：
  * - 如果生命值高于 threshold_high，则进入 3 距离以内，用 RANGED_ATTACK 攻击敌人，同时治疗自身
  * - 如果生命值低于 threshold_low，则进入 3 距离以外，用 HEAL 治疗自身
- * 
+ *
  * 准备阶段完成之后一直处于这个房间之内
- */ 
+ */
 
-import util from '@/util.js';
-import creepCommon from '@/creep.common.js';
-import { skSoldierCallback } from '@/movement/callback';
+import util from 'util.js';
+import creepCommon from 'creep.common.js';
+import { skSoldierCallback } from 'movement/callback.js';
 
 const lairWaitRange = 5;
 

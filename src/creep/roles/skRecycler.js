@@ -3,16 +3,16 @@
  * forked from outerCarrier
  */
 
-import util from '@/util.js';
-import creepCommon from '@/creep.common.js';
-import taskCommon from '@/task.common.js';
+import util from 'util.js';
+import creepCommon from 'creep.common.js';
+import taskCommon from 'task.common.js';
 
 const defaultEarlyStop = 100;
 const skSafeRange = 5;
 const skWaitRange = 7;
 
-import { GetDanger } from './outerDigger';
-import { RoomDanger } from '../../skRoom';
+import { GetDanger } from './outerDigger.js';
+import { RoomDanger } from 'skRoom.js';
 
 export default (args) => ({
     // args.roomName, args.sourceIdList, args.targetId

@@ -4,9 +4,9 @@
  * 如果手头没事干，也可以去 CarrierManager 处接任务，filter 设置为自己够得着的
  */
 
-import util from '@/util.js';
-import creepCommon from '@/creep.common.js';
-import { CarrierTask } from '@/carrierManager.js';
+import util from 'util.js';
+import creepCommon from 'creep.common.js';
+import { CarrierTask } from 'carrierManager.js';
 
 export default (args) => ({
     // args.storageId, args.linkId, args.terminalId, ?args.containerId

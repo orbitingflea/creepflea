@@ -3,16 +3,16 @@
 // Executed every tick.
 // WARN: Only for rooms with storage.
 // names do not contain spawn & commonPrefix information.
-/** 
+/**
  * @param roomName
  * @param commonSuffix (only required to compute SOS information)
  * @returns confList
  */
 
-import { BodyWCM, GetCreepCost } from '@/util.js';
-import { UpdateStructureStatus } from '@/CarrierSystem.js';
-import taskCommon from '@/task.common.js';
-import util from '@/util.js';
+import { BodyWCM, GetCreepCost } from 'util.js';
+import { UpdateStructureStatus } from 'CarrierSystem.js';
+import taskCommon from 'task.common.js';
+import util from 'util.js';
 
 function ConfForSource(room, sources, i, bodyCarrierForSource) {
     const source = sources[i];

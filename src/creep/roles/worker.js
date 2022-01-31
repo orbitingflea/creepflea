@@ -6,8 +6,8 @@
 // 3. priority
 // 工作的时候会在 priority 并列最高的任务中找到最近的，然后执行
 
-import util from '@/util.js';
-import creepCommon from '@/creep.common.js';
+import util from 'util.js';
+import creepCommon from 'creep.common.js';
 
 export default (args) => ({
     // {sourceId, taskList}

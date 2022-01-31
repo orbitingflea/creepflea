@@ -1,9 +1,9 @@
-import util from '@/util.js';
+import util from 'util.js';
 
 export function UpdateStructureStatus(room) {
     // for each structure that may need energy, update obj.memory.needEnergy
     // spawn & extensions always need energy if they are not full
-    
+
     var structures = room.find(FIND_STRUCTURES);
     for (var i in structures) {
         var structure = structures[i];

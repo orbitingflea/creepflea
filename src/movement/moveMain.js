@@ -1,6 +1,6 @@
 import './core.js';
 import { staticCallback } from './callback.js';
-import { GetDangerZone, IsDangerZoneActive } from '@/skRoom.js';
+import { GetDangerZone, IsDangerZoneActive } from 'skRoom.js';
 
 Creep.prototype.driveToBlindObject = function(object, roomName, opts) {
     if (opts.range == null) opts.range = 1;

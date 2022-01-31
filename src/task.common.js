@@ -1,4 +1,4 @@
-import util from '@/util.js';
+import util from 'util.js';
 
 export default {
     GetWorkerTasks: function(room, upgrade=true) {
@@ -44,7 +44,7 @@ export default {
             action: 'repair',
             priority: 120
         }));
-        
+
         return taskList;
     },
 

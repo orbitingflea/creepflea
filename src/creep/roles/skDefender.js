@@ -4,7 +4,7 @@
  * 索敌时优先没有 ATTACK 的
  */
 
-import { RoomDanger } from '../../skRoom';
+import { RoomDanger } from 'skRoom.js';
 
 function ExecuteAction(creep) {
     while (creep.memory.action) {

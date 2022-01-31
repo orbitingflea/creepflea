@@ -1,4 +1,4 @@
-import { InWhiteList } from '@/util.js';
+import { InWhiteList } from 'util.js';
 
 Creep.prototype.park = function() {
     if (!this.pos.parkable) {
