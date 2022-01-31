@@ -1,46 +1,42 @@
-import { ErrorMapper } from 'utils/ErrorMapper';
-
+import { errorMapper } from '@/modules/errorMapper';
 import profiler from 'screeps-profiler';
 
 import './functionManager.js';  // must import early
 
-import util from 'util.js';
-import roleTower from 'role.tower.js';
-import { CleanUp as MemRoomObjectCleanUp } from 'memory.roomObject.js';
+import util from '@/util.js';
+import roleTower from '@/role.tower.js';
+import { CleanUp as MemRoomObjectCleanUp } from '@/memory.roomObject.js';
 
-import MarketMain from 'market.js';
-import { CarrierManagerSave } from 'carrierManager.js';
+import '@/creep/creepManager.js';
+import '@/carrierManager.js';
+import '@/creep/mountCreepRoles.js';
+import '@/prototypes/prototypeMain.js';
+import '@/movement/moveMain.js';
+import '@/cache/cacheMain.js';
+
+import MarketMain from '@/market.js';
+import { CarrierManagerSave } from '@/carrierManager.js';
 
 const LOG_CPU_INFO = 0;
 
-import 'init';
-
-function runHook(hook: (() => void)[]) {
-  for (const func of hook) {
-    func();
-  }
-}
-
 profiler.enable();
-
-// When compiling TS to JS and bundling with rollup, the line numbers and file names in error messages change
-// This utility uses source maps to get the line numbers and file names of the original, TS source code
-export const loop = ErrorMapper.wrapLoop(() => {
-  profiler.wrap(() => {
+export const loop = errorMapper(function() {
+profiler.wrap(function() {
     if (Game.cpu.bucket >= 10000) {
-      Game.cpu.generatePixel();
+        Game.cpu.generatePixel();
     }
-    for (const name in Memory.creeps) {
-      if (!(name in Game.creeps)) {
-        delete Memory.creeps[name];
-      }
+
+    // 清理无效的 creep memory
+    for (var name in Memory.creeps) {
+        if (!Game.creeps[name]) {
+            delete Memory.creeps[name];
+            console.log('Clear invalid memory for Creep: ', name);
+        }
     }
     if (!Memory.roomObjects) {
-      Memory.roomObjects = {};
+        Memory.roomObjects = {};
     }
     MemRoomObjectCleanUp();
-
-    runHook(global.tickBeginHook);
 
     let cpustart = Game.cpu.getUsed();
     if (LOG_CPU_INFO) {
@@ -82,8 +78,8 @@ export const loop = ErrorMapper.wrapLoop(() => {
 
     // Link 1
     var RunLinkRoom1 = function() {
-        let link2 = Game.getObjectById(util.constant.idLinkDown) as StructureLink;
-        let link3 = Game.getObjectById(util.constant.idRoom1.linkLeft) as StructureLink;
+        var link2 = Game.getObjectById(util.constant.idLinkDown);
+        var link3 = Game.getObjectById(util.constant.idRoom1.linkLeft);
         if (link3.store[RESOURCE_ENERGY] >= 700 && link2.store[RESOURCE_ENERGY] == 0 && !link2.gotEnergy) {
             link3.transferEnergy(link2);
             link2.gotEnergy = true;
@@ -104,19 +100,20 @@ export const loop = ErrorMapper.wrapLoop(() => {
         console.log(`[CPU-INFO] Spawn & CarrierManager & Market: ${Game.cpu.getUsed() - cpustart}`);
         cpustart = Game.cpu.getUsed();
     }
-
-    if (Game.cpu.getUsed() >= 19) return;
+    
+    if (Game.cpu.getUsed >= 19) return;
     let factory = util.myRoom().find(FIND_MY_STRUCTURES, {
-        filter: (structure: Structure) => {
+        filter: (structure) => {
             return structure.structureType == STRUCTURE_FACTORY;
         }
-    })[0] as StructureFactory;
+    })[0];
     if (factory) {
         if (factory.produce(RESOURCE_LEMERGIUM_BAR) != OK) {
             factory.produce(RESOURCE_CELL);
         }
     }
-
-    runHook(global.tickEndHook);
-  });
 });
+});
+
+import { RoomDanger } from './skRoom.js';
+global.RoomDanger = RoomDanger;

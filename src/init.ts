@@ -5,3 +5,18 @@
 
 global.tickBeginHook = [];
 global.tickEndHook = [];
+
+import 'creep/creepManager.js';
+import 'carrierManager.js';
+import 'creep/mountCreepRoles.js';
+import 'prototypes/prototypeMain.js';
+import 'movement/moveMain.js';
+import 'cache/cacheMain.js';
+
+// global.tickBeginHook.push(() => {
+//   console.log(`[INFO] Tick ${Game.time} is running`);
+// });
+
+// global.tickEndHook.push(() => {
+//   console.log(`[INFO] CPU used: ${Game.cpu.getUsed()}`);
+// });
