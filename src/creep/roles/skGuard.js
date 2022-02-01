@@ -50,7 +50,7 @@ export default (args) => ({
         }
 
         if (!creep.memory.target) {
-            hostileCreeps = room.findHostileCreeps();
+            hostileCreeps = room.hostileCreeps;
             if (hostileCreeps.length > 0) {
                 target = creep.pos.findClosestByRange(hostileCreeps);
                 creep.memory.target = target.id;
@@ -71,7 +71,7 @@ export default (args) => ({
         }
 
         if (!creep.memory.target) {
-            hostileCreeps = room.findSourceKeepers();
+            hostileCreeps = room.keepers;
             if (hostileCreeps.length > 0) {
                 target = creep.pos.findClosestByPath(hostileCreeps);
                 creep.memory.target = target.id;

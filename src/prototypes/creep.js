@@ -1,5 +1,3 @@
-import { InWhiteList } from 'util.js';
-
 Creep.prototype.park = function() {
     if (!this.pos.parkable) {
         let pos = new RoomPosition(25, 25, this.room.name);
@@ -18,10 +16,6 @@ Creep.prototype.isOffRoad = function() {
 
 Creep.prototype.isStrictInRoom = function(roomName) {
     return this.room.name == roomName && !(creep.pos.x == 0 || creep.pos.y == 0 || creep.pos.x == 49 || creep.pos.y == 49);
-};
-
-Creep.prototype.inWhiteList = function() {
-    return InWhiteList(this);
 };
 
 Creep.prototype.repairRoad = function() {

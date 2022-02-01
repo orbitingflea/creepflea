@@ -11,11 +11,7 @@ Room.prototype.NeedSOS = function(masterName, masterCost) {
 }
 
 Room.prototype.findHostileCreeps = function() {
-    return this.find(FIND_HOSTILE_CREEPS, {
-        filter: (creep) => {
-            return !creep.inWhiteList() && creep.owner.username !== 'Source Keeper';
-        }
-    });
+    return this.hostileCreeps;
 };
 
 Room.prototype.findHostileStructures = function() {
@@ -27,11 +23,7 @@ Room.prototype.findHostileStructures = function() {
 };
 
 Room.prototype.findSourceKeepers = function() {
-    return this.find(FIND_HOSTILE_CREEPS, {
-        filter: (creep) => {
-            return creep.owner.username === 'Source Keeper';
-        }
-    });
+    return this.keepers;
 };
 
 Room.prototype.getSpawnNameList = function() {

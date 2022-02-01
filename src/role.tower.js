@@ -19,11 +19,7 @@ export default {
 
     run: function(tower) {
         // attack nearest hostile creep
-        let target = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {
-            filter: (creep) => {
-                return !creep.inWhiteList();
-            }
-        });
+        let target = tower.pos.findClosestByRange(tower.room.hostileCreeps);
         if (target) {
             tower.attack(target);
             return;

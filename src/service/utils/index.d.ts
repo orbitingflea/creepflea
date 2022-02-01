@@ -8,3 +8,9 @@ interface RoomPosition {
   isRoad: boolean;
   underCreep: boolean;
 }
+
+interface Creep {
+  isHostile: boolean;
+  inWhiteList: boolean;
+  hasAttackParts: boolean;
+}

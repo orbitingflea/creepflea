@@ -138,14 +138,3 @@ export function GetCreepCost(body) {
     }
     return cost;
 }
-
-export function InWhiteList(creep) {
-    const whiteList = utilConstant.whiteList;
-    for (let i = 0; i < whiteList.length; i++) {
-        if (creep.owner.username == whiteList[i]) {
-            console.log(`white found`);
-            return true;
-        }
-    }
-    return false;
-}
