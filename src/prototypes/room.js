@@ -1,4 +1,4 @@
-/** 
+/**
  * 检查是否需要 SOS creep。如果没有 master creep 并且没有足够 energy 来 spawn，则返回 true。
  * master creep 一般指的是 carrier from storage.
  */
@@ -44,20 +44,3 @@ Room.prototype.getSpawnNameList = function() {
         return spawn.name;
     });
 };
-
-Object.defineProperty(Room.prototype, 'cache', {
-    configurable: true,
-    get: function() {
-        let cacheName = `roomCache${this.name}`;
-        let cache = CacheMind.get(cacheName, Infinity);
-        if (!cache) {
-            cache = {};
-            CacheMind.set(cacheName, cache);
-        }
-        return cache;
-    },
-    set: function(cache) {
-        let cacheName = `roomCache${this.name}`;
-        CacheMind.set(cacheName, cache);
-    }
-});

@@ -33,23 +33,6 @@ Creep.prototype.repairRoad = function() {
     }
 };
 
-Object.defineProperty(Creep.prototype, 'cache', {
-    configurable: true,
-    get: function() {
-        let cacheName = `creepCache${this.id}`;
-        let cache = CacheMind.get(cacheName, Infinity);
-        if (!cache) {
-            cache = {};
-            CacheMind.set(cacheName, cache);
-        }
-        return cache;
-    },
-    set: function(cache) {
-        let cacheName = `creepCache${this.id}`;
-        CacheMind.set(cacheName, cache);
-    }
-});
-
 
 Creep.prototype.collectEnergyOrDrop = function() {
     // 优先捡起 dropped resource

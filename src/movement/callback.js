@@ -15,13 +15,13 @@ function AddPenalty(room, costs, x, y, delta) {
  */
 export const staticCallback = (roadCost = 1) => (roomName) => {
     let cacheName = `staticCallback${roomName}${roadCost}`;
-    let cache = CacheMind.get(cacheName, 1000);  // 静态信息可以用很久
+    let cache = staticCache.get(cacheName, 1000);  // 静态信息可以用很久
     if (cache) return cache;
 
     const room = Game.rooms[roomName];
     let costs = new PathFinder.CostMatrix;
     if (!room) {
-        cache = CacheMind.get(cacheName, Infinity);
+        cache = staticCache.get(cacheName, Infinity);
         if (cache) return cache;
         else return costs;
     }
@@ -53,7 +53,7 @@ export const staticCallback = (roadCost = 1) => (roomName) => {
         // }
     }
 
-    CacheMind.set(cacheName, costs);
+    staticCache.set(cacheName, costs);
     return costs;
 }
 
@@ -65,7 +65,7 @@ export const staticCallback = (roadCost = 1) => (roomName) => {
  */
 export const creepCallback = (roadBlocking = false) => (roomName) => {
     let cacheName = `creepCallback${roomName}${roadBlocking}`;
-    let cache = CacheMind.get(cacheName, 1);
+    let cache = staticCache.get(cacheName, 1);
     if (cache) return cache;
 
     const room = Game.rooms[roomName];
@@ -81,8 +81,8 @@ export const creepCallback = (roadBlocking = false) => (roomName) => {
             costs.set(creep.pos.x, creep.pos.y, 255);
         }
     }
-    
-    CacheMind.set(cacheName, costs);
+
+    staticCache.set(cacheName, costs);
     return costs;
 }
 
@@ -92,9 +92,9 @@ export const creepCallback = (roadBlocking = false) => (roomName) => {
 export const skSoldierCallback = (blocking) => (roomName) => {
     const room = Game.rooms[roomName];
     if (!room || blocking == 0) return staticCallback(2)(roomName);
-    
+
     let cacheName = `skSoldierCallback${roomName}`;
-    let cache = CacheMind.get(cacheName, 1);
+    let cache = staticCache.get(cacheName, 1);
     if (cache) return cache;
 
     let costs = staticCallback(2)(roomName).clone();
@@ -106,7 +106,7 @@ export const skSoldierCallback = (blocking) => (roomName) => {
         costs.set(creep.pos.x, creep.pos.y, 255);
     }
 
-    CacheMind.set(cacheName, costs);
+    staticCache.set(cacheName, costs);
     return costs;
 }
 
@@ -117,10 +117,10 @@ export const skSoldierCallback = (blocking) => (roomName) => {
 /**
  * 单房间的 Callback，在规避 SK 的时候调用。dangerZone 是一个矩形。
  * WARN：调用前 creep 必须处于危险区域的外面，否则就出不去了。
- * @param {Rectangle} dangerZone 
- * @param {RoomCallback} callback 
- * @param {string} roomName1 
- * @returns 
+ * @param {Rectangle} dangerZone
+ * @param {RoomCallback} callback
+ * @param {string} roomName1
+ * @returns
  */
 export const banDangerZone = (dangerZone, callback, roomName1) => (roomName2) => {
     if (roomName1 !== roomName2) return callback(roomName2);

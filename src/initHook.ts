@@ -1,0 +1,2 @@
+global.tickBeginHook = [];
+global.tickEndHook = [];
