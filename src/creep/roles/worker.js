@@ -28,6 +28,7 @@ export default (args) => ({
         var task = util.closestTaskWithTopPriority(taskList, creep.pos);
         if (!task) {
             creep.say('No Task');
+            creep.park();
             return false;
         }
         var target = Game.getObjectById(task.targetId);

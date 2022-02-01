@@ -1,4 +1,3 @@
-import util from 'util.js';
 import creepCommon from 'creep.common.js';
 
 function carrierTargetPriority(obj) {
@@ -20,6 +19,10 @@ function carrierTargetPriority(obj) {
                 return 10;  // least priority
             case STRUCTURE_LAB:
                 return 20;
+            case STRUCTURE_POWER_SPAWN:
+                return 18;
+            case STRUCTURE_NUKER:
+                return 19;
             default:
                 return -1;
         }

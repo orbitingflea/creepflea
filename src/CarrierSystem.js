@@ -1,5 +1,3 @@
-import util from 'util.js';
-
 export function UpdateStructureStatus(room) {
     // for each structure that may need energy, update obj.memory.needEnergy
     // spawn & extensions always need energy if they are not full
@@ -27,7 +25,7 @@ export function UpdateStructureStatus(room) {
                     structure.memory.needEnergy = true;
                 }
             }
-        } else if (structure.structureType == STRUCTURE_LAB) {
+        } else if (structure.structureType == STRUCTURE_LAB || structure.structureType === STRUCTURE_POWER_SPAWN) {
             let lim = structure.store.getCapacity(RESOURCE_ENERGY);
             let cur = structure.store[RESOURCE_ENERGY];
             if (cur >= lim * 0.95) {
@@ -35,6 +33,8 @@ export function UpdateStructureStatus(room) {
             } else if (cur < lim * 0.75) {
                 structure.memory.needEnergy = true;
             }
+        } else if (structure.structureType === STRUCTURE_NUKER) {
+            structure.memory.needEnergy = structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
         }
     }
 }

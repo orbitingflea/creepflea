@@ -52,7 +52,8 @@ export default (args) => ({
         if (!creep.memory.target) {
             hostileCreeps = room.hostileCreeps;
             if (hostileCreeps.length > 0) {
-                target = creep.pos.findClosestByRange(hostileCreeps);
+                let candidate = hostileCreeps.filter(c => c.getActiveBodyparts(HEAL) > 0);
+                target = creep.pos.findClosestByRange(candidate.length > 0 ? candidate : hostileCreeps);
                 creep.memory.target = target.id;
             }
         }
