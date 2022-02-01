@@ -31,7 +31,7 @@ export const staticCallback = (roadCost = 1) => (roomName) => {
     // ----------
     // 开始计算
 
-    let structureList = room.find(FIND_STRUCTURES).concat(room.find(FIND_CONSTRUCTION_SITES));
+    let structureList = room.structures.concat(room.constructionSites);
 
     for (let structure of structureList) {
         if (structure.structureType === STRUCTURE_ROAD) {
@@ -41,16 +41,6 @@ export const staticCallback = (roadCost = 1) => (roomName) => {
         } else {
             costs.set(structure.pos.x, structure.pos.y, 255);
         }
-
-        // SK penalty
-        // const skPenalty = 50;
-        // if (structure.structureType === STRUCTURE_KEEPER_LAIR) {
-        //     let rect = GetDangerZone(structure);
-        //     let points = rect.getBoundary();
-        //     for (let pos of points) {
-        //         AddPenalty(room, costs, pos.x, pos.y, skPenalty);
-        //     }
-        // }
     }
 
     staticCache.set(cacheName, costs);
@@ -74,7 +64,7 @@ export const creepCallback = (roadBlocking = false) => (roomName) => {
 
     console.log(`[INFO] calc creep callback for ${roomName}, roadBlocking=${roadBlocking}`);
 
-    const creepList = room.find(FIND_CREEPS);
+    const creepList = room.creeps;
     for (let creep of creepList) {
         if (creep.spawning) continue;
         if (!creep.pos.isRoad || !creep.my || roadBlocking) {

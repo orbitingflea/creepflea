@@ -1,5 +1,5 @@
 interface Memory {
-  roomObjects: Object;
+
 }
 
 interface StructureLink {

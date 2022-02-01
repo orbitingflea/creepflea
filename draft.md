@@ -30,6 +30,40 @@ calls		time		avg		function
 240		2.1		0.009		Room._scanCreeps
 Avg: 21.95	Total: 614.65	Ticks: 28
 
+calls		time		avg		function
+1349		346.8		0.257		Creep.work
+465		89.2		0.192		Creep.driveTo
+315		66.9		0.212		Creep.harvest
+268		56.0		0.209		Creep.move
+3637		46.7		0.013		Room.find
+155		34.6		0.223		Creep.upgradeController
+113		30.5		0.270		RoomPosition.findClosestByPath
+517		20.4		0.039		RoomPosition.parkable:get
+1340		15.5		0.012		RoomPosition.findClosestByRange
+2087		12.3		0.006		RoomPosition.lookFor
+53		11.8		0.223		Creep.repair
+41		9.3		0.226		Creep.transfer
+36		7.8		0.217		Creep.heal
+30		6.5		0.218		Creep.reserveController
+66		6.1		0.093		Creep.moveOffRoad
+26		5.8		0.225		Creep.withdraw
+30		5.6		0.187		Creep.rangedAttack
+3231		5.6		0.002		RoomPosition.inRangeTo
+119		5.1		0.043		Creep.park
+2327		5.0		0.002		Room.lookForAt
+2600		4.2		0.002		RoomPosition.isEqualTo
+302		3.9		0.013		RoomPosition.findInRange
+2018		3.8		0.002		Room.cache:get
+120		3.7		0.031		Room.structures:get
+240		3.4		0.014		Room._ensureScanInfo
+46		3.3		0.072		Creep.repairRoad
+Avg: 22.09	Total: 618.59	Ticks: 28
+
+
+观察到内存会比较大地影响性能，因为每个 tick 内存都会被解析一次、存储一次，太浪费时间了。每 tick 需要解析长度为 5*10^4 的 json 字符串，需要零点几 CPU。如果在 global 里面，每秒不用付出线性时间来访问，更适合数据结构。
+
+实际上，大部分数据都是允许失去的，可以考虑把它们放在缓存里面。
+
 
 # 代码整改计划
 ## Fix Cache

@@ -168,7 +168,7 @@ function ConfForUpgrader(room) {
             }
         });
         // mark container as containerNearController
-        container.memory.isContainerNearController = true;
+        container.cache.isContainerNearController = true;
 
         confs.push({
             name: 'CarrierForUpgrader',
@@ -317,7 +317,7 @@ export default function BuildRoomList(roomName, commonSuffix, opts = {}) {
             sourceId: room.storage.id,
             targetIdList: room.functionalStructures.filter(
                 (structure) => {
-                    return (structure.memory.needEnergy);
+                    return (structure.hasCache && structure.cache.needEnergy);
                 }
             ).map((obj) => obj.id)
         }

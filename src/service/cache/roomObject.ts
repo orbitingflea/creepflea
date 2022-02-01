@@ -4,7 +4,7 @@
 
 global.roomObjectCache = {
   data: {},
-  get: function(id: Id<RoomObject>): Object | null {
+  get: function(id: Id<RoomObject>): Object {
     if (!(id in this.data)) {
       this.data[id] = {};
     }
@@ -22,6 +22,12 @@ Object.defineProperty(RoomObject.prototype, 'cache', {
   },
   set: function(value: RoomObjectCache): void {
     global.roomObjectCache.set(this.id, value);
+  }
+});
+
+Object.defineProperty(RoomObject.prototype, 'hasCache', {
+  get: function(): boolean {
+    return this.id in global.roomObjectCache.data;
   }
 });
 

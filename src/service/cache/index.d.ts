@@ -1,5 +1,6 @@
 interface Creep {
   cache: CreepCache;
+  hasCache: boolean;
 }
 
 interface CreepCache {

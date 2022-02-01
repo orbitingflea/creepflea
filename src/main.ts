@@ -6,7 +6,6 @@ import './functionManager.js';  // must import early
 
 import util from 'util.js';
 import roleTower from 'role.tower.js';
-import { CleanUp as MemRoomObjectCleanUp } from 'memory.roomObject.js';
 
 import MarketMain from 'market.js';
 import { CarrierManagerSave } from 'carrierManager.js';
@@ -27,18 +26,11 @@ profiler.enable();
 // This utility uses source maps to get the line numbers and file names of the original, TS source code
 export const loop = ErrorMapper.wrapLoop(() => {
   profiler.wrap(() => {
-    if (Game.cpu.bucket >= 10000) {
-      Game.cpu.generatePixel();
-    }
     for (const name in Memory.creeps) {
       if (!(name in Game.creeps)) {
         delete Memory.creeps[name];
       }
     }
-    if (!Memory.roomObjects) {
-      Memory.roomObjects = {};
-    }
-    MemRoomObjectCleanUp();
 
     runHook(global.tickBeginHook);
 
@@ -56,28 +48,28 @@ export const loop = ErrorMapper.wrapLoop(() => {
 
     // 让所有 creep 执行他们的角色
     for (let name in Game.creeps) {
-        let creep = Game.creeps[name];
-        if (creep.spawning) continue;
-        if (creep.memory.configName) {
-            let workStart = Game.cpu.getUsed();
-            creep.work();
-            if (creep.name.indexOf('E36S45') >= 0) {
-                // console.log(`[CPU-INFO] ${creep.name} work: ${Game.cpu.getUsed() - workStart}`);
-            }
+      let creep = Game.creeps[name];
+      if (creep.spawning) continue;
+      if (creep.memory.configName) {
+        let workStart = Game.cpu.getUsed();
+        creep.work();
+        if (creep.name.indexOf('E36S45') >= 0) {
+          // console.log(`[CPU-INFO] ${creep.name} work: ${Game.cpu.getUsed() - workStart}`);
         }
+      }
     }
 
     if (LOG_CPU_INFO) {
-        console.log(`[CPU-INFO] Creep.work: ${Game.cpu.getUsed() - cpustart}`);
-        cpustart = Game.cpu.getUsed();
+      console.log(`[CPU-INFO] Creep.work: ${Game.cpu.getUsed() - cpustart}`);
+      cpustart = Game.cpu.getUsed();
     }
 
     // 让炮塔行动
     for (let name in Game.structures) {
-        let structure = Game.structures[name];
-        if (structure.structureType == STRUCTURE_TOWER) {
-            roleTower.run(structure);
-        }
+      let structure = Game.structures[name];
+      if (structure.structureType == STRUCTURE_TOWER) {
+        roleTower.run(structure);
+      }
     }
 
     // Link 1

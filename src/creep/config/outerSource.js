@@ -34,7 +34,7 @@ export default function ConfigList() {
             roomName: 'E37S46',
             workingPosition: [43, 36],
             bodyCarrier: BodyWCM(1, 32, 17),
-            targetId: idRoom1.storage,
+            targetId: idRoom1.link_left,
             baseRoomName: 'E38S45',
         },
         {
@@ -66,11 +66,6 @@ export default function ConfigList() {
             body: bodyOuterDefender,
             args: {roomName: roomName},
             require: 0,  // use tmp require to spawn
-            // room && (room.find(FIND_HOSTILE_CREEPS, {
-            //     filter: (creep) => {
-            //         return !creep.inWhiteList;
-            //     }
-            // }).length > 0) ? 1 : 0,
             spawn: spawn,
         };
         confs.push(conf);

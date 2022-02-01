@@ -7,3 +7,5 @@ import './cache/roomObject';
 
 import './roomFind/main';
 import './roomFind/creep';
+
+import './memory/roomObject';
