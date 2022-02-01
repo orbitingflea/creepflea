@@ -11,13 +11,31 @@ Room.prototype._scan = function(): void {
   let roadIdList = [];
   let rampartIdList = [];
   let functionalStructureIdList = [];
+  let containerIdList = [];
+  let linkIdList = [];
+  let labIdList = [];
+  let extensionIdList = [];
+  let spawnIdList = [];
   for (let structure of structures) {
-    if (structure.structureType == STRUCTURE_ROAD) {
+    if (structure.structureType === STRUCTURE_ROAD) {
       roadIdList.push(structure.id);
-    } else if (structure.structureType == STRUCTURE_RAMPART) {
+    } else if (structure.structureType === STRUCTURE_RAMPART) {
       rampartIdList.push(structure.id);
     } else {
       functionalStructureIdList.push(structure.id);
+      if (structure.structureType === STRUCTURE_CONTAINER) {
+        containerIdList.push(structure.id);
+      } else if (('my' in structure) && structure.my) {
+        if (structure.structureType === STRUCTURE_LINK) {
+          linkIdList.push(structure.id);
+        } else if (structure.structureType === STRUCTURE_LAB) {
+          labIdList.push(structure.id);
+        } else if (structure.structureType === STRUCTURE_EXTENSION) {
+          extensionIdList.push(structure.id);
+        } else if (structure.structureType === STRUCTURE_SPAWN) {
+          spawnIdList.push(structure.id);
+        }
+      }
     }
   }
   this.cache.scanInfo = {
@@ -29,6 +47,11 @@ Room.prototype._scan = function(): void {
     constructionSiteIdList: this.find(FIND_CONSTRUCTION_SITES).map(s => s.id),
     roadIdList,
     rampartIdList,
+    containerIdList,
+    linkIdList,
+    labIdList,
+    extensionIdList,
+    spawnIdList,
   };
 }
 
@@ -112,6 +135,73 @@ Object.defineProperty(Room.prototype, 'ramparts', {
     if (res.indexOf(null) >= 0) {
       this._scan();
       return this.cache.scanInfo.rampartIdList.map((id: Id<StructureRampart>) => Game.getObjectById(id));
+    } else {
+      return res;
+    }
+  }
+});
+
+Object.defineProperty(Room.prototype, 'containers', {
+  configurable: true,
+  get: function(): StructureContainer[] {
+    let res = this.cache.scanInfo.containerIdList.map((id: Id<StructureContainer>) => Game.getObjectById(id));
+    if (res.indexOf(null) >= 0) {
+      this._scan();
+      return this.cache.scanInfo.containerIdList.map((id: Id<StructureContainer>) => Game.getObjectById(id));
+    } else {
+      return res;
+    }
+  }
+});
+
+Object.defineProperty(Room.prototype, 'links', {
+  configurable: true,
+  get: function(): StructureLink[] {
+    let res = this.cache.scanInfo.linkIdList.map((id: Id<StructureLink>) => Game.getObjectById(id));
+    if (res.indexOf(null) >= 0) {
+      this._scan();
+      return this.cache.scanInfo.linkIdList.map((id: Id<StructureLink>) => Game.getObjectById(id));
+    } else {
+      return res;
+    }
+  }
+});
+
+Object.defineProperty(Room.prototype, 'labs', {
+  configurable: true,
+  get: function(): StructureLab[] {
+    let res = this.cache.scanInfo.labIdList.map((id: Id<StructureLab>) => Game.getObjectById(id));
+    if (res.indexOf(null) >= 0) {
+      this._scan();
+      return this.cache.scanInfo.labIdList.map((id: Id<StructureLab>) => Game.getObjectById(id));
+    } else {
+      return res;
+    }
+  }
+});
+
+// START EDITING BELOW
+
+Object.defineProperty(Room.prototype, 'extensions', {
+  configurable: true,
+  get: function(): StructureExtension[] {
+    let res = this.cache.scanInfo.extensionIdList.map((id: Id<StructureExtension>) => Game.getObjectById(id));
+    if (res.indexOf(null) >= 0) {
+      this._scan();
+      return this.cache.scanInfo.extensionIdList.map((id: Id<StructureExtension>) => Game.getObjectById(id));
+    } else {
+      return res;
+    }
+  }
+});
+
+Object.defineProperty(Room.prototype, 'spawns', {
+  configurable: true,
+  get: function(): StructureSpawn[] {
+    let res = this.cache.scanInfo.spawnIdList.map((id: Id<StructureSpawn>) => Game.getObjectById(id));
+    if (res.indexOf(null) >= 0) {
+      this._scan();
+      return this.cache.scanInfo.spawnIdList.map((id: Id<StructureSpawn>) => Game.getObjectById(id));
     } else {
       return res;
     }

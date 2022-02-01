@@ -26,7 +26,7 @@ export default (args) => ({
         // if there exist hostile creeps in the room, attack them
         let hostileCreeps = room.find(FIND_HOSTILE_CREEPS, {
             filter: (creep) => {
-                return !creep.inWhiteList();
+                return !creep.inWhiteList;
             }
         });
         if (hostileCreeps.length) {

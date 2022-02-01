@@ -64,7 +64,7 @@ const attackTarget = FunctionManager.register((creep, targetId) => {
         return true;
     }
     let hostileNearMe = creep.pos.findInRange(FIND_HOSTILE_CREEPS, 1, {
-        filter: creep => !creep.inWhiteList()
+        filter: creep => !creep.inWhiteList
     });
     if (hostileNearMe.length > 0) {
         creep.attack(hostileNearMe[0]);

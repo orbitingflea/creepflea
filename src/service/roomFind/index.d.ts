@@ -10,6 +10,12 @@ interface Room {
   roads: StructureRoad[];
   ramparts: StructureRampart[];
 
+  containers: StructureContainer[];
+  links: StructureLink[];
+  labs: StructureLab[];
+  extensions: StructureExtension[];
+  spawns: StructureSpawn[];
+
   _scanCreeps(): void;
   _creeps: {
     all: Creep[];
@@ -38,5 +44,10 @@ interface RoomCache {
     constructionSiteIdList: Id<ConstructionSite>[];
     roadIdList: Id<StructureRoad>[];
     rampartIdList: Id<StructureRampart>[];
+    containerIdList: Id<StructureContainer>[];
+    linkIdList: Id<StructureLink>[];
+    labIdList: Id<StructureLab>[];
+    extensionIdList: Id<StructureExtension>[];
+    spawnIdList: Id<StructureSpawn>[];
   }
 }

@@ -31,12 +31,7 @@ function ConfForSource(room, sources, i, bodyCarrierForSource) {
 
     let container;
     if (!workingPos) {
-        let containers = room.find(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return structure.structureType == STRUCTURE_CONTAINER &&
-                    structure.pos.inRangeTo(source, 1);
-            }
-        });
+        let containers = room.containers.filter(s => s.pos.inRangeTo(source, 1));
         if (containers.length > 0) {
             container = containers[0];
             workingPos = container.pos;
@@ -60,12 +55,7 @@ function ConfForSource(room, sources, i, bodyCarrierForSource) {
     }
 
     // find links
-    let links = room.find(FIND_STRUCTURES, {
-        filter: (structure) => {
-            return structure.structureType == STRUCTURE_LINK &&
-                structure.pos.inRangeTo(workingPos, 1);
-        }
-    });
+    let links = room.links.filter(s => s.pos.inRangeTo(workingPos, 1));
     if (links.length > 0 && !links[0].isCenterLink) {
         // link mining
         let link = links[0];
@@ -157,12 +147,7 @@ function DesignStrongUpgrader(energy) {
 function ConfForUpgrader(room) {
     const controller = room.controller;
     let confs = [];
-    const containers = room.find(FIND_STRUCTURES, {
-        filter: (structure) => {
-            return structure.structureType == STRUCTURE_CONTAINER &&
-                structure.pos.inRangeTo(controller, 3);
-        }
-    });
+    const containers = room.containers.filter(s => s.pos.inRangeTo(controller, 3));
     if (containers.length > 0) {
         const container = containers[0];
         let threshold = 300000;
@@ -235,24 +220,15 @@ function DesignMinerBody(energy) {
 }
 
 function ConfForMiner(room) {
-    const minerals = room.find(FIND_MINERALS);
-    if (minerals.length == 0) return [];
-    const mineral = minerals[0];
+    const mineral = room.mineral;
+    if (!mineral) return [];
     let confs = [];
-    const containers = room.find(FIND_STRUCTURES, {
-        filter: (structure) => {
-            return structure.structureType == STRUCTURE_CONTAINER &&
-                structure.pos.inRangeTo(mineral, 1);
-        }
-    });
+    const containers = room.containers.filter(s => s.pos.inRangeTo(mineral, 1));
     // console.log(`INFO: ${room.name} has ${containers.length} containers for miner`);
     if (containers.length > 0) {
         const container = containers[0];
-        let require = mineral.mineralAmount > 0 && room.find(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return structure.structureType == STRUCTURE_EXTRACTOR;
-            }
-        }).length > 0 ? 1 : 0;
+        let require = mineral.mineralAmount > 0 &&
+            mineral.pos.lookFor(LOOK_STRUCTURES).some(s => s.structureType === STRUCTURE_EXTRACTOR) ? 1 : 0;
         let body = DesignMinerBody(room.energyCapacityAvailable);
         confs.push({
             name: 'Miner',
@@ -297,26 +273,19 @@ export default function BuildRoomList(roomName, commonSuffix, opts = {}) {
     // SOS & Main Carrier
     let needSosCarrier = room.NeedSOS('CarrierFromStorage' + commonSuffix, GetCreepCost(bodyCarrierFromStorage));
     let needSosHarvester = room.storage.store[RESOURCE_ENERGY] == 0 &&
-        _.filter(room.find(FIND_MY_CREEPS), (creep) => {
-            return creep.memory.configName.indexOf('Digger') != -1;
-        }).length == 0;
+        !room.myCreeps.some(c => c.memory.configName.indexOf('Digger') !== -1);
     confs.push({
         name: 'SosCarrier',
         role: 'carrier',
         body: [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE],
         args: {
             sourceId: room.storage.id,
-            targetIdList: room.find(FIND_MY_STRUCTURES, {
-                filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_EXTENSION ||
-                            structure.structureType == STRUCTURE_SPAWN);
-                }
-            }).map((obj) => obj.id)
+            targetIdList: room.spawns.concat(room.extensions).map(s => s.id)
         },
         require: needSosCarrier ? 1 : 0
     });
 
-    const sosSource = room.storage.pos.findClosestByRange(room.find(FIND_SOURCES));
+    const sosSource = room.storage.pos.findClosestByRange(room.sources);
     confs.push({
         name: 'SosHarvester',
         role: 'basicHarvester',
@@ -346,11 +315,11 @@ export default function BuildRoomList(roomName, commonSuffix, opts = {}) {
         require: 1,
         args: {
             sourceId: room.storage.id,
-            targetIdList: room.find(FIND_STRUCTURES, {
-                filter: (structure) => {
+            targetIdList: room.functionalStructures.filter(
+                (structure) => {
                     return (structure.memory.needEnergy);
                 }
-            }).map((obj) => obj.id)
+            ).map((obj) => obj.id)
         }
     });
 
@@ -366,12 +335,7 @@ export default function BuildRoomList(roomName, commonSuffix, opts = {}) {
     if (centerPos) {
         // find a link
         room.centerPos = centerPos;
-        let links = room.find(FIND_MY_STRUCTURES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_LINK &&
-                        structure.pos.inRangeTo(centerPos, 1));
-            }
-        });
+        let links = room.links.filter(s => s.pos.inRangeTo(centerPos, 1));
         if (links.length > 0) {
             let link = links[0];
             link.isCenterLink = true;
@@ -391,7 +355,7 @@ export default function BuildRoomList(roomName, commonSuffix, opts = {}) {
     }
 
     // Diggers
-    const sources = room.find(FIND_SOURCES);
+    const sources = room.sources;
     for (let i in sources) {
         confs = confs.concat(ConfForSource(room, sources, i, bodyCarrierForSource));
     }

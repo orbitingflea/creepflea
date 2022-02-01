@@ -68,7 +68,7 @@ export default function ConfigList() {
             require: 0,  // use tmp require to spawn
             // room && (room.find(FIND_HOSTILE_CREEPS, {
             //     filter: (creep) => {
-            //         return !creep.inWhiteList();
+            //         return !creep.inWhiteList;
             //     }
             // }).length > 0) ? 1 : 0,
             spawn: spawn,

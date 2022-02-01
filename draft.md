@@ -2,6 +2,35 @@
 ## CPU
 固有消耗 1-4 不等，是运行空代码就需要用的。
 
+calls		time		avg		function
+1323		358.5		0.271		Creep.work
+579		137.7		0.238		Creep.driveTo
+485		100.3		0.207		Creep.move
+4929		69.5		0.014		Room.find
+283		60.8		0.215		Creep.harvest
+123		27.2		0.221		Creep.upgradeController
+109		24.4		0.224		RoomPosition.findClosestByPath
+70		15.7		0.225		Creep.repair
+1358		15.5		0.011		RoomPosition.findClosestByRange
+55		12.2		0.221		Creep.transfer
+261		10.5		0.040		RoomPosition.parkable:get
+1378		8.4		0.006		RoomPosition.lookFor
+134		7.6		0.057		Creep.repairRoad
+30		6.6		0.219		Creep.reserveController
+58		6.5		0.111		Creep.withdraw
+3598		5.9		0.002		RoomPosition.inRangeTo
+3192		4.9		0.002		RoomPosition.isEqualTo
+242		3.9		0.016		RoomPosition.findInRange
+1587		3.8		0.002		Room.lookForAt
+56		3.8		0.068		Creep.park
+2171		3.7		0.002		RoomPosition.getRangeTo
+485		2.4		0.005		RoomPosition.getDirectionTo
+1427		2.3		0.002		RoomPosition.isNearTo
+240		2.3		0.010		Room._ensureScanInfo
+240		2.1		0.009		Room._scanCreeps
+Avg: 21.95	Total: 614.65	Ticks: 28
+
+
 # 代码整改计划
 ## Fix Cache
 现在的 cache 系统问题很多。应该把 cache 按照其性质分类，然后分别解决，但提供好用的接口。
