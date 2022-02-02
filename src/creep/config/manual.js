@@ -34,16 +34,16 @@ export default function ConfigList() {
         name: 'StrongholdAttacker_E36S45',
         role: 'skStrongholdAttacker',
         body: BodyRepeat([
-            {type: TOUGH, num: 4},
-            {type: MOVE, num: 19},
+            {type: TOUGH, num: 10},
+            {type: MOVE, num: 10},
             {type: RANGED_ATTACK, num: 10},
-            {type: HEAL, num: 5},
+            {type: HEAL, num: 20},
         ]),
         require: 0,
         args: {
             roomName: 'E36S45',
         },
-        spawn: ['Spawn1', 'Spawn1b'],
+        spawn: ['Spawn1', 'Spawn1b', 'Spawn1c'],
     });
 
     confs.push({
