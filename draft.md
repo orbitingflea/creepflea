@@ -76,4 +76,28 @@ Avg: 22.09	Total: 618.59	Ticks: 28
 
 global.StaticCache：存储从名称到对象的映射。这里的对象能保持几百个 tick 以上的时间。TTL 由读取的时候指定。这里的对象不会被删除。
 global.ObjectCache[Id<xxx>]：存储从属于 Id 的对象的缓存。对象可以是 creep, room object。
-global.PathCache[coded string]：存储寻路缓存。
+global.PathCache[coded string]：存储寻路缓存。TODO.
+
+## 寻路系统
+
+寻路目标由一组参数描述，通常是一个中心点 destination + opts。这组参数可以构造出一个 filter，判断某个点是否是目标点。注意目标点与可以经过的点是不同的，比如有时要求目标点 parkable，但是过去的时候还是行走在道路上。
+
+如果寻路的 creep 现在位置不符合要求，则构造一组 heuristic 的参数，用于计算下一步的位置。通常，在距离目标点很远的时候，这个参数是满足 range 的要求（即接近或远离目标到指定的 range），传入 path finder。
+
+每个 creep 携带两组信息：
+1. dangerAttitude = 'avoid' | 'passive' | 'aggresive'，表示当 danger 产生的时候将会干什么。如果是 'avoid'，将会回避存在危险的房间，callback 返回 false；若已经在危险房间，则尽快撤离。如果是 'passive'，则完全无视 danger，直到被打死。如果是 'aggresive'，则会在 danger 产生的时候停止正在干的事情，切换到战斗状态。
+2. keeperAttitude。首先，如果走路的起点终点均不在 keeper 势力范围内，则避开所有不论是否 active 的 lair region。其次，如果终点在 lair region 以内，则：
+  - 如果 inactive，那么无视目标区域的 lair region。
+  - 如果 active，且 keeperAttitude == 'passive'，则无视危险。
+  - 如果 active，且 'avoid'，则认为目标位置是不可达的。需要设置比较大的 rangeMax，到达 (dest, range) - lairRegion 等待。
+如果起点是危险区域，inactive，则忽略这个危险区域。如果起点是危险区域，active，则
+  - 'avoid'：先远离目标区域，以此为第一阶段目标；达成以后再寻路到目标区域，避开 lairRegion。
+  - 'passive'：无视
+
+需要的接口：
+- 查询一个房间是否是危险状态
+- 查询一个房间内所有的 lairRegion，以及是不是 active
+- 查询一个点属于的 lairRegion，以及是不是 active
+
+# 性能问题
+Creep 的工作代价其实很难避免，现在性能瓶颈基本上是 room plan 的时间。需要大量的分析，每个 tick 都做一次。代码整改的一环就是把它换成 room planner。

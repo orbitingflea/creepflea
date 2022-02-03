@@ -177,24 +177,8 @@ export default function ConfigList() {
 
     // ----------
 
-    conf = {
-        name: 'SpecialCarrier',
-        role: 'carrier',
-        body: BodyWCM(0, 20, 10),
-        require: 0,
-        args: {
-            sourceId: idRoom4.storage,
-            targetIdList: [idRoom1.storage]
-        },
-        spawn: ['Spawn4'],
-        liveThreshold: 20,
-    };
-    confs.push(conf);
-
-    // ----------
-
     // add spawn info
-    const spawnList = ['Spawn1', 'Spawn1b'];
+    const spawnList = ['Spawn1', 'Spawn1b', 'Spawn1c'];
     for (let i = 0; i < confs.length; i++) {
         // confs[i].name = confs[i].name + commonSuffix;
         if (confs[i].spawn == null) confs[i].spawn = spawnList;

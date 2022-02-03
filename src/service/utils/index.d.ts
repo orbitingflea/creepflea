@@ -14,3 +14,8 @@ interface Creep {
   inWhiteList: boolean;
   hasAttackParts: boolean;
 }
+
+interface Room {
+  my: boolean;
+  isKeeperRoom: boolean;  // 需要晚于 roomFind 加载
+}

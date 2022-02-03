@@ -19,7 +19,7 @@ export default function ConfigList() {
         // bodyWorker: BodyWCM(10, 6, 8),
     });
 
-    confs.find(conf => conf.name === 'Worker').require = 2;
+    // confs.find(conf => conf.name === 'Worker').require = 2;
 
     // -------------------- add suffix & spawn --------------------
 

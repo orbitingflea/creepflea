@@ -17,7 +17,7 @@ interface Room {
   spawns: StructureSpawn[];
 
   _scanCreeps(): void;
-  _creeps: {
+  _creeps?: {
     all: Creep[];
     my: Creep[];
     hostile: Creep[];
@@ -35,7 +35,7 @@ interface Room {
 }
 
 interface RoomCache {
-  scanInfo: {
+  scanInfo?: {
     scanTime: number;
     sourceIdList: Id<Source>[];
     mineralId: Id<Mineral> | null;

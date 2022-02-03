@@ -3,7 +3,7 @@
  * 可以将 id list 存在缓存中，避免 Memory 解析开销。
  */
 
-const SCAN_INFO_TTL = 100;
+const SCAN_INFO_TTL = 200;
 
 Room.prototype._scan = function(): void {
   let structures = this.find(FIND_STRUCTURES);
@@ -215,6 +215,6 @@ global.tickBeginHook.push(function(): void {
   for (let name in Game.rooms) {
     let room = Game.rooms[name];
     room._ensureScanInfo();
-    room._scanCreeps();  // save some for-loop time.
+    // room._scanCreeps();  // save some for-loop time.
   }
 });

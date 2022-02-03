@@ -28,6 +28,8 @@ declare global {
         get: (id: Id<RoomObject>) => Object | null;
         set: (id: Id<RoomObject>, value: Object) => void;
       };
+
+      roomDanger: (roomName: string) => DangerInfo | null;
     }
   }
 }

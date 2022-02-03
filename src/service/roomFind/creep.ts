@@ -47,6 +47,7 @@ Room.prototype._scanCreeps = function(): void {
 Object.defineProperty(Room.prototype, 'creeps', {
   configurable: true,
   get: function(): Creep[] {
+    if (!this._creeps) this._scanCreeps();
     return this._creeps.all;
   }
 });
@@ -54,6 +55,7 @@ Object.defineProperty(Room.prototype, 'creeps', {
 Object.defineProperty(Room.prototype, 'myCreeps', {
   configurable: true,
   get: function(): Creep[] {
+    if (!this._creeps) this._scanCreeps();
     return this._creeps.my;
   }
 });
@@ -61,6 +63,7 @@ Object.defineProperty(Room.prototype, 'myCreeps', {
 Object.defineProperty(Room.prototype, 'hostileCreeps', {
   configurable: true,
   get: function(): Creep[] {
+    if (!this._creeps) this._scanCreeps();
     return this._creeps.hostile;
   }
 });
@@ -68,6 +71,7 @@ Object.defineProperty(Room.prototype, 'hostileCreeps', {
 Object.defineProperty(Room.prototype, 'invaders', {
   configurable: true,
   get: function(): Creep[] {
+    if (!this._creeps) this._scanCreeps();
     return this._creeps.invader;
   }
 });
@@ -75,6 +79,7 @@ Object.defineProperty(Room.prototype, 'invaders', {
 Object.defineProperty(Room.prototype, 'keepers', {
   configurable: true,
   get: function(): Creep[] {
+    if (!this._creeps) this._scanCreeps();
     return this._creeps.keeper;
   }
 });
@@ -82,6 +87,7 @@ Object.defineProperty(Room.prototype, 'keepers', {
 Object.defineProperty(Room.prototype, 'neutralCreeps', {
   configurable: true,
   get: function(): Creep[] {
+    if (!this._creeps) this._scanCreeps();
     return this._creeps.neutral;
   }
 });
