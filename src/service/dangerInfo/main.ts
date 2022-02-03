@@ -64,7 +64,7 @@ global.roomDanger = function(roomName: string): DangerInfo | null {
   if (room) {
     return room.danger;
   } else if (Memory.rooms[roomName]) {
-    return Game.rooms[roomName].danger;
+    return Memory.rooms[roomName].danger;
   } else {
     return null;
   }

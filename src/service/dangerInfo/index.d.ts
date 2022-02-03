@@ -38,4 +38,10 @@ declare global {
   interface StructureKeeperLair {
     spawnSoon: boolean;
   }
+
+  interface RoomPosition {
+    inLairRegion: boolean;
+    inActiveLairRegion: boolean;
+    lairRegion: LairRegion | null;
+  }
 }

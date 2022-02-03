@@ -13,77 +13,28 @@ function GetCollapseTime(obj) {
 }
 
 /**
- * room.memory.danger = {
- *   ids: [ list of id that makes dangerous ]
- *   ticksToEnd: number
- * }
+ * global.roomDanger, defined by ts service 'dangerInfo'
  */
 export function RoomDanger(roomName) {
-    let room = Game.rooms[roomName];
-    let mem = Memory.rooms[roomName];
-    if (!mem) {
-        Memory.rooms[roomName] = {};
-        mem = Memory.rooms[roomName];
-    }
-    if (!room) {
-        if (mem.danger && Game.time >= mem.danger.endTime) {
-            mem.danger = null;
-        }
-        return mem.danger;
-    }
-
-    if (room.dangerComputed) {
-        return mem.danger;
-    }
-    room.dangerComputed = true;
-
-    let ids = [];
-    let ticksToEnd = -1;
-    let creepList = room.find(FIND_CREEPS);
-    for (let creep of creepList) {
-        if (creep.spawning) continue;
-        if (creep.owner.username === 'Invader') {
-            ids.push(creep.id);
-            ticksToEnd = Math.max(ticksToEnd, creep.ticksToLive);
-        }
-    }
-    let structureList = room.find(FIND_HOSTILE_STRUCTURES);
-    for (let structure of structureList) {
-        if (structure.structureType === STRUCTURE_TOWER) {
-            ids.push(structure.id);
-            ticksToEnd = Math.max(ticksToEnd, GetCollapseTime(structure));
-        }
-    }
-
-    if (ticksToEnd === -1) {
-        mem.danger = null;
+    let danger = roomDanger(roomName);
+    if (danger === null) {
+        Memory.rooms[roomName]._spawnedDefender = false;
+        return null;
     } else {
-        let spawnedDefender = false;
-        if (mem.danger) {
-            spawnedDefender = mem.danger.spawnedDefender;
-        }
-        if (!spawnedDefender) {
+        if (danger.type === 'invader' && !Memory.rooms[roomName]._spawnedDefender) {
+            Memory.rooms[roomName]._spawnedDefender = true;
             CreepManager.AddTmpRequire('OuterDefender_' + roomName, 1);
-            spawnedDefender = true;
         }
-        mem.danger = {
-            ids: ids,
-            endTime: Game.time + ticksToEnd,
-            spawnedDefender: spawnedDefender,
-        };
+        return danger;
     }
-    return mem.danger;
 }
 
 
 
 export function GetStrongholdContainers(room) {
-    return room.find(FIND_STRUCTURES, {
-        filter: (structure) => {
-            return (structure.structureType == STRUCTURE_CONTAINER && structure.store.getUsedCapacity() > 0 &&
-                GetCollapseTime(structure) >= 0);
-        }
-    }).map((obj) => obj.id);
+    return room.functionalStructures.filter(
+        s => (structure.structureType == STRUCTURE_CONTAINER && structure.store.getUsedCapacity() > 0 && GetCollapseTime(structure) >= 0)
+    ).map((obj) => obj.id);
 }
 
 

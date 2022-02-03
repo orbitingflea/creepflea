@@ -87,3 +87,30 @@ Object.defineProperty(StructureKeeperLair.prototype, 'spawnSoon', {
     return foo !== undefined && foo < SPAWN_SOON_PREJUDGE_TICKS;
   }
 });
+
+
+
+Object.defineProperty(RoomPosition.prototype, 'lairRegion', {
+  get: function(): LairRegion | null {
+    let lairRegionList = this.room.lairRegions;
+    for (let lairRegion of lairRegionList) {
+      if (lairRegion.shape.contains(this)) {
+        return lairRegion;
+      }
+    }
+    return null;
+  }
+});
+
+Object.defineProperty(RoomPosition.prototype, 'inLairRegion', {
+  get: function(): boolean {
+    return this.lairRegion !== null;
+  }
+});
+
+Object.defineProperty(RoomPosition.prototype, 'inActiveLairRegion', {
+  get: function(): boolean {
+    let lairRegion = this.lairRegion;
+    return lairRegion !== null && lairRegion.active;
+  }
+});
