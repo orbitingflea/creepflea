@@ -1,4 +1,5 @@
-import { Rectangle } from './movement/rectangle.js';
+// This file is to be removed soon.
+import { Rectangle } from 'lib/rectangle';
 
 function GetCollapseTime(obj) {
     let eff = obj.effects;
@@ -44,59 +45,12 @@ export function GetStrongholdContainers(room) {
  */
 export function GetDangerZone(lair) {
     if (lair.cache.dangerZone) return lair.cache.dangerZone;
-    let sources = lair.pos.findInRange(FIND_SOURCES, 5).concat(lair.pos.findInRange(FIND_MINERALS, 5));
-    if (sources.length !== 1) {
-        console.log(`[ERROR] lair ${lair.name} has ${sources.length} sources`);
-    }
-
-    let xl = lair.pos.x, xr = lair.pos.x, yl = lair.pos.y, yr = lair.pos.y;
-    for (let source of sources) {
-        xl = Math.min(xl, source.pos.x);
-        xr = Math.max(xr, source.pos.x);
-        yl = Math.min(yl, source.pos.y);
-        yr = Math.max(yr, source.pos.y);
-    }
-    const dangerRange = 4;
-    xl = Math.max(0, xl - dangerRange);
-    xr = Math.min(49, xr + dangerRange);
-    yl = Math.max(0, yl - dangerRange);
-    yr = Math.min(49, yr + dangerRange);
-
-    let dangerZone = new Rectangle(xl, xr, yl, yr, lair.room.name);
-    lair.cache.dangerZone = dangerZone;
-    return dangerZone;
+    let dangerZone = lair.room.lairRegions.find(r => r.shape.contains(lair.pos));
+    lair.cache.dangerZone = dangerZone.shape;
+    return lair.cache.dangerZone;
 }
 
 export function IsDangerZoneActive(lair) {
-    if (lair.cache.safeEndTime) {
-        if (Game.time < lair.cache.safeEndTime) {
-            return false;
-        }
-        delete lair.cache.safeEndTime;
-    }
-
-    if (lair.cache.keeperId) {
-        let keeper = Game.getObjectById(lair.cache.keeperId);
-        if (keeper) {
-            return true;
-        }
-        delete lair.cache.keeperId;
-    }
-
-    const PREJUDGE_TIME = 15;
-    if (lair.ticksToSpawn != null && lair.ticksToSpawn <= PREJUDGE_TIME) {
-        return true;
-    }
-
-    let keepers = lair.pos.findInRange(FIND_HOSTILE_CREEPS, 5, {
-        filter: creep => creep.owner.username === 'Source Keeper'
-    });
-    if (keepers.length > 0) {
-        lair.cache.keeperId = keepers[0].id;
-        return true;
-    }
-
-    // safe
-    lair.cache.safeEndTime = Game.time + lair.ticksToSpawn - PREJUDGE_TIME;
-    return false;
+    let dangerZone = lair.room.lairRegions.find(r => r.shape.contains(lair.pos));
+    return dangerZone.active;
 }

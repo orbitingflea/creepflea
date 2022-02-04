@@ -1,6 +1,6 @@
 /**
  * 本文件的核心是两个函数：driveStep 和 driveTo。
- * 
+ *
  * driveTo 的接口与 moveTo 类似，使 creep 移动到唯一的目标，within range。
  * opts 里支持以下参数：
  * - range: 距离目标的最大距离，默认为 1
@@ -10,7 +10,7 @@
  */
 
 import { staticCallback, creepCallback, banDangerZone } from './callback.js';
-import { LoadRectangle, Rectangle } from './rectangle.js';
+import { Rectangle, decodeRectangle } from 'lib/rectangle';
 
 const MAX_PATIENT = 3;
 
@@ -29,6 +29,10 @@ function CleanPath(path, creep) {
 
 
 
+function LoadRectangle(rect) {
+    return new Rectangle(rect.xl, rect.xr, rect.yl, rect.yr, rect.roomName);
+}
+
 
 /**
  * 读取 driveTo 格式的 opts，并判断是否已经达到目标
@@ -39,13 +43,13 @@ function CleanPath(path, creep) {
     let rangeMin = opts.rangeMin == null ? 0 : opts.rangeMin;
     if (dist < rangeMin || dist > opts.range) return false;
     if (opts.offRoad && !origin.parkable) return false;
-    
+
     // danger zone
     if (opts.dangerZone != null) {
         let dangerZone = LoadRectangle(opts.dangerZone);
         if (dangerZone.contains(origin)) return false;
     }
-    
+
     return true;
 }
 
@@ -78,7 +82,7 @@ function _FindPath(origin, destination, opts, blocking = 0) {
         let dangerZone = LoadRectangle(opts.dangerZone);
         if (dangerZone.contains(origin)) {
             // 阶段性目标：走出危险区
-            let pfTargets = dangerZone.getSquareCover();
+            let pfTargets = dangerZone.getPosRangeCover();
             trans_opt.flee = true;
             return PathFinder.search(origin, pfTargets.map(
                 data => ({
@@ -113,7 +117,7 @@ function _FindPath(origin, destination, opts, blocking = 0) {
                 Math.min(origin.y + d, 48),
                 origin.roomName
             );
-            let points = rect.getBoundary().filter(
+            let points = rect.boundary.filter(
                 p => MatchDestination(p, destination, opts) && !p.underCreep
             );
             if (points.length > 0) {

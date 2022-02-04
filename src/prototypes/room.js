@@ -28,11 +28,9 @@ Room.prototype.findSourceKeepers = function() {
 
 Room.prototype.getSpawnNameList = function() {
     if (!this.spawnNameList) {
-        this.spawnNameList = this.find(FIND_MY_SPAWNS).map((spawn) => {
+        this.spawnNameList = this.spawns.map((spawn) => {
             return spawn.name;
         });
     }
-    return this.find(FIND_MY_SPAWNS).map((spawn) => {
-        return spawn.name;
-    });
+    return this.spawnNameList;
 };

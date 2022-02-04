@@ -1,11 +1,4 @@
-import { Rectangle } from './rectangle.js';
-import { GetDangerZone } from '../skRoom.js';
-
-function AddPenalty(room, costs, x, y, delta) {
-    if (!room.getPositionAt(x, y).isWall) {
-        costs.set(x, y, Math.min(costs.get(x, y) + delta, 255));
-    }
-}
+import { Rectangle } from 'lib/rectangle';
 
 /**
  * 静态 callback，将道路代价标记为 roadCost，不可通行静止结构标记为 255
@@ -115,7 +108,7 @@ export const skSoldierCallback = (blocking) => (roomName) => {
 export const banDangerZone = (dangerZone, callback, roomName1) => (roomName2) => {
     if (roomName1 !== roomName2) return callback(roomName2);
     let costs = callback(roomName1).clone();
-    let points = dangerZone.getBoundary();
+    let points = dangerZone.boundary;
     for (let pos of points) {
         costs.set(pos.x, pos.y, 255);
     }

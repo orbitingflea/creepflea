@@ -127,7 +127,8 @@ export default (args) => ({
         }) : null;
 
         // case 2: source keeper exist or appear soon
-        let rect = workPos.getActiveLairRegion();
+        let region = workPos.lairRegion;
+        let rect = region && region.active ? region.shape : null;
         if (rect) {
             let action2 = {
                 work: creep => {},
