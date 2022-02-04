@@ -64,6 +64,10 @@ global.roomDanger = function(roomName: string): DangerInfo | null {
   if (room) {
     return room.danger;
   } else if (Memory.rooms[roomName]) {
+    let danger = Memory.rooms[roomName].danger;
+    if (danger && danger.endTime <= Game.time) {
+      Memory.rooms[roomName].danger = null;
+    }
     return Memory.rooms[roomName].danger;
   } else {
     return null;
