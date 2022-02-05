@@ -13,6 +13,8 @@ interface Creep {
   isHostile: boolean;
   inWhiteList: boolean;
   hasAttackParts: boolean;
+  hasHealParts: boolean;
+  isDangerous: boolean;
 }
 
 interface Room {

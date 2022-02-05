@@ -20,15 +20,18 @@ interface Room {
   _creeps?: {
     all: Creep[];
     my: Creep[];
-    hostile: Creep[];
     invader: Creep[];
     keeper: Creep[];
     neutral: Creep[];
+    hostilePlayer: Creep[];
+    hostile: Creep[];
   }
 
   creeps: Creep[];
   myCreeps: Creep[];
   hostileCreeps: Creep[];
+  hostilePlayerCreeps: Creep[];
+  hostilePlayerDangerousCreeps: Creep[];
   neutralCreeps: Creep[];
   invaders: Creep[];
   keepers: Creep[];

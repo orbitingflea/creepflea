@@ -6,6 +6,7 @@ Room.prototype._scanCreeps = function(): void {
   let creeps = this.find(FIND_CREEPS);
   let my = [];
   let hostile = [];
+  let hostilePlayer = [];
   let invader = [];
   let keeper = [];
   let neutral = [];
@@ -19,6 +20,7 @@ Room.prototype._scanCreeps = function(): void {
       keeper.push(creep);
     } else if (creep.isHostile) {
       hostile.push(creep);
+      hostilePlayer.push(creep);
     } else {
       neutral.push(creep);
     }
@@ -30,19 +32,9 @@ Room.prototype._scanCreeps = function(): void {
     invader,
     keeper,
     neutral,
+    hostilePlayer,
   };
 };
-
-/**
- * Use hook to scan all rooms at the beginning of each tick.
- * 已经在 main.ts 中完成。
- */
-// global.tickBeginHook.push(function(): void {
-//   for (let name in Game.rooms) {
-//     let room = Game.rooms[name];
-//     room._scanCreeps();
-//   }
-// });
 
 Object.defineProperty(Room.prototype, 'creeps', {
   configurable: true,
@@ -89,5 +81,21 @@ Object.defineProperty(Room.prototype, 'neutralCreeps', {
   get: function(): Creep[] {
     if (!this._creeps) this._scanCreeps();
     return this._creeps.neutral;
+  }
+});
+
+Object.defineProperty(Room.prototype, 'hostilePlayerCreeps', {
+  configurable: true,
+  get: function(): Creep[] {
+    if (!this._creeps) this._scanCreeps();
+    return this._creeps.hostilePlayer;
+  }
+});
+
+Object.defineProperty(Room.prototype, 'hostilePlayerDangerousCreeps', {
+  configurable: true,
+  get: function(): Creep[] {
+    if (!this._creeps) this._scanCreeps();
+    return this._creeps.hostilePlayer.filter((c: Creep) => c.isDangerous);
   }
 });

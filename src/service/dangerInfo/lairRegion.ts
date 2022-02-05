@@ -92,7 +92,8 @@ Object.defineProperty(StructureKeeperLair.prototype, 'spawnSoon', {
 
 Object.defineProperty(RoomPosition.prototype, 'lairRegion', {
   get: function(): LairRegion | null {
-    let lairRegionList = this.room.lairRegions;
+    if (!this.visible) return null;
+    let lairRegionList = Game.rooms[this.roomName].lairRegions;
     for (let lairRegion of lairRegionList) {
       if (lairRegion.shape.contains(this)) {
         return lairRegion;

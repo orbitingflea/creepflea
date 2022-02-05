@@ -52,7 +52,7 @@ const WorkWithContainer = (sourceId, lairId, containerId) => creep => {
 
     let container = Game.getObjectById(containerId);
     if (!container) return false;
-    if (container.hits < container.hitsMax && creep.store[RESOURCE_ENERGY] >= creep.getActiveBodyparts(WORK)) {
+    if (container.hits < container.hitsMax && creep.store[RESOURCE_ENERGY] >= creep.store.getActiveBodyparts(WORK)) {
         creep.repair(container);
         return true;
     }
@@ -74,7 +74,7 @@ const WorkWithSite = (sourceId, lairId, siteId) => creep => {
 
     let site = Game.getObjectById(siteId);
     if (!site) return false;
-    if (creep.store[RESOURCE_ENERGY] >= creep.getActiveBodyparts(WORK) * 5 || creep.getFreeCapacity() == 0) {
+    if (creep.store[RESOURCE_ENERGY] >= creep.getActiveBodyparts(WORK) * 5 || creep.store.getFreeCapacity() == 0) {
         creep.build(site);
         return true;
     }
