@@ -81,7 +81,7 @@ export default function ConfigList() {
 
     conf = {
         name: 'OuterDigger_E36S45',
-        role: 'skDigger',
+        role: 'outerDigger',
         body: bodyOuterDigger,
         require: RoomDanger('E36S45') ? 0 : 1,
         args: {

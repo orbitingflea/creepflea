@@ -15,6 +15,7 @@ const skWaitRange = 7;
 function ExecuteAction(creep) {
     while (creep.cache.action != null) {
         let action = creep.cache.action;
+        console.log(action.work);
         try {
             if (action.stop) {
                 if (!action.stop(creep)) {
