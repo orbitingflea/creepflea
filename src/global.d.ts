@@ -17,11 +17,12 @@ declare global {
         set: (id: Id<Creep>, value: Object) => void;
       };
 
-      roomCache: {
-        data: { [name: string]: Object };
-        get: (name: string) => Object | null;
-        set: (name: string, value: Object) => void;
+      _roomCache: {
+        data: { [name: string]: RoomCache };
+        get: (name: string) => RoomCache;
+        set: (name: string, value: RoomCache) => void;
       };
+      roomCache: (name: string) => RoomCache;
 
       roomObjectCache: {
         data: { [id: string]: Object };
@@ -30,6 +31,8 @@ declare global {
       };
 
       roomDanger: (roomName: string) => DangerInfo | null;
+      roomLairRegions: (roomName: string) => LairRegionStatic[];
+      decodeRoomPosition: (code: string) => RoomPosition;
     }
   }
 }

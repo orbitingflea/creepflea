@@ -9,6 +9,10 @@ import 'creep/creepManager.js';
 import 'carrierManager.js';
 import 'creep/mountCreepRoles.js';
 import 'prototypes/prototypeMain.js';
-import 'movement/moveMain.js';
+// import 'movement/_moveMain.js';
 
 import 'service/load';
+
+import 'movement/main';
+import 'movement/destination';
+import 'movement/utils';

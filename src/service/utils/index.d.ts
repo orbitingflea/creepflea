@@ -7,6 +7,7 @@ interface RoomPosition {
   isEdge: boolean;
   isRoad: boolean;
   underCreep: boolean;
+  code: string;
 }
 
 interface Creep {

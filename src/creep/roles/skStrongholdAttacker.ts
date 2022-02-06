@@ -61,9 +61,7 @@ export default (args: {
     target: (creep: Creep) => {
         const room = args.roomName ? Game.rooms[args.roomName] : creep.room;
         if (!room) {
-            if (!!creep.memory.driveInfo) {
-                if (creep.driveStep()) return false;
-            }
+            if (creep.driveAhead() === OK) return false;
             creep.driveTo(new RoomPosition(25, 25, args.roomName), {
                 range: 20
             });

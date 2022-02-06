@@ -19,10 +19,9 @@ import roleOuterDefender from './roles/outerDefender.js';
 import roleOuterAttacker from './roles/outerAttacker.js';
 
 import roleSkGuard from './roles/skGuard.js';
-import roleSkRecycler from './roles/skRecycler.js';
-import roleSkStrongholdAttacker from './roles/skStrongholdAttacker.js';
-import roleSkDigger from './roles/skDigger.js';
-import roleSkDefender from './roles/skDefender.js';
+import roleSkStrongholdAttacker from './roles/skStrongholdAttacker.ts';
+// import roleSkDigger from './roles/skDigger.js';
+// import roleSkDefender from './roles/skDefender.js';
 
 const roles = {
     carrier: roleCarrier,
@@ -46,10 +45,7 @@ const roles = {
     outerDefender: roleOuterDefender,
     outerAttacker: roleOuterAttacker,
     skGuard: roleSkGuard,
-    skRecycler: roleSkRecycler,
     skStrongholdAttacker: roleSkStrongholdAttacker,
-    skDigger: roleSkDigger,
-    skDefender: roleSkDefender,
 };
 
 Creep.prototype.work = function() {

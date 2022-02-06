@@ -99,5 +99,27 @@ global.PathCache[coded string]：存储寻路缓存。TODO.
 - 查询一个房间内所有的 lairRegion，以及是不是 active
 - 查询一个点属于的 lairRegion，以及是不是 active
 
+这里有几套 interface？
+1. 描述目的地逻辑的类型。比如（在xx附近、不在道路上、不在 active lair region 以内）。但是不同时间同一对象可能意义不同（例如 lair region 可能 inactive）；似乎不影响使用。
+2. 寻路的参数。比如 keeperAttitude，dangerAttitude，banCreeps，avoid。它们与目的地无关，只和 creep 有关。
+
+几个重要功能：
+1. find a path from xxx to xxx, with opts xxx. 几乎与 PathFinder 相同，但是提供了更多功能：两个 attitude 等等，本质上是用这些参数确定 callback。输入为 heuristic 和 FindPathOpts。
+2. calc heuristic
+3. drive along path
+4. fine tune near destination。在符合 heuristic 目标 range +- 1 (or 0) 的时候开始 fine tune。扫描 creep 周围符合条件的目标格子，直接寻路过去。这里在搜索目标格子的时候会考虑 creep，寻路也会考虑 creep。
+
+重新搜索路径的时机：
+1. 当 creep 耐心耗尽
+2. 获得视野（所以还需要记录 path 哪些房间是有视野的）
+
+TODO：现在 Destination 和 DriveOpts 有一点混乱，明天最好想想清楚再写。
+
 # 性能问题
 Creep 的工作代价其实很难避免，现在性能瓶颈基本上是 room plan 的时间。需要大量的分析，每个 tick 都做一次。代码整改的一环就是把它换成 room planner。
+
+
+[WARN] OuterDigger_E36S45b_35653163 drive: incomplete path
+  - drive from [room E37S45 pos 8,32] to [room E36S45 pos 11,43], opts: {"keeperAttitude":"avoid","dangerAttitude":"avoid","ignoreRoads":false,"singleRoom":true,"avoid":[],"blocking":2}
+  - dest: {"pos":{"x":11,"y":43,"roomName":"E36S45"},"range":0,"rangeMin":0,"offRoad":false,"keeperAttitude":"avoid","dangerAttitude":"avoid"}
+  - path: [{"x":9,"y":33,"roomName":"E37S45"},{"x":9,"y":34,"roomName":"E37S45"},{"x":9,"y":35,"roomName":"E37S45"},{"x":8,"y":36,"roomName":"E37S45"},{"x":7,"y":35,"roomName":"E37S45"},{"x":6,"y":34,"roomName":"E37S45"},{"x":5,"y":34,"roomName":"E37S45"},{"x":4,"y":33,"roomName":"E37S45"},{"x":3,"y":33,"roomName":"E37S45"},{"x":2,"y":33,"roomName":"E37S45"},{"x":1,"y":33,"roomName":"E37S45"},{"x":0,"y":34,"roomName":"E37S45"},{"x":49,"y":34,"roomName":"E36S45"},{"x":48,"y":35,"roomName":"E36S45"},{"x":47,"y":36,"roomName":"E36S45"},{"x":46,"y":36,"roomName":"E36S45"},{"x":45,"y":37,"roomName":"E36S45"},{"x":44,"y":38,"roomName":"E36S45"},{"x":43,"y":39,"roomName":"E36S45"},{"x":42,"y":40,"roomName":"E36S45"},{"x":41,"y":41,"roomName":"E36S45"},{"x":40,"y":41,"roomName":"E36S45"},{"x":39,"y":41,"roomName":"E36S45"},{"x":38,"y":41,"roomName":"E36S45"},{"x":37,"y":41,"roomName":"E36S45"},{"x":36,"y":42,"roomName":"E36S45"},{"x":35,"y":42,"roomName":"E36S45"},{"x":34,"y":42,"roomName":"E36S45"},{"x":33,"y":42,"roomName":"E36S45"},{"x":32,"y":42,"roomName":"E36S45"},{"x":31,"y":42,"roomName":"E36S45"},{"x":30,"y":42,"roomName":"E36S45"},{"x":29,"y":42,"roomName":"E36S45"},{"x":28,"y":42,"roomName":"E36S45"},{"x":27,"y":42,"roomName":"E36S45"},{"x":26,"y":42,"roomName":"E36S45"},{"x":25,"y":42,"roomName":"E36S45"},{"x":24,"y":42,"roomName":"E36S45"},{"x":23,"y":42,"roomName":"E36S45"},{"x":22,"y":42,"roomName":"E36S45"},{"x":21,"y":42,"roomName":"E36S45"},{"x":20,"y":42,"roomName":"E36S45"},{"x":19,"y":42,"roomName":"E36S45"},{"x":18,"y":42,"roomName":"E36S45"},{"x":17,"y":42,"roomName":"E36S45"},{"x":16,"y":42,"roomName":"E36S45"},{"x":15,"y":42,"roomName":"E36S45"},{"x":14,"y":42,"roomName":"E36S45"},{"x":13,"y":42,"roomName":"E36S45"},{"x":12,"y":42,"roomName":"E36S45"}]

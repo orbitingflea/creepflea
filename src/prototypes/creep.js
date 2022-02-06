@@ -1,19 +1,3 @@
-Creep.prototype.park = function() {
-    if (!this.pos.parkable) {
-        let pos = new RoomPosition(25, 25, this.room.name);
-        this.driveTo(pos, {
-            range: 25,
-            offRoad: true
-        });
-    }
-};
-
-Creep.prototype.moveOffRoad = Creep.prototype.park;  // 已弃用
-
-Creep.prototype.isOffRoad = function() {
-    return this.pos.parkable;
-};
-
 Creep.prototype.isStrictInRoom = function(roomName) {
     return this.room.name == roomName && !(creep.pos.x == 0 || creep.pos.y == 0 || creep.pos.x == 49 || creep.pos.y == 49);
 };

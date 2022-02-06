@@ -2,7 +2,6 @@
 
 import util from 'util.js';
 import creepCommon from 'creep.common.js';
-import { skSoldierCallback } from 'movement/callback';
 
 export default (args) => ({
     // {roomName}
@@ -14,9 +13,7 @@ export default (args) => ({
     target: creep => {
         const room = args.roomName ? Game.rooms[args.roomName] : creep.room;
         if (!room) {
-            if (!!creep.memory.driveInfo) {
-                if (creep.driveStep()) return false;
-            }
+            if (creep.driveAhead() === OK) return false;
             creep.driveTo(new RoomPosition(25, 25, args.roomName), {
                 range: 20
             });
@@ -24,16 +21,16 @@ export default (args) => ({
         }
 
         // if there exist hostile creeps in the room, attack them
-        let hostileCreeps = room.find(FIND_HOSTILE_CREEPS, {
-            filter: (creep) => {
-                return !creep.inWhiteList;
-            }
-        });
+        let hostileCreeps = room.hostileCreeps;
         if (hostileCreeps.length) {
             let target = creep.pos.findClosestByPath(hostileCreeps);
             if (!target) target = hostileCreeps[0];
             if (!creep.pos.inRangeTo(target, 1)) {
-                creep.driveTo(target, {range: 1});
+                creep.driveTo(target, {
+                    range: 1,
+                    keeperAttitude: 'passive',
+                    dangerAttitude: 'passive'
+                });
                 creep.heal(creep);
                 return false;
             }
@@ -56,7 +53,11 @@ export default (args) => ({
             let target = creep.pos.findClosestByPath(healCreeps);
             if (!target) target = healCreeps[0];
             if (!creep.pos.inRangeTo(target, 1)) {
-                creep.driveTo(target, {range: 1});
+                creep.driveTo(target, {
+                    range: 1,
+                    keeperAttitude: 'passive',
+                    dangerAttitude: 'passive'
+                });
                 return false;
             }
             creep.heal(target);
@@ -69,7 +70,11 @@ export default (args) => ({
             let target = creep.pos.findClosestByPath(invaderCore);
             if (!target) target = invaderCore[0];
             if (!creep.pos.inRangeTo(target, 1)) {
-                creep.driveTo(target, {range: 1});
+                creep.driveTo(target, {
+                    range: 1,
+                    keeperAttitude: 'passive',
+                    dangerAttitude: 'passive'
+                });
                 return false;
             }
             creep.attack(target);

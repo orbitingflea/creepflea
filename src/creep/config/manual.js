@@ -53,7 +53,7 @@ export default function ConfigList() {
             {type: MOVE, num: 25},
             {type: HEAL, num: 5},
             {type: RANGED_ATTACK, num: 20}]),
-        require: RoomDanger('E36S45') ? 0 : 2,
+        require: RoomDanger('E36S45') ? 0 : 1,
         args: {
             roomName: 'E36S45',
             hurtTolerance: 15

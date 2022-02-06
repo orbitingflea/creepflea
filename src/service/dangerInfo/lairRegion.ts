@@ -88,7 +88,26 @@ Object.defineProperty(StructureKeeperLair.prototype, 'spawnSoon', {
   }
 });
 
+// 当没视野时调用，可以得到 shape，如果以前有信息。
+global.roomLairRegions = function(roomName: string): LairRegionStatic[] {
+  let room = Game.rooms[roomName];
+  if (room) {
+    return room.lairRegions.map((region: LairRegion) => ({
+      shape: region.shape,
+      lairId: region.lair.id
+    }));
+  }
 
+  let cache = global.roomCache(roomName);
+  if (cache.lairRegionStaticInfo) {
+    return cache.lairRegionStaticInfo;
+  } else {
+    return [];
+  }
+}
+
+// --------------------
+// RoomPosition
 
 Object.defineProperty(RoomPosition.prototype, 'lairRegion', {
   get: function(): LairRegion | null {

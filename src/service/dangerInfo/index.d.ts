@@ -14,10 +14,7 @@ declare global {
   }
 
   interface RoomCache {
-    lairRegionStaticInfo: {
-      shape: Rectangle;
-      lairId: Id<StructureKeeperLair>;
-    }[];
+    lairRegionStaticInfo?: LairRegionStatic[];
   }
 
   interface RoomMemory {
@@ -33,6 +30,11 @@ declare global {
     active: boolean;
     shape: Rectangle;
     lair: StructureKeeperLair;
+  }
+
+  interface LairRegionStatic {
+    shape: Rectangle;
+    lairId: Id<StructureKeeperLair>;
   }
 
   interface StructureKeeperLair {

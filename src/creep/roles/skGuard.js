@@ -11,7 +11,6 @@
 
 import util from 'util.js';
 import creepCommon from 'creep.common.js';
-import { skSoldierCallback } from 'movement/callback.js';
 
 const lairWaitRange = 5;
 
@@ -25,9 +24,7 @@ export default (args) => ({
     target: creep => {
         const room = args.roomName ? Game.rooms[args.roomName] : creep.room;
         if (!room) {
-            if (!!creep.memory.driveInfo) {
-                if (creep.driveStep()) return false;
-            }
+            if (creep.driveAhead() === OK) return false;
             creep.driveTo(new RoomPosition(25, 25, args.roomName), {
                 range: 20
             });
@@ -101,7 +98,9 @@ export default (args) => ({
             let expectedDistance = creep.memory.mode === 'heal' ? 4 : 3;
             creep.driveTo(target, {
                 range: expectedDistance,
-                rangeMin: expectedDistance
+                rangeMin: expectedDistance,
+                keeperAttitude: 'passive',
+                dangerAttitude: 'passive'
             });
             return false;
         }
@@ -119,7 +118,9 @@ export default (args) => ({
             if (!target) target = healCreeps[0];
             if (!creep.pos.inRangeTo(target, 1)) {
                 creep.driveTo(target, {
-                    range: 1
+                    range: 1,
+                    keeperAttitude: 'passive',
+                    dangerAttitude: 'passive'
                 });
                 if (creep.hits < creep.hitsMax) creep.heal(creep);
                 return false;
@@ -146,7 +147,9 @@ export default (args) => ({
             if (target) {
                 creep.driveTo(target, {
                     range: lairWaitRange,
-                    offRoad: true
+                    offRoad: true,
+                    keeperAttitude: 'passive',
+                    dangerAttitude: 'passive'
                 });
                 if (creep.hits < creep.hitsMax) creep.heal(creep);
                 return false;

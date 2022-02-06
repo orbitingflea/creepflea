@@ -89,3 +89,15 @@ Object.defineProperty(RoomPosition.prototype, 'isRoad', {
       .find((structure: Structure | ConstructionSite) => structure.structureType === STRUCTURE_ROAD);
   }
 });
+
+Object.defineProperty(RoomPosition.prototype, 'code', {
+  configurable: true,
+  get: function(): string {
+    return this.roomName + '_' + this.x + '_' + this.y;
+  }
+});
+
+global.decodeRoomPosition = function(code: string): RoomPosition {
+  let [roomName, x, y] = code.split('_');
+  return new RoomPosition(+x, +y, roomName);
+}

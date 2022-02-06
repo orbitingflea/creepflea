@@ -4,7 +4,7 @@ export default {
     // 定义若干常用的方法
 
     waitOffRoad: () => (creep) => {
-        const res = creep.moveOffRoad();
+        const res = creep.park();
     },
 
     prepareGotoPositionXY: (posXY) => (creep) => {
@@ -53,7 +53,7 @@ export default {
     prepareGotoBlindObject: (id, roomName, range = 1) => (creep) => {
         let obj = Game.getObjectById(id);
         if (obj && creep.pos.inRangeTo(obj.pos, range)) return true;
-        creep.driveToBlindObject(Game.getObjectById(id), roomName, {range: range});
+        creep.driveBlind(Game.getObjectById(id), roomName, {range: range});
         return false;
     },
 
