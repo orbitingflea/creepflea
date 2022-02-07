@@ -41,7 +41,14 @@ export function findPath(origin: RoomPosition, destination: HeuristicDestination
     optsFinder.plainCost = 1;
     optsFinder.swampCost = 5;
   }
+  // DEBUG begin
+  let cpuStart = Game.cpu.getUsed();
   let result = PathFinder.search(origin, {pos: destination.pos, range: destination.range}, optsFinder);
+  let cpuUsed = Game.cpu.getUsed() - cpuStart;
+  if (cpuUsed > 0.1) {
+    console.log(`findPath use cpu: ${cpuUsed}`);
+  }
+  // DEBUG end
   let ret: FindPathMyResult = {
     path: result.path,
     incomplete: result.incomplete,
@@ -55,6 +62,15 @@ export function findPath(origin: RoomPosition, destination: HeuristicDestination
 }
 
 export function findPathLeaveLairRegion(origin: RoomPosition, opts: FindPathMyOpts): FindPathMyResult {
+  let useCache = (opts.blocking === 0);
+  let cacheName;
+  if (useCache) {
+    cacheName = `L${origin.code}#${encodeFindPathOpts(opts)}}`;
+    let cacheValue = global.pathCache.get(cacheName);
+    if (cacheValue !== undefined) {
+      return cacheValue;
+    }
+  }
   let roomCallback = callback(origin, null, opts);
   let rect = origin.lairRegion?.shape;
   if (!rect) {
@@ -84,10 +100,14 @@ export function findPathLeaveLairRegion(origin: RoomPosition, opts: FindPathMyOp
     range: pair.range + 1
   }));
   let result = PathFinder.search(origin, cover, optsFinder);
-  return {
+  let ret: FindPathMyResult = {
     path: result.path,
     incomplete: result.incomplete,
     cost: result.cost * (opts.ignoreRoads ? 2 : 1),
     firstInvisibleRoom: firstInvisibleRoom(result.path)
   };
+  if (useCache) {
+    global.pathCache.set(cacheName as string, ret);
+  }
+  return ret;
 }

@@ -131,7 +131,7 @@ PathFinder.CostMatrix.prototype.avoidCreeps = function(room: Room): CostMatrix {
 PathFinder.CostMatrix.prototype.avoidNonRoadCreeps = function(room: Room): CostMatrix {
   let creeps = room.creeps;
   for (let c of creeps) {
-    if (!(c.my && c.pos.isRoad)) {
+    if (!(c.my && !c.pos.parkable)) {
       this.set(c.pos.x, c.pos.y, 255);
     }
   }
