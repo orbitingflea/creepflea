@@ -16,3 +16,12 @@ import 'service/load';
 import 'movement/main';
 import 'movement/destination';
 import 'movement/utils';
+
+global.tickEndHook.push(() => {
+  for (let name in Memory.rooms) {
+    if (roomDanger(name) && !Memory.rooms[name]._spawnedDefender) {
+      Memory.rooms[name]._spawnedDefender = true;
+      CreepManager.AddTmpRequire('OuterDefender_' + name, 1);
+    }
+  }
+})

@@ -22,7 +22,7 @@ export function RoomDanger(roomName) {
         Memory.rooms[roomName]._spawnedDefender = false;
         return null;
     } else {
-        if (danger.type === 'invader' && !Memory.rooms[roomName]._spawnedDefender) {
+        if (danger.type !== 'stronghold' && !Memory.rooms[roomName]._spawnedDefender) {
             Memory.rooms[roomName]._spawnedDefender = true;
             CreepManager.AddTmpRequire('OuterDefender_' + roomName, 1);
         }

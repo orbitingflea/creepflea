@@ -4,6 +4,12 @@
  */
 
 import { callback } from './callback';
+import { encodeFindPathOpts, encodeHeuristicDestination } from './destination';
+import { LRUMap } from 'lib/lru/lru.js';
+
+const CACHE_SIZE = 1000;
+
+global.pathCache = new LRUMap(CACHE_SIZE);
 
 function firstInvisibleRoom(path: RoomPosition[]) {
   for (let pos of path) {
@@ -15,9 +21,16 @@ function firstInvisibleRoom(path: RoomPosition[]) {
 }
 
 export function findPath(origin: RoomPosition, destination: HeuristicDestination, opts: FindPathMyOpts): FindPathMyResult {
+  let useCache = (opts.blocking === 0);
+  let cacheName;
+  if (useCache) {
+    cacheName = `A${origin.code}#${encodeHeuristicDestination(destination)}#${encodeFindPathOpts(opts)}}`;
+    let cacheValue = global.pathCache.get(cacheName);
+    if (cacheValue !== undefined) {
+      return cacheValue;
+    }
+  }
   let roomCallback = callback(origin, destination.pos, opts);
-  // console.log(`[DEBUG] costmatrix ${JSON.stringify(roomCallback('E38S45'))}`);
-  // console.log(`[DEBUG] ${roomCallback(origin.roomName)}, ${roomCallback(destination.pos.roomName)}, ${roomCallback('E38S45')}`);
   let optsFinder = {
     plainCost: 2,
     swampCost: 10,
@@ -29,13 +42,16 @@ export function findPath(origin: RoomPosition, destination: HeuristicDestination
     optsFinder.swampCost = 5;
   }
   let result = PathFinder.search(origin, {pos: destination.pos, range: destination.range}, optsFinder);
-  // console.log(`[DEBUG] result path len ${result.path.length}`);
-  return {
+  let ret: FindPathMyResult = {
     path: result.path,
     incomplete: result.incomplete,
     cost: result.cost * (opts.ignoreRoads ? 2 : 1),
     firstInvisibleRoom: firstInvisibleRoom(result.path),
   };
+  if (useCache) {
+    global.pathCache.set(cacheName as string, ret);
+  }
+  return ret;
 }
 
 export function findPathLeaveLairRegion(origin: RoomPosition, opts: FindPathMyOpts): FindPathMyResult {

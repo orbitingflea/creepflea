@@ -113,13 +113,37 @@ global.PathCache[coded string]：存储寻路缓存。TODO.
 1. 当 creep 耐心耗尽
 2. 获得视野（所以还需要记录 path 哪些房间是有视野的）
 
-TODO：现在 Destination 和 DriveOpts 有一点混乱，明天最好想想清楚再写。
+问题：什么样的寻路相对静止，可以用缓存？
+1. 起点终点都不在 lair region 以内
+2.
 
 # 性能问题
 Creep 的工作代价其实很难避免，现在性能瓶颈基本上是 room plan 的时间。需要大量的分析，每个 tick 都做一次。代码整改的一环就是把它换成 room planner。
 
-
-[WARN] OuterDigger_E36S45b_35653163 drive: incomplete path
-  - drive from [room E37S45 pos 8,32] to [room E36S45 pos 11,43], opts: {"keeperAttitude":"avoid","dangerAttitude":"avoid","ignoreRoads":false,"singleRoom":true,"avoid":[],"blocking":2}
-  - dest: {"pos":{"x":11,"y":43,"roomName":"E36S45"},"range":0,"rangeMin":0,"offRoad":false,"keeperAttitude":"avoid","dangerAttitude":"avoid"}
-  - path: [{"x":9,"y":33,"roomName":"E37S45"},{"x":9,"y":34,"roomName":"E37S45"},{"x":9,"y":35,"roomName":"E37S45"},{"x":8,"y":36,"roomName":"E37S45"},{"x":7,"y":35,"roomName":"E37S45"},{"x":6,"y":34,"roomName":"E37S45"},{"x":5,"y":34,"roomName":"E37S45"},{"x":4,"y":33,"roomName":"E37S45"},{"x":3,"y":33,"roomName":"E37S45"},{"x":2,"y":33,"roomName":"E37S45"},{"x":1,"y":33,"roomName":"E37S45"},{"x":0,"y":34,"roomName":"E37S45"},{"x":49,"y":34,"roomName":"E36S45"},{"x":48,"y":35,"roomName":"E36S45"},{"x":47,"y":36,"roomName":"E36S45"},{"x":46,"y":36,"roomName":"E36S45"},{"x":45,"y":37,"roomName":"E36S45"},{"x":44,"y":38,"roomName":"E36S45"},{"x":43,"y":39,"roomName":"E36S45"},{"x":42,"y":40,"roomName":"E36S45"},{"x":41,"y":41,"roomName":"E36S45"},{"x":40,"y":41,"roomName":"E36S45"},{"x":39,"y":41,"roomName":"E36S45"},{"x":38,"y":41,"roomName":"E36S45"},{"x":37,"y":41,"roomName":"E36S45"},{"x":36,"y":42,"roomName":"E36S45"},{"x":35,"y":42,"roomName":"E36S45"},{"x":34,"y":42,"roomName":"E36S45"},{"x":33,"y":42,"roomName":"E36S45"},{"x":32,"y":42,"roomName":"E36S45"},{"x":31,"y":42,"roomName":"E36S45"},{"x":30,"y":42,"roomName":"E36S45"},{"x":29,"y":42,"roomName":"E36S45"},{"x":28,"y":42,"roomName":"E36S45"},{"x":27,"y":42,"roomName":"E36S45"},{"x":26,"y":42,"roomName":"E36S45"},{"x":25,"y":42,"roomName":"E36S45"},{"x":24,"y":42,"roomName":"E36S45"},{"x":23,"y":42,"roomName":"E36S45"},{"x":22,"y":42,"roomName":"E36S45"},{"x":21,"y":42,"roomName":"E36S45"},{"x":20,"y":42,"roomName":"E36S45"},{"x":19,"y":42,"roomName":"E36S45"},{"x":18,"y":42,"roomName":"E36S45"},{"x":17,"y":42,"roomName":"E36S45"},{"x":16,"y":42,"roomName":"E36S45"},{"x":15,"y":42,"roomName":"E36S45"},{"x":14,"y":42,"roomName":"E36S45"},{"x":13,"y":42,"roomName":"E36S45"},{"x":12,"y":42,"roomName":"E36S45"}]
+calls		time		avg		function
+1110		276.1		0.249		Creep.work
+302		87.4		0.289		Creep.driveTo
+298		80.1		0.269		Creep._drive
+281		58.5		0.208		Creep.move
+281		52.2		0.186		Creep.harvest
+2415		40.7		0.017		Room.find
+172		38.6		0.224		Creep.upgradeController
+80		19.8		0.248		RoomPosition.findClosestByPath
+169		15.4		0.091		Creep.park
+309		14.2		0.046		RoomPosition.parkable:get
+1102		12.1		0.011		RoomPosition.findClosestByRange
+45		10.3		0.228		Creep.transfer
+1388		9.5		0.007		RoomPosition.lookFor
+30		6.6		0.219		Creep.reserveController
+28		6.3		0.224		Creep.withdraw
+374		5.9		0.016		RoomPosition.matchDestination
+2747		5.4		0.002		RoomPosition.inRangeTo
+2088		3.9		0.002		Room.cache:get
+120		3.9		0.032		Room.structures:get
+1504		3.8		0.003		Room.lookForAt
+71		3.5		0.049		Room._scanDanger
+180		2.9		0.016		Room._scanCreeps
+59		2.8		0.047		Creep.repairRoad
+180		2.6		0.014		Room.functionalStructures:get
+300		2.3		0.008		Room.links:get
+Avg: 19.75	Total: 553.07	Ticks: 28

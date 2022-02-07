@@ -16,6 +16,10 @@ interface Creep {
   park(): void;
 }
 
+interface RoomMemory {
+  _spawnedDefender?: boolean;
+}
+
 declare var CreepManager: any;
 declare var decodeRoomPosition: (code: string) => RoomPosition;
 declare const roomDanger: (roomName: string) => DangerInfo | null;

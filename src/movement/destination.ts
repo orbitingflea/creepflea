@@ -125,3 +125,7 @@ export function decodeFindPathOpts(code: string): FindPathMyOpts {
     avoid: avoid
   };
 }
+
+export function encodeHeuristicDestination(dest: HeuristicDestination): string {
+  return dest.pos.code + '#' + dest.range + '#' + (dest.flee ? '1' : '0');
+}

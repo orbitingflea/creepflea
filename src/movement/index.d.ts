@@ -1,3 +1,4 @@
+import { LRUMap } from 'lib/lru/lru';
 import { Rectangle } from 'lib/rectangle';
 export {};
 
@@ -81,5 +82,11 @@ declare global {
     driveTo(destination: RoomPosition | RoomObject, opts?: DriveToOpts): number;
     driveBlind(object: RoomObject | undefined, roomName: string, opts?: DriveToOpts): number;
     driveAhead(): number;
+  }
+
+  namespace NodeJS {
+    interface Global {
+      pathCache: LRUMap;
+    }
   }
 }
