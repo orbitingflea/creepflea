@@ -19,7 +19,7 @@ function staticCallback(roomName: string): CostMatrix {
 
   let matrix = new PathFinder.CostMatrix();
   matrix.considerStructures(room);
-  console.log(`[INFO] computing static callback for ${roomName}`);
+  // console.log(`[INFO] computing static callback for ${roomName}`);
 
   global.staticCache.set(cacheName, matrix);
   return matrix;
@@ -81,13 +81,13 @@ export function callback(origin: RoomPosition, destination: RoomPosition | null,
       if (room) {
         if (!cloned) { matrix = matrix.clone(); cloned = true; }
         matrix.avoidNonRoadCreeps(room);
-        console.log(`[INFO] normal blocking at ${roomName}`);
+        // console.log(`[INFO] normal blocking at ${roomName}`);
       }
     } else if (opts.blocking === 2) {
       if (room) {
         if (!cloned) { matrix = matrix.clone(); cloned = true; }
         matrix.avoidCreeps(room);
-        console.log(`[INFO] road blocking at ${roomName}`);
+        // console.log(`[INFO] road blocking at ${roomName}`);
       }
     }
     return matrix;

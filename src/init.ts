@@ -25,3 +25,21 @@ global.tickEndHook.push(() => {
     }
   }
 })
+
+// global.tickEndHook.push(() => {
+//   for (let name in Game.creeps) {
+//     Memory.creeps[name].driveInfo = Game.creeps[name].cache.driveInfo;
+//   }
+// });
+
+// debug
+// import { LRUMap } from 'lib/lru/lru';
+
+// global.tickBeginHook.push(() => {
+//   let test = new LRUMap(10);
+//   test.set('a', {
+//     path: [23, 233, 2333],
+//     cost: 3
+//   });
+//   console.log(`[TEST] ${JSON.stringify(test.get('a'))}`);
+// })

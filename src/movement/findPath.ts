@@ -20,6 +20,24 @@ function firstInvisibleRoom(path: RoomPosition[]) {
   return null;
 }
 
+function clonePath(path: RoomPosition[]) {
+  let newPath = [];
+  for (let pos of path) {
+    newPath.push(pos);
+  }
+  return newPath;
+}
+
+function cloneResult(result: FindPathMyResult) {
+  let newResult = {
+    path: clonePath(result.path),
+    cost: result.cost,
+    incomplete: result.incomplete,
+    firstInvisibleRoom: result.firstInvisibleRoom,
+  };
+  return newResult;
+}
+
 export function findPath(origin: RoomPosition, destination: HeuristicDestination, opts: FindPathMyOpts): FindPathMyResult {
   let useCache = (opts.blocking === 0);
   let cacheName;
@@ -27,7 +45,9 @@ export function findPath(origin: RoomPosition, destination: HeuristicDestination
     cacheName = `A${origin.code}#${encodeHeuristicDestination(destination)}#${encodeFindPathOpts(opts)}}`;
     let cacheValue = global.pathCache.get(cacheName);
     if (cacheValue !== undefined) {
-      return cacheValue;
+      let ret = cloneResult(cacheValue);
+      // console.log(`[findpath cache] len = ${ret.path.length}`);
+      return ret;
     }
   }
   let roomCallback = callback(origin, destination.pos, opts);
@@ -55,20 +75,22 @@ export function findPath(origin: RoomPosition, destination: HeuristicDestination
     cost: result.cost * (opts.ignoreRoads ? 2 : 1),
     firstInvisibleRoom: firstInvisibleRoom(result.path),
   };
-  if (useCache) {
-    global.pathCache.set(cacheName as string, ret);
+  if (useCache && !ret.incomplete && !ret.firstInvisibleRoom) {
+    global.pathCache.set(cacheName as string, cloneResult(ret));
+    // console.log(`Save cache with len ${ret.path.length}`);
   }
   return ret;
 }
 
 export function findPathLeaveLairRegion(origin: RoomPosition, opts: FindPathMyOpts): FindPathMyResult {
   let useCache = (opts.blocking === 0);
+  // let useCache = 0;
   let cacheName;
   if (useCache) {
     cacheName = `L${origin.code}#${encodeFindPathOpts(opts)}}`;
     let cacheValue = global.pathCache.get(cacheName);
     if (cacheValue !== undefined) {
-      return cacheValue;
+      return cloneResult(cacheValue);
     }
   }
   let roomCallback = callback(origin, null, opts);
@@ -107,7 +129,7 @@ export function findPathLeaveLairRegion(origin: RoomPosition, opts: FindPathMyOp
     firstInvisibleRoom: firstInvisibleRoom(result.path)
   };
   if (useCache) {
-    global.pathCache.set(cacheName as string, ret);
+    global.pathCache.set(cacheName as string, cloneResult(ret));
   }
   return ret;
 }

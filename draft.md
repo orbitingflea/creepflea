@@ -147,3 +147,89 @@ calls		time		avg		function
 180		2.6		0.014		Room.functionalStructures:get
 300		2.3		0.008		Room.links:get
 Avg: 19.75	Total: 553.07	Ticks: 28
+
+calls		time		avg		function
+1260		321.4		0.255		Creep.work
+444		114.1		0.257		Creep.driveTo
+429		103.8		0.242		Creep._drive
+371		77.2		0.208		Creep.move
+338		61.2		0.181		Creep.harvest
+2927		42.2		0.014		Room.find
+103		23.2		0.225		Creep.upgradeController
+66		17.0		0.257		RoomPosition.findClosestByPath
+66		15.0		0.227		Creep.transfer
+78		14.0		0.179		Creep.withdraw
+1234		13.8		0.011		RoomPosition.findClosestByRange
+222		8.9		0.040		RoomPosition.parkable:get
+27		8.3		0.307		Creep.build
+1059		7.8		0.007		RoomPosition.lookFor
+106		7.2		0.068		Creep.park
+3096		6.1		0.002		RoomPosition.inRangeTo
+168		5.1		0.030		Room._scanDanger
+476		5.1		0.011		RoomPosition.matchDestination
+79		4.7		0.060		Creep.repairRoad
+2392		4.5		0.002		Room.cache:get
+290		4.1		0.014		RoomPosition.findInRange
+123		3.6		0.029		Room.structures:get
+1354		3.6		0.003		Room.lookForAt
+15		3.3		0.219		Creep.heal
+14		3.2		0.228		Creep.repair
+1448		2.8		0.002		RoomPosition.isEqualTo
+Avg: 21.06	Total: 589.75	Ticks: 28
+
+- path len 1, path [{"x":12,"y":32,"roomName":"E37S45"}]
+[下午5:24:24][shard3][DEBUG] findPath AE38S45_25_38#E38S45_26_42#1#0#avoid#avoid#0#1#} returned {"path":[{"x":26,"y":41,"roomName":"E38S45"}],"incomplete":false,"cost":3,"firstInvisibleRoom":null} from cache
+[下午5:24:24][shard3]- path len 1, path [{"x":26,"y":41,"roomName":"E38S45"}]
+[下午5:24:27][shard3][DEBUG] findPath AE37S45_9_33#E37S45_25_38#3#0#avoid#avoid#0#1#} returned {"path":[],"incomplete":false,"cost":13,"firstInvisibleRoom":null} from cache
+[下午5:24:27][shard3]- path len 0, path []
+[下午5:24:27][shard3][DEBUG] findPath AE37S45_12_32#E37S45_14_34#1#0#avoid#avoid#0#1#} returned {"path":[{"x":13,"y":33,"roomName":"E37S45"}],"incomplete":false,"cost":1,"firstInvisibleRoom":null} from cache
+[下午5:24:27][shard3]- path len 1, path [{"x":13,"y":33,"roomName":"E37S45"}]
+[下午5:24:31][shard3]Save cache with len 21
+[下午5:24:31][shard3][DEBUG] findPath AE37S45_9_33#E37S45_25_38#3#0#avoid#avoid#0#1#} returned {"path":[],"incomplete":false,"cost":13,"firstInvisibleRoom":null} from cache
+[下午5:24:31][shard3]- path len 0, path []
+[下午5:24:31][shard3]Save cache with len 3
+[下午5:24:31][shard3][DEBUG] findPath AE39S45_28_21#E39S45_25_21#1#0#avoid#avoid#0#1#} returned {"path":[{"x":26,"y":21,"roomName":"E39S45"}],"incomplete":false,"cost":2,"firstInvisibleRoom":null} from cache
+[下午5:24:31][shard3]- path len 1, path [{"x":26,"y":21,"roomName":"E39S45"}]
+[下午5:24:34][shard3][DEBUG] findPath AE37S45_9_33#E37S45_25_38#3#0#avoid#avoid#0#1#} returned {"path":[],"incomplete":false,"cost":13,"firstInvisibleRoom":null} from cache
+[下午5:24:34][shard3]- path len 0, path []
+[下午5:24:34][shard3][DEBUG] findPath AE37S45_7_33#E36S45_42_4#1#0#avoid#avoid#0#1#} returned {"path":[{"x":41,"y":4,"roomName":"E36S45"}],"incomplete":false,"cost":43,"firstInvisibleRoom":null} from cache
+[下午5:24:34][shard3]- path len 1, path [{"x":41,"y":4,"roomName":"E36S45"}]
+[下午5:24:34][shard3][INFO] road blocking at E38S45
+[下午5:24:37][shard3][DEBUG] findPath AE37S45_9_33#E37S45_25_38#3#0#avoid#avoid#0#1#} returned {"path":[],"incomplete":false,"cost":13,"firstInvisibleRoom":null} from cache
+[下午5:24:37][shard3]- path len 0, path []
+[下午5:24:37][shard3][INFO] road blocking at E36S45
+[下午5:24:37][shard3][INFO] road blocking at E37S45
+[下午5:24:37][shard3]findPath use cpu: 0.12592059999951744
+
+
+[DEBUG] findPath AE39S45_28_21#E39S45_25_21#1#0#avoid#avoid#0#1#} returned {"path":[{"x":26,"y":21,"roomName":"E39S45"}],"incomplete":false,"cost":2,"firstInvisibleRoom":null} from cache
+[下午5:29:39][shard3]- path len 1, path [{"x":26,"y":21,"roomName":"E39S45"}]
+
+calls		time		avg		function
+1431		364.4		0.255		Creep.work
+533		120.0		0.225		Creep.driveTo
+384		101.7		0.265		Creep._drive
+383		79.5		0.208		Creep.move
+317		61.0		0.192		Creep.harvest
+3083		44.3		0.014		Room.find
+147		32.7		0.223		Creep.upgradeController
+127		25.2		0.198		RoomPosition.findClosestByPath
+1415		19.1		0.013		RoomPosition.findClosestByRange
+421		17.4		0.041		RoomPosition.parkable:get
+605		15.0		0.025		RoomPosition.matchDestination
+60		13.0		0.216		Creep.reserveController
+54		11.9		0.220		Creep.transfer
+1673		11.6		0.007		RoomPosition.lookFor
+161		10.6		0.066		Creep.park
+30		6.8		0.225		Creep.attack
+30		6.7		0.224		Creep.withdraw
+3080		5.8		0.002		RoomPosition.inRangeTo
+128		5.4		0.042		Room._scanDanger
+1972		4.8		0.002		Room.lookForAt
+2236		4.5		0.002		RoomPosition.getRangeTo
+2422		4.4		0.002		Room.cache:get
+288		3.7		0.013		RoomPosition.findInRange
+16		3.5		0.219		Creep.heal
+15		3.4		0.225		Creep.repair
+116		3.1		0.027		Room._scanLair
+Avg: 22.44	Total: 628.31	Ticks: 28
