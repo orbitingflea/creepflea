@@ -16,6 +16,9 @@ interface Creep {
   hasAttackParts: boolean;
   hasHealParts: boolean;
   isDangerous: boolean;
+
+  repairRoad: () => number;
+  collectEnergyOrDrop: () => number;
 }
 
 interface Room {

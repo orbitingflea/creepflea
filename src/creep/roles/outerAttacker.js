@@ -14,7 +14,7 @@ export default (args) => ({
         const room = args.roomName ? Game.rooms[args.roomName] : creep.room;
 
         // if there exist hostile creeps in the room, attack them
-        let hostileCreeps = room.findHostileCreeps();
+        let hostileCreeps = room.hostileCreeps;
         if (hostileCreeps.length) {
             let target = creep.pos.findClosestByPath(hostileCreeps);
             if (!target) target = hostileCreeps[0];

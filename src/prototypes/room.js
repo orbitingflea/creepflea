@@ -10,22 +10,6 @@ Room.prototype.NeedSOS = function(masterName, masterCost) {
     return numMaster == 0;
 }
 
-Room.prototype.findHostileCreeps = function() {
-    return this.hostileCreeps;
-};
-
-Room.prototype.findHostileStructures = function() {
-    return this.find(FIND_HOSTILE_STRUCTURES, {
-        filter: (structure) => {
-            return structure.structureType !== STRUCTURE_KEEPER_LAIR;
-        }
-    });
-};
-
-Room.prototype.findSourceKeepers = function() {
-    return this.keepers;
-};
-
 Room.prototype.getSpawnNameList = function() {
     if (!this.spawnNameList) {
         this.spawnNameList = this.spawns.map((spawn) => {

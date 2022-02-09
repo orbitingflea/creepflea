@@ -70,7 +70,10 @@ export default function ConfigList() {
             {type: ATTACK, num: 20},
             {type: MOVE, num: 20},
         ]),
-        require: RoomDanger('E36S45') ? 0 : room_sk && room_sk.findHostileStructures().length > 0 ? 1 : 0,
+        require: RoomDanger('E36S45') ? 0 : room_sk && (
+            room_sk.functionalStructures.some(s => s.structureType !== STRUCTURE_KEEPER_LAIR &&
+                s.owner && s.owner.username === 'Invader')
+        ) ? 1 : 0,
         args: {
             roomName: 'E36S45'
         },
