@@ -77,6 +77,11 @@ export function callback(origin: RoomPosition, destination: RoomPosition | null,
       if (!cloned) { matrix = matrix.clone(); cloned = true; }
       matrix.avoidPositions(roomName, avoidPos);
     }
+    if (opts.singleRoom) {
+      // ban exits
+      if (!cloned) { matrix = matrix.clone(); cloned = true; }
+      matrix.avoidExits(roomName);
+    }
     if (opts.blocking === 1) {
       if (room) {
         if (!cloned) { matrix = matrix.clone(); cloned = true; }
@@ -151,6 +156,14 @@ PathFinder.CostMatrix.prototype.avoidRectangle = function(roomName: string, rect
     for (let p of rect.boundary) {
       this.set(p.x, p.y, 255);
     }
+  }
+  return this;
+}
+
+PathFinder.CostMatrix.prototype.avoidExits = function(roomName: string): CostMatrix {
+  let rect = new Rectangle(0, 49, 0, 49, roomName);
+  for (let p of rect.boundary) {
+    this.set(p.x, p.y, 255);
   }
   return this;
 }

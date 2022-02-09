@@ -58,6 +58,7 @@ declare global {
     avoidNonRoadCreeps(room: Room): CostMatrix;
     avoidPositions(roomName: string, pos: RoomPosition[] | RoomPosition): CostMatrix;
     avoidRectangle(roomName: string, rect: Rectangle): CostMatrix;
+    avoidExits(roomName: string): CostMatrix;
   }
 
   interface RoomPosition {
