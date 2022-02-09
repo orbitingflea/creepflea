@@ -77,7 +77,7 @@ export function callback(origin: RoomPosition, destination: RoomPosition | null,
       if (!cloned) { matrix = matrix.clone(); cloned = true; }
       matrix.avoidPositions(roomName, avoidPos);
     }
-    if (opts.singleRoom) {
+    if (opts.singleRoom && (!destination || origin.roomName === destination.roomName)) {
       // ban exits
       if (!cloned) { matrix = matrix.clone(); cloned = true; }
       matrix.avoidExits(roomName);
