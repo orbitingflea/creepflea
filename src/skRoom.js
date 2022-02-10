@@ -17,17 +17,7 @@ function GetCollapseTime(obj) {
  * global.roomDanger, defined by ts service 'dangerInfo'
  */
 export function RoomDanger(roomName) {
-    let danger = roomDanger(roomName);
-    if (danger === null) {
-        Memory.rooms[roomName]._spawnedDefender = false;
-        return null;
-    } else {
-        if (danger.type !== 'stronghold' && !Memory.rooms[roomName]._spawnedDefender) {
-            Memory.rooms[roomName]._spawnedDefender = true;
-            CreepManager.AddTmpRequire('OuterDefender_' + roomName, 1);
-        }
-        return danger;
-    }
+    return roomDanger(roomName);
 }
 
 

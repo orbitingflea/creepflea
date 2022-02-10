@@ -50,7 +50,7 @@ const roles = {
 
 Creep.prototype.work = function() {
     if (this.spawning) return;
-    const creepConfig = CreepManager.GetLogic(this.memory.configName);
+    const creepConfig = creepManager.getConfigWork(this.memory.configName);
     // 检查 creep 内存中的配置是否存在
     if (!creepConfig) {
         console.log(`creep ${this.name} 携带了一个无效的配置项 ${this.memory.configName}`);

@@ -39,10 +39,10 @@ export const loop = ErrorMapper.wrapLoop(() => {
         console.log(`[CPU-INFO] Init: ${cpustart}`);
     }
 
-    CreepManager.RunUpdate();
+    creepManager.runUpdate();
 
     if (LOG_CPU_INFO) {
-        console.log(`[CPU-INFO] CreepManager.Update: ${Game.cpu.getUsed() - cpustart}`);
+        console.log(`[CPU-INFO] creepManager.runUpdate: ${Game.cpu.getUsed() - cpustart}`);
         cpustart = Game.cpu.getUsed();
     }
 
@@ -89,7 +89,7 @@ export const loop = ErrorMapper.wrapLoop(() => {
     }
 
     CarrierManagerSave();
-    if (Game.cpu.getUsed() < 19) CreepManager.RunSpawn();
+    if (Game.cpu.getUsed() < 19) creepManager.runSpawn();
     if (Game.cpu.bucket >= 5000) MarketMain();
 
     if (LOG_CPU_INFO) {
@@ -97,17 +97,17 @@ export const loop = ErrorMapper.wrapLoop(() => {
         cpustart = Game.cpu.getUsed();
     }
 
-    if (Game.cpu.getUsed() >= 19) return;
-    let factory = util.myRoom().find(FIND_MY_STRUCTURES, {
-        filter: (structure: Structure) => {
-            return structure.structureType == STRUCTURE_FACTORY;
-        }
-    })[0] as StructureFactory;
-    if (factory) {
-        if (factory.produce(RESOURCE_LEMERGIUM_BAR) != OK) {
-            factory.produce(RESOURCE_CELL);
-        }
-    }
+    // if (Game.cpu.getUsed() >= 19) return;
+    // let factory = util.myRoom().find(FIND_MY_STRUCTURES, {
+    //     filter: (structure: Structure) => {
+    //         return structure.structureType == STRUCTURE_FACTORY;
+    //     }
+    // })[0] as StructureFactory;
+    // if (factory) {
+    //     if (factory.produce(RESOURCE_LEMERGIUM_BAR) != OK) {
+    //         factory.produce(RESOURCE_CELL);
+    //     }
+    // }
 
     runHook(global.tickEndHook);
   });

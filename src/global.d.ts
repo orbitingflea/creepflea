@@ -3,7 +3,7 @@ declare global {
     interface Global {
       tickBeginHook: (() => void)[];
       tickEndHook: (() => void)[];
-      CreepManager: any;  // 在 main.ts 中使用的 js 内容，将在未来整改
+      creepManager: CreepManager;
 
       staticCache: {
         data: { [key: string]: { updateTime: number, value: Object } };

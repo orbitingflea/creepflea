@@ -76,5 +76,17 @@ global.PathCache[coded string]：存储寻路缓存。TODO.
 一个核心idea不知道如何实现：完成一个目标的代码应当是任务的属性，而非主人 creep 的属性。
 像 fillMultipleExtensions 这样的功能应当被挂载到 creep 原型上面。
 
+## Creep Manager
+
+将 creepManager 写规范一点，翻译成 ts。
+
+定义了全局对象 CreepManager。其具备两个属性：
+1. config map，用来询问 work 的配置。
+2. config list，其顺序表示了 spawn 的优先级。
+
+把 Creep Config 中的变量分为易变的和不易变的，在不同时间计算；不易变的可以多个 tick 算一次。
+
+args, require 是易变的，其他属性是不易变的
+
 # 性能问题
 Creep 的工作代价其实很难避免，现在性能瓶颈基本上是 room plan 的时间。需要大量的分析，每个 tick 都做一次。代码整改的一环就是把它换成 room planner。

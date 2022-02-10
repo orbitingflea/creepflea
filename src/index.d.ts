@@ -1,5 +1,5 @@
 interface Memory {
-
+  creepTmpRequire?: { [name: string]: number };
 }
 
 interface StructureLink {
@@ -8,7 +8,7 @@ interface StructureLink {
 
 interface CreepMemory {
   configName: string;
-  target: any;  // to be deleted
+  target?: any;  // to be deleted
   driveInfo?: any; // debug
 }
 
@@ -21,6 +21,6 @@ interface RoomMemory {
   _spawnedDefender?: boolean;
 }
 
-declare var CreepManager: any;
+// declare var creepManager: any;
 declare var decodeRoomPosition: (code: string) => RoomPosition;
 declare const roomDanger: (roomName: string) => DangerInfo | null;
