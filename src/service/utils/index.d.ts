@@ -25,3 +25,8 @@ interface Room {
   my: boolean;
   isKeeperRoom: boolean;  // 需要晚于 roomFind 加载
 }
+
+interface StructureLink {
+  gotEnergy?: boolean;
+  tryTransfer: (target: StructureLink) => number;
+}

@@ -4,6 +4,7 @@ declare global {
       tickBeginHook: (() => void)[];
       tickEndHook: (() => void)[];
       creepManager: CreepManager;
+      CarrierManager: any;
 
       staticCache: {
         data: { [key: string]: { updateTime: number, value: Object } };
@@ -33,6 +34,8 @@ declare global {
       roomDanger: (roomName: string) => DangerInfo | null;
       roomLairRegions: (roomName: string) => LairRegionStatic[];
       decodeRoomPosition: (code: string) => RoomPosition;
+
+
     }
   }
 }

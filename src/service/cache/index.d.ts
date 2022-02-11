@@ -3,7 +3,7 @@ interface Creep {
   hasCache: boolean;
 }
 
-interface CreepCache {
+interface CreepCache extends RoomObjectCache {
 
 }
 
@@ -17,8 +17,7 @@ interface RoomCache {
 
 interface RoomObject {
   cache: RoomObjectCache;
+  hasCache: boolean;
 }
 
-interface RoomObjectCache {
-
-}
+interface RoomObjectCache {}

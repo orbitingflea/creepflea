@@ -2,10 +2,6 @@ interface Memory {
   creepTmpRequire?: { [name: string]: number };
 }
 
-interface StructureLink {
-  gotEnergy: boolean;
-}
-
 interface CreepMemory {
   configName: string;
   target?: any;  // to be deleted
@@ -19,6 +15,10 @@ interface Creep {
 
 interface RoomMemory {
   _spawnedDefender?: boolean;
+}
+
+interface RoomObjectCache {
+  isContainerNearController?: boolean;
 }
 
 // declare var creepManager: any;

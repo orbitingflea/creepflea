@@ -1,7 +1,8 @@
-import './utils/RoomPosition';
-import './utils/Creep';
-import './utils/Room';
+import './utils/roomPosition';
+import './utils/creep';
+import './utils/room';
 import './utils/creepActions';
+import './utils/Link';
 
 import './cache/static';
 import './cache/creep';
