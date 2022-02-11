@@ -42,3 +42,6 @@ args, require 是易变的，其他属性是不易变的
 
 # 性能问题
 Creep 的工作代价其实很难避免，现在性能瓶颈基本上是 room plan 的时间。需要大量的分析，每个 tick 都做一次。代码整改的一环就是把它换成 room planner。
+
+
+[DEBUG] data is {"role":"carrier","args":{"storageId":"61d6c3647312ef616aabc6c6","linkId":"61d9ed408c3e66030f284879","workingPosition":[25,22]}}

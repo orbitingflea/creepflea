@@ -31,6 +31,7 @@ function translateOldConfig(conf: any): CreepConfigPreset {
 global.creepManager = {
   confList: [],
   confMap: {},
+  tickHook: [],
 
   getConfigWork(confName: string): CreepConfigWork | null {
     if (this.confMap[confName]) {
@@ -39,7 +40,7 @@ global.creepManager = {
         item.data = generateConfigWork(item.preset);
         item.lastUpdateTime = Game.time;
       }
-      return this.confMap[confName].data;
+      return item.data;
     }
     return null;
   },
@@ -48,16 +49,15 @@ global.creepManager = {
     if (this._lastDeepUpdateTime === undefined || Game.time - this._lastDeepUpdateTime >= UPDATE_TIME_THRESHOLD) {
       this._lastDeepUpdateTime = Game.time;
       let oldList = buildOldConfigList() as CreepConfig[];
-      this.confList = buildConfigList().concat(oldList.map(conf => translateOldConfig(conf)));
+      let [confList, actions] = buildConfigList();
+      this.confList = confList.concat(oldList.map(conf => translateOldConfig(conf)));
+      this.tickHook = actions;
       this.confMap = {};
-      for (let conf of oldList) {
+      for (let conf of this.confList) {
         this.confMap[conf.name] = {
           preset: conf,
           lastUpdateTime: Game.time,
-          data: {
-            role: conf.role,
-            args: conf.args
-          }
+          data: generateConfigWork(conf)
         };
       }
     } else {
@@ -79,6 +79,10 @@ global.creepManager = {
           }
         }
       }
+    }
+
+    for (let f of this.tickHook) {
+      f();
     }
   },
 

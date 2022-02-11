@@ -35,20 +35,20 @@ let centerLink: StructureLink | null;
 
 let emergency: string;
 
-export default function developeRoomConfigList(_roomName: string, _opts?: DevelopeOpts): [CreepConfigPreset[], () => void] {
+export default function developeRoomConfigList(_roomName: string, _opts?: DevelopeOpts): [CreepConfigPreset[], (() => void)[]] {
   roomName = _roomName;
   room = Game.rooms[roomName];
   if (!room) {
     console.log(`[ERROR] developeRoomConfigList: ${roomName} is not a valid room name.`);
-    return [[], () => {}];
+    return [[], []];
   }
   if (!room.storage) {
     console.log(`[ERROR] developeRoomConfigList: ${roomName} does not have storage.`);
-    return [[], () => {}];
+    return [[], []];
   }
   if (!room.controller || !room.controller.my) {
     console.log(`[ERROR] developeRoomConfigList: ${roomName} is not mine.`);
-    return [[], () => {}];
+    return [[], []];
   }
   opts = _opts || {};
   nickName = opts.nickName || roomName;
@@ -57,7 +57,7 @@ export default function developeRoomConfigList(_roomName: string, _opts?: Develo
 
   main();
 
-  conf = _.sortBy(conf, (c) => c.priority || 0);
+  conf = _.sortBy(conf, (c) => -(c.priority || 0));
 
   let spawnList = _.filter(Game.spawns, (spawn) => spawn.room.name === roomName)
     .map((spawn) => spawn.name);
@@ -72,12 +72,7 @@ export default function developeRoomConfigList(_roomName: string, _opts?: Develo
       conf[i].liveThreshold = 0;
     }
   }
-  let funcCombined = () => {
-    for (let i = 0; i < funcList.length; ++i) {
-      funcList[i]();
-    }
-  };
-  return [conf as CreepConfigPreset[], funcCombined];
+  return [conf as CreepConfigPreset[], funcList];
 }
 
 function main() {
@@ -177,7 +172,7 @@ function carrierPart() {
     // carry energy from link to storage
     let carrierCenter: CreepConfigPresetIncomplete = {
       name: `CarrierCenter_${nickName}`,
-      role: 'carrier',
+      role: 'carrierCenter',
       body: smallCarrierBody,
       require: 1,
       args: {

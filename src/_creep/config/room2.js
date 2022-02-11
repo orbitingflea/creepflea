@@ -19,24 +19,5 @@ export const id = {
 };
 
 export default function ConfigList() {
-    const room = Game.rooms[roomName];
-    UpdateStructureStatus(room);
-
-    let confs = AutoRoomList(room.name, commonSuffix);
-    // console.log(JSON.stringify(confs));
-
-    // -------------------- add suffix --------------------
-
-    const spawnList = room.find(FIND_MY_STRUCTURES, {
-        filter: (structure) => {
-            return (structure.structureType == STRUCTURE_SPAWN);
-        }
-    }).map((obj) => obj.name);
-
-    for (let i = 0; i < confs.length; i++) {
-        confs[i].name = confs[i].name + commonSuffix;
-        if (confs[i].spawn == null) confs[i].spawn = spawnList;
-    }
-
-    return confs;
+    return [];
 }

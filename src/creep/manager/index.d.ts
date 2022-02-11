@@ -35,6 +35,7 @@ declare global {
       data: CreepConfigWork;
       lastUpdateTime: number;
     } };
+    tickHook: (() => void)[];
     getConfigWork: (confName: string) => CreepConfigWork | null;
     runUpdate: () => void;
     addTmpRequire: (name: string, number?: number) => number;
