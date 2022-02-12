@@ -20,8 +20,6 @@ import roleOuterAttacker from './roles/outerAttacker.js';
 
 import roleSkGuard from './roles/skGuard.js';
 import roleSkStrongholdAttacker from './roles/skStrongholdAttacker.ts';
-// import roleSkDigger from './roles/skDigger.js';
-// import roleSkDefender from './roles/skDefender.js';
 
 const roles = {
     carrier: roleCarrier,

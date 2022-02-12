@@ -1,21 +1,21 @@
 export {};
 
 declare global {
-  type CreepConfigArgs = Object;
+  type CreepRoleArgs = Object;
 
   interface CreepConfig {
     name: string;
     role: string;
     body: BodyPartConstant[];
     require: number;
-    args: CreepConfigArgs;
+    args: CreepRoleArgs;
     spawn: string[];
     liveThreshold: number;
   }
 
   interface CreepConfigWork {
     role: string;
-    args: CreepConfigArgs;
+    args: CreepRoleArgs;
   }
 
   interface CreepConfigPreset {
@@ -23,7 +23,7 @@ declare global {
     role: string;
     body: BodyPartConstant[];
     require: number | (() => number);
-    args: CreepConfigArgs | (() => CreepConfigArgs);
+    args: CreepRoleArgs | (() => CreepRoleArgs);
     spawn: string[];
     liveThreshold: number;
   }

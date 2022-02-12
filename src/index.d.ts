@@ -3,7 +3,6 @@ interface Memory {
 }
 
 interface CreepMemory {
-  configName: string;
   target?: any;  // to be deleted
   driveInfo?: any; // debug
 }

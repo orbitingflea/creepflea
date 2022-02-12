@@ -155,6 +155,8 @@ export default (args) => ({
                 return false;
             }
         }
+
+        return false;
     },
 
     wait: creepCommon.waitOffRoad(),

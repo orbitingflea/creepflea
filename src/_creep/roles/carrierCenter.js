@@ -89,6 +89,4 @@ export default (args) => ({
     target: creep => {
         return true;
     },
-
-    wait: null,
 });
