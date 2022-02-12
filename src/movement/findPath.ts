@@ -5,7 +5,7 @@
 
 import { callback } from './callback';
 import { encodeFindPathOpts, encodeHeuristicDestination } from './destination';
-import { LRUMap } from 'lib/lru/lru.js';
+import { LRUMap } from 'lib/lru.js';
 
 const CACHE_SIZE = 1000;
 

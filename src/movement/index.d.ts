@@ -1,4 +1,4 @@
-import { LRUMap } from 'lib/lru/lru';
+import { LRUMap } from 'lib/lru';
 import { Rectangle } from 'lib/rectangle';
 export {};
 
