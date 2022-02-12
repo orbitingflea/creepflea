@@ -14,3 +14,12 @@ CreepCache 和 RoomObjectCache 这个划分很奇怪，应该把后者改为 Str
 ## Creep 角色代码整改
 
 很多前期设计的角色已经过时了，需要重写一下。用需求制来完成任务分配，用锁来完成多体协同。
+
+## 需求系统
+
+1. 每个 tick 计算出需求，挂在每个 structure 的 cache 上。
+2. 角色运行逻辑
+
+## RoomFind service
+
+用 _.groupBy 来把 structure 按照 type 分组，再建立原先的 alias for links, containers, so on, 完成类型转换。

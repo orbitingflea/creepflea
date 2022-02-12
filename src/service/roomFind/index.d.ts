@@ -5,11 +5,12 @@ interface Room {
   sources: Source[];
   mineral: Mineral | null;
   structures: Structure[];
+  structuresOfType(type: StructureConstant): Structure[];
   constructionSites: ConstructionSite[];
   functionalStructures: Structure[];
+
   roads: StructureRoad[];
   ramparts: StructureRampart[];
-
   containers: StructureContainer[];
   links: StructureLink[];
   labs: StructureLab[];
@@ -45,12 +46,6 @@ interface RoomCache {
     structureIdList: Id<Structure>[];
     functionalStructureIdList: Id<Structure>[];
     constructionSiteIdList: Id<ConstructionSite>[];
-    roadIdList: Id<StructureRoad>[];
-    rampartIdList: Id<StructureRampart>[];
-    containerIdList: Id<StructureContainer>[];
-    linkIdList: Id<StructureLink>[];
-    labIdList: Id<StructureLab>[];
-    extensionIdList: Id<StructureExtension>[];
-    spawnIdList: Id<StructureSpawn>[];
+    structureIdListOfType: { [type: string]: Id<Structure>[] };
   }
 }
