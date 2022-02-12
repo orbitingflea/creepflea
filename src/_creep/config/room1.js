@@ -1,9 +1,5 @@
 // config for room1
 
-import { BodyWCM } from 'util.js';
-import { UpdateStructureStatus } from 'CarrierSystem.js';
-import AutoRoomList from './autoRoomList.js';
-
 const roomName = 'E38S45';
 const commonSuffix = '_R1';
 
@@ -21,33 +17,3 @@ export const id = {
     container_near_mineral: '61d1bde8c970355bfa5970a7',
     link_left: '61d9b48576241c09d3f8b6ba',
 };
-
-export default function ConfigList() {
-    const room = Game.rooms[roomName];
-    UpdateStructureStatus(room);
-
-    let confs = AutoRoomList(room.name, commonSuffix, {
-        bodyCarrierFromStorage: BodyWCM(0, 32, 16),
-        bodyWorker: BodyWCM(20, 10, 15),
-    });
-
-    // Modifications:
-    // 1. Extra work for central carrier
-    confs.find((conf) => conf.name == 'CarrierCenter').args.containerId = id.container_down;
-    confs.find((conf) => conf.name == 'CarrierForUpgrader').body = BodyWCM(0, 16, 8);
-
-    // -------------------- add suffix --------------------
-
-    const spawnList = room.find(FIND_MY_STRUCTURES, {
-        filter: (structure) => {
-            return (structure.structureType == STRUCTURE_SPAWN);
-        }
-    }).map((obj) => obj.name);
-
-    for (let i = 0; i < confs.length; i++) {
-        confs[i].name = confs[i].name + commonSuffix;
-        if (confs[i].spawn == null) confs[i].spawn = spawnList;
-    }
-
-    return confs;
-}

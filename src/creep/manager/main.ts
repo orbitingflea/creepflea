@@ -40,6 +40,7 @@ global.creepManager = {
         item.data = generateConfigWork(item.preset);
         item.lastUpdateTime = Game.time;
       }
+      console.log(`[DEBUG] configName ${confName} get args ${JSON.stringify(item.data)}`);
       return item.data;
     }
     return null;
@@ -116,6 +117,7 @@ global.creepManager = {
       if (numExist >= numRequire) continue;
 
       // need to spawn this type of creep
+      console.log(`[DEBUG] try to spawn ${conf.name}`);
       let succ = false;
       for (let spawnName of conf.spawn) {
         let spawn = Game.spawns[spawnName];

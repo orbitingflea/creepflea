@@ -1,12 +1,7 @@
 // config for room2
 
-import { BodyWCM } from 'util.js';
-import { UpdateStructureStatus } from 'CarrierSystem.js';
-import AutoRoomList from './autoRoomList.js';
-
 const roomName = 'E39S45';
 const commonSuffix = '_R2';
-const carrierMain = BodyWCM(0, 10, 5);
 
 export const id = {
     container_near_controller: '61d4151e76241cb831f71b24',
@@ -17,7 +12,3 @@ export const id = {
     link_near_source: '61da40af0ec4284fd204cb11',
     link_center: '61d9ed408c3e66030f284879',
 };
-
-export default function ConfigList() {
-    return [];
-}

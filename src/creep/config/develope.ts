@@ -79,9 +79,10 @@ function main() {
   nickName = opts.nickName || roomName;
   energyLimit = room.energyCapacityAvailable;
 
-  funcList.push(() => {
-    UpdateStructureStatus(room);
-  });
+  funcList.push(((roomName: string) => () => {
+    let room = Game.rooms[roomName];
+    if (room) UpdateStructureStatus(room);
+  })(roomName));
 
   emergency = '';
   let emergencyThreshold = opts.energyEmergencyThreshold || 10000;
@@ -103,18 +104,17 @@ function main() {
     name: `EmergencyCarrier_${nickName}`,
     role: 'carrier',
     body: designCarrier(Math.max(300, room.energyAvailable), Infinity),
-    priority: 1,
-    require: () => {
-      return emergency === 'carrier' ? 1 : 0;
-    },
-    args: () => {
+    priority: 2,
+    require: emergency === 'carrier' ? 1 : 0,
+    args: ((roomName: string) => () => {
+      let room = Game.rooms[roomName];
       return {
         sourceId: room.storage!.id,
         targetIdList: room.functionalStructures.filter(
           (structure) => (structure.hasCache && structure.cache.needEnergy)
         ).map((obj) => obj.id)
       }
-    }
+    })(roomName)
   };
   conf.push(emergencyCarrier);
 
@@ -156,14 +156,15 @@ function carrierPart() {
     body: bigCarrierBody,
     priority: 1,
     require: 1,
-    args: () => {
+    args: ((roomName: string) => () => {
+      let room = Game.rooms[roomName];
       return {
         sourceId: room.storage!.id,
         targetIdList: room.functionalStructures.filter(
           (structure) => (structure.hasCache && structure.cache.needEnergy)
         ).map((obj) => obj.id)
       }
-    },
+    })(roomName),
     liveThreshold: 50
   };
   conf.push(carrierFromStorage);
@@ -228,7 +229,6 @@ function harvestPart(source: Source, label: number) {
   }
 
   let fullstackBody = designBalanceWorker(energyLimit);
-  // TODO energyLimit limited to 300 when emergency of energy
 
   if (!workPos) {
     // basic mining
@@ -265,11 +265,14 @@ function harvestPart(source: Source, label: number) {
     conf.push(linkDigger);
 
     // run link logic
-    funcList.push(() => {
-      if (link!.store[RESOURCE_ENERGY] > 700) {
-        link!.tryTransfer(centerLink!);
+    funcList.push(((linkId: Id<StructureLink>, centerLinkId: Id<StructureLink>) => () => {
+      let link = Game.getObjectById(linkId);
+      let centerLink = Game.getObjectById(centerLinkId);
+      if (!link || !centerLink) return;
+      if (link.store[RESOURCE_ENERGY] > 700) {
+        link.tryTransfer(centerLink);
       }
-    });
+    })(link.id, centerLink!.id));
 
   } else {
     // container mining
@@ -284,7 +287,7 @@ function harvestPart(source: Source, label: number) {
     }
     let containerDigger: CreepConfigPresetIncomplete = {
       name: `Digger_${label}_${nickName}`,
-      role: 'diggerContainer',
+      role: 'digger',
       body: body,
       require: 1,
       args: {
@@ -297,24 +300,26 @@ function harvestPart(source: Source, label: number) {
     // carrier for source
     let needCarrier = !(centerPos && centerPos.isNearTo(container));
     if (needCarrier) {
-      let dist = room.storage!.pos.getRangeTo(container) * 1.1 + 2;
-      let needCapacity = dist * 2 * 12;
+      let dist = room.storage!.pos.getRangeTo(container) + 1;
+      let needCapacity = dist * 2 * 10;
       let body = designCarrier(energyLimit, Math.max(needCapacity, 200));
       let carrier: CreepConfigPresetIncomplete = {
         name: `CarrierForSource_${label}_${nickName}`,
         role: 'carrier',
         body,
         require: 1,
-        args: () => {
+        args: ((containerId: Id<StructureContainer>) => () => {
+          let container = Game.getObjectById(containerId);
+          if (!container) return null;
           let containerFull = container.store.getFreeCapacity() === 0;
           let threshold = containerFull ? 20 : 0;
           let resList = container.pos.lookFor(LOOK_RESOURCES).filter(r => r.resourceType === RESOURCE_ENERGY && r.amount >= threshold);
-          let fromId = resList.length > 0 ? resList[0].id : container.id;
+          let fromId = resList.length > 0 ? resList[0].id : containerId;
           return {
             sourceId: fromId,
-            targetIdList: [room.storage!.id]
+            targetIdList: [container.room.storage!.id]
           }
-        }
+        })(container.id)
       };
       conf.push(carrier);
     }
@@ -371,14 +376,14 @@ function upgraderWithContainer(container: StructureContainer, useStrong: boolean
   conf.push(upgrader);
   container.cache.isContainerNearController = true;
 
-  let dist = room.storage!.pos.getRangeTo(container) * 1.1 + 2;
+  let dist = room.storage!.pos.getRangeTo(container) + 1;
   let needCapacity = dist * 2 * upgraderThroughput(body);
   let carrierBody = designCarrier(energyLimit, Math.max(needCapacity, 200));
   let carrier: CreepConfigPresetIncomplete = {
     name: `CarrierForUpgrader_${nickName}`,
     role: 'carrier',
     body: carrierBody,
-    require: () => {
+    require: (() => {
       if (!useStrong) return 0;
       let currentUpgrader = room.myCreeps.filter(c => c.memory.configName === `Upgrader_${nickName}`)[0] || null;
       if (currentUpgrader && currentUpgrader.body.length >= 12) {
@@ -386,7 +391,7 @@ function upgraderWithContainer(container: StructureContainer, useStrong: boolean
       } else {
         return 0;
       }
-    },
+    })(),
     args: {
       sourceId: room.storage!.id,
       targetIdList: [container.id]
@@ -415,16 +420,16 @@ function workerPart() {
     name: `Worker_${nickName}`,
     role: 'worker',
     body,
-    require: () => {
-      return room.storage!.store[RESOURCE_ENERGY] >= threshold ? 1 : 0;
-    },
-    args: () => {
+    require: room.storage!.store[RESOURCE_ENERGY] >= threshold ? 1 : 0,
+    args: ((roomName: string) => () => {
+      let room = Game.rooms[roomName];
+      if (!room) return null;
       let doUpgrade = room.controller!.level < 8;
       return {
         sourceId: room.storage!.id,
         taskList: taskCommon.GetWorkerTasks(room, doUpgrade)
       }
-    }
+    })(roomName)
   };
   conf.push(worker);
 }
@@ -441,9 +446,10 @@ function minerPart() {
     name: `Miner_${nickName}`,
     role: 'miner',
     body,
-    require: () => {
-      return mineral.mineralAmount > 0 ? 1 : 0;
-    },
+    require: ((mineralId: Id<Mineral>) => () => {
+      let mineral = Game.getObjectById(mineralId);
+      return mineral && mineral.mineralAmount > 0 ? 1 : 0;
+    })(mineral.id),
     args: {
       containerId: container.id,
       sourceId: mineral.id
@@ -452,13 +458,17 @@ function minerPart() {
   };
   conf.push(miner);
 
-  let func = () => {
-    if (Game.time % 10 === 0 && container.store.getUsedCapacity() >= 500) {
-      for (let resType in container.store) {
-        global.CarrierManager(room.name).NewTask(container.id, room.storage!.id, resType);
+  let func = ((containerId: Id<StructureContainer>, roomName: string) => () => {
+    if (Game.time % 10 === 0) {
+      let container = Game.getObjectById(containerId);
+      let room = Game.rooms[roomName];
+      if (container && container.store.getUsedCapacity() >= 500) {
+        for (let resType in container.store) {
+          global.CarrierManager(roomName).NewTask(container.id, room.storage!.id, resType);
+        }
       }
     }
-  };
+  })(container.id, room.name);
   funcList.push(func);
 }
 
