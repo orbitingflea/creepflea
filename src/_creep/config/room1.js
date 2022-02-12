@@ -1,8 +1,5 @@
 // config for room1
 
-const roomName = 'E38S45';
-const commonSuffix = '_R1';
-
 export const id = {
     source_down: '5bbcaf379099fc012e63a55f',
     source_up: '5bbcaf379099fc012e63a55d',

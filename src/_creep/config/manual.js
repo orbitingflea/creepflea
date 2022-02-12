@@ -1,9 +1,7 @@
 import { BodyWCM, BodyRepeat } from 'util.js';
-import { id as idRoom1 } from './room1.js';
 import { id as idRoom2 } from './room2.js';
 import { id as idRoom4 } from './room4.js';
-import taskCommon from 'task.common.js';
-import { RoomDanger, GetStrongholdContainers } from 'skRoom.js';
+import { RoomDanger } from 'skRoom.js';
 
 const bodyOuterCarrier = BodyWCM(1, 21, 11);
 const bodyOuterDigger = BodyWCM(12, 2, 7);

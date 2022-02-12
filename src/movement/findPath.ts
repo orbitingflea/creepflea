@@ -62,12 +62,12 @@ export function findPath(origin: RoomPosition, destination: HeuristicDestination
     optsFinder.swampCost = 5;
   }
   // DEBUG begin
-  let cpuStart = Game.cpu.getUsed();
+  // let cpuStart = Game.cpu.getUsed();
   let result = PathFinder.search(origin, {pos: destination.pos, range: destination.range}, optsFinder);
-  let cpuUsed = Game.cpu.getUsed() - cpuStart;
-  if (cpuUsed > 0.1) {
-    console.log(`findPath use cpu: ${cpuUsed}`);
-  }
+  // let cpuUsed = Game.cpu.getUsed() - cpuStart;
+  // if (cpuUsed > 0.1) {
+  //   console.log(`findPath use cpu: ${cpuUsed}`);
+  // }
   // DEBUG end
   let ret: FindPathMyResult = {
     path: result.path,

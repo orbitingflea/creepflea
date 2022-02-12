@@ -1,6 +1,3 @@
-// This file is to be removed soon.
-import { Rectangle } from 'lib/rectangle';
-
 function GetCollapseTime(obj) {
     let eff = obj.effects;
     // console.log(`[DEBUG] obj = ${obj}`);

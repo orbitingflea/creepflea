@@ -1,8 +1,5 @@
 // config for room2
 
-const roomName = 'E39S45';
-const commonSuffix = '_R2';
-
 export const id = {
     container_near_controller: '61d4151e76241cb831f71b24',
     controller: '5bbcaf4a9099fc012e63a6e6',
