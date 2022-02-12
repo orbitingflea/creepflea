@@ -322,6 +322,14 @@ function harvestPart(source: Source, label: number) {
         })(container.id)
       };
       conf.push(carrier);
+    } else {
+      // cheat: let center carrier args.containerId = container.id
+      let item = conf.find(c => c.name === `CarrierCenter_${nickName}`);
+      if (item) {
+        (item.args as any).containerId = container.id;
+      } else {
+        console.log(`[ERROR] developeRoomConfigList: impossible branch for ${source}: CarrierCenter not found.`);
+      }
     }
   }
 }
