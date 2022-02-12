@@ -1,4 +1,4 @@
-import util from 'util.js';
+import { getRepairerTasks } from 'modules/repair/main';
 
 export default {
     GetWorkerTasks: function(room, upgrade=true) {
@@ -11,17 +11,8 @@ export default {
             priority: 100
         })));
 
-        // repair ramparts
-        taskList = taskList.concat(room.structures.filter(
-            (structure) => {
-                return ((structure.structureType === STRUCTURE_RAMPART && structure.my ||
-                         structure.structureType === STRUCTURE_WALL) && structure.hits < util.constant.hitsMaxRampart);
-            }
-        ).map((obj) => ({
-            targetId: obj.id,
-            action: 'repair',
-            priority: 50
-        })));
+        // repair everything
+        taskList = taskList.concat(getRepairerTasks(room));
 
         // upgrade controller
         if (upgrade) {
@@ -36,20 +27,7 @@ export default {
     },
 
     GetRepairerTasks: function(room) {
-        var taskList = room.structures.filter(
-            (s) => {
-                if ('my' in s && !s.my) return false;
-                if (s.structureType === STRUCTURE_WALL || s.structureType === STRUCTURE_RAMPART)
-                    return structure.hits < util.constant.hitsMaxRampart;
-                return s.hits < s.hitsMax - 1000;
-            }
-        ).map((obj) => ({
-            targetId: obj.id,
-            action: 'repair',
-            priority: 120
-        }));
-
-        return taskList;
+        return getRepairerTasks(room);
     },
 
     GetRecyclerTargets: function(room) {
