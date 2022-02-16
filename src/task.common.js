@@ -6,7 +6,7 @@ export default {
 
         // build structures
         taskList = taskList.concat(room.constructionSites.map((obj) => ({
-            targetId: obj.id,
+            id: obj.id,
             action: 'build',
             priority: 100
         })));
@@ -17,7 +17,7 @@ export default {
         // upgrade controller
         if (upgrade) {
             taskList.push({
-                targetId: room.controller.id,
+                id: room.controller.id,
                 action: 'upgrade',
                 priority: 1
             });

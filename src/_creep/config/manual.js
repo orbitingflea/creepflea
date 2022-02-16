@@ -22,27 +22,27 @@ export default function ConfigList() {
             targetId: idRoom2.storage,
             earlyStop: 200,
         },
-        spawn: ['Spawn1', 'Spawn1b']
+        spawn: ['Spawn1', 'Spawn1b', 'Spawn1c']
     });
 
     // ---------
     // SK Mining
 
-    confs.push({
-        name: 'StrongholdAttacker_E36S45',
-        role: 'skStrongholdAttacker',
-        body: BodyRepeat([
-            {type: TOUGH, num: 10},
-            {type: MOVE, num: 10},
-            {type: RANGED_ATTACK, num: 10},
-            {type: HEAL, num: 20},
-        ]),
-        require: 0,
-        args: {
-            roomName: 'E36S45',
-        },
-        spawn: ['Spawn1', 'Spawn1b', 'Spawn1c'],
-    });
+    // confs.push({
+    //     name: 'StrongholdAttacker_E36S45',
+    //     role: 'skStrongholdAttacker',
+    //     body: BodyRepeat([
+    //         {type: TOUGH, num: 10},
+    //         {type: MOVE, num: 10},
+    //         {type: RANGED_ATTACK, num: 10},
+    //         {type: HEAL, num: 20},
+    //     ]),
+    //     require: 0,
+    //     args: {
+    //         roomName: 'E36S45',
+    //     },
+    //     spawn: ['Spawn1', 'Spawn1b', 'Spawn1c'],
+    // });
 
     confs.push({
         name: 'SKGuard_E36S45',
@@ -56,7 +56,7 @@ export default function ConfigList() {
             roomName: 'E36S45',
             hurtTolerance: 15
         },
-        spawn: ['Spawn1', 'Spawn1b'],
+        spawn: ['Spawn1', 'Spawn1b', 'Spawn1c'],
         liveThreshold: 200,
     });
 
@@ -75,7 +75,7 @@ export default function ConfigList() {
         args: {
             roomName: 'E36S45'
         },
-        spawn: ['Spawn1', 'Spawn1b'],
+        spawn: ['Spawn1', 'Spawn1b', 'Spawn1c'],
     });
 
     // --- 生产单位
@@ -91,7 +91,7 @@ export default function ConfigList() {
             sourceId: '5bbcaf169099fc012e63a233',
             retreatRoom: 'E37S45',
         },
-        spawn: ['Spawn4'],
+        spawn: ['Spawn4', 'Spawn4b'],
         liveThreshold: 20,
     };
     confs.push(conf);
@@ -107,7 +107,7 @@ export default function ConfigList() {
             targetId: idRoom4.storage,
             earlyStop: 100,
         },
-        spawn: ['Spawn4'],
+        spawn: ['Spawn4', 'Spawn4b'],
         liveThreshold: 100,
     };
     confs.push(conf);
@@ -123,7 +123,7 @@ export default function ConfigList() {
             sourceId: '5bbcaf169099fc012e63a235',
             retreatRoom: 'E37S45',
         },
-        spawn: ['Spawn4'],
+        spawn: ['Spawn4', 'Spawn4b'],
         liveThreshold: 20,
     };
     confs.push(conf);
@@ -139,7 +139,7 @@ export default function ConfigList() {
             targetId: idRoom4.storage,
             earlyStop: 100,
         },
-        spawn: ['Spawn4'],
+        spawn: ['Spawn4', 'Spawn4b'],
         liveThreshold: 100,
     };
     confs.push(conf);
@@ -155,7 +155,7 @@ export default function ConfigList() {
             sourceId: '5bbcaf169099fc012e63a22e',
             retreatRoom: 'E37S45',
         },
-        spawn: ['Spawn4'],
+        spawn: ['Spawn4', 'Spawn4b'],
         liveThreshold: 20,
     };
     confs.push(conf);
@@ -171,7 +171,7 @@ export default function ConfigList() {
             targetId: idRoom4.storage,
             earlyStop: 100,
         },
-        spawn: ['Spawn4'],
+        spawn: ['Spawn4', 'Spawn4b'],
         liveThreshold: 100,
     };
     confs.push(conf);

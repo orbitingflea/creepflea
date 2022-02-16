@@ -23,6 +23,11 @@ declare global {
     isContainerNearController?: boolean;
   }
 
+  interface RoomObject {
+    id: Id<RoomObject>;
+    store?: StoreDefinition;
+  }
+
   namespace NodeJS {
     interface Global {
       tickBeginHook: (() => void)[];

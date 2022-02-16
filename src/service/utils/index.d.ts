@@ -8,6 +8,9 @@ interface RoomPosition {
   isRoad: boolean;
   underCreep: boolean;
   code: string;
+
+  wFindClosestByRange: (targets: (RoomPosition | {pos: RoomPosition})[]) => (RoomPosition | {pos: RoomPosition} | null);
+  wGetRangeTo: (target: RoomPosition | {pos: RoomPosition}) => number;
 }
 
 interface Creep {
@@ -29,4 +32,8 @@ interface Room {
 interface StructureLink {
   gotEnergy?: boolean;
   tryTransfer: (target: StructureLink) => number;
+}
+
+interface Structure {
+  isHostile: boolean;
 }

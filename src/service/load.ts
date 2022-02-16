@@ -1,3 +1,5 @@
+import './constant/main';
+
 import './utils/roomPosition';
 import './utils/creep';
 import './utils/room';

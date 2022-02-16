@@ -67,6 +67,7 @@ declare global {
 
   interface CreepCache {
     driveInfo?: DriveInfo;
+    driveToAnyInfo?: DriveToAnyInfo;
   }
 
   interface DriveInfo {
@@ -78,11 +79,23 @@ declare global {
     optsCode: string;
   }
 
+  interface DriveToAnyInfo {
+    targetId: Id<RoomObject>;
+    minRange: number;
+    lastUpdate: number;
+  }
+
+  interface BlindObject {
+    id: Id<RoomObject>;
+    roomName?: string;
+  }
+
   interface Creep {
     _drive(dest: Destination, opts: FindPathMyOpts): number;
     driveTo(destination: RoomPosition | RoomObject, opts?: DriveToOpts): number;
     driveBlind(object: RoomObject | undefined, roomName: string, opts?: DriveToOpts): number;
     driveAhead(): number;
+    driveToAny(destinations: (RoomObject | Id<RoomObject> | BlindObject)[], opts?: DriveToOpts): number;
   }
 
   namespace NodeJS {

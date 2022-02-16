@@ -7,7 +7,7 @@ import { Rectangle } from 'lib/rectangle';
 import { ensureArray } from 'lib/utils';
 import { callback } from './callback';
 
-const MAX_PARK_RANGE = 7;
+const MAX_PARK_RANGE = 6;
 
 RoomPosition.prototype.matchDestination = function(dest: Destination): boolean {
   let distance = this.getRangeTo(dest.pos);

@@ -1,3 +1,5 @@
+import { toWorldPosition } from "lib/worldPosition";
+
 Object.defineProperty(RoomPosition.prototype, 'terrain', {
   configurable: true,
   get: function(): number {
@@ -100,4 +102,24 @@ Object.defineProperty(RoomPosition.prototype, 'code', {
 global.decodeRoomPosition = function(code: string): RoomPosition {
   let [roomName, x, y] = code.split('_');
   return new RoomPosition(+x, +y, roomName);
+}
+
+RoomPosition.prototype.wFindClosestByRange = function(targets: (RoomPosition | {pos: RoomPosition})[]): (RoomPosition | {pos: RoomPosition} | null) {
+  let dist = Infinity;
+  let obj = null;
+  let wThis = toWorldPosition(this);
+  for (let target of targets) {
+    let pos = (target instanceof RoomPosition) ? target : target.pos;
+    let d = wThis.getRangeTo(toWorldPosition(pos));
+    if (d < dist) {
+      dist = d;
+      obj = target;
+    }
+  }
+  return obj;
+}
+
+RoomPosition.prototype.wGetRangeTo = function(target: RoomPosition | {pos: RoomPosition}): number {
+  let pos = (target instanceof RoomPosition) ? target : target.pos;
+  return toWorldPosition(this).getRangeTo(toWorldPosition(pos));
 }

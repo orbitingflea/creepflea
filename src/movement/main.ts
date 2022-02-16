@@ -85,6 +85,9 @@ Creep.prototype._drive = function(destination: Destination, opts: FindPathMyOpts
     }, opts);
   } else if (destination.offRoad && !this.pos.parkable) {
     result = findPathOffRoad(this.pos, destination, opts);
+    if (result.incomplete) {
+      return ERR_NO_PARKABLE_POS;
+    }
   } else {
     // already reached destination
     return 1;

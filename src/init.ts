@@ -17,6 +17,7 @@ import 'movement/utils';
 
 import 'creep/manager/main';
 import 'creep/roles/load';
+import 'creep/action/load';
 
 global.tickEndHook.push(() => {
   for (let name in Memory.rooms) {

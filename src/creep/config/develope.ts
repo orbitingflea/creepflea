@@ -426,7 +426,7 @@ function workerPart() {
   let threshold = opts.workerSpawnThreshold || 100000;
   let worker: CreepConfigPresetIncomplete = {
     name: `Worker_${nickName}`,
-    role: 'worker',
+    role: 'newWorker',
     body,
     require: room.storage!.store[RESOURCE_ENERGY] >= threshold ? 1 : 0,
     args: ((roomName: string) => () => {
@@ -434,8 +434,8 @@ function workerPart() {
       if (!room) return null;
       let doUpgrade = room.controller!.level < 8;
       return {
-        sourceId: room.storage!.id,
-        taskList: taskCommon.GetWorkerTasks(room, doUpgrade)
+        sources: room.storage!.id,
+        tasks: taskCommon.GetWorkerTasks(room, doUpgrade)
       }
     })(roomName)
   };
