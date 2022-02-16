@@ -9,12 +9,9 @@ import roleDigger from '_creep/roles/digger.js';
 import roleDiggerLink from '_creep/roles/diggerLink.js';
 
 import roleRecycler from '_creep/roles/recycler.js';
-import roleUpgrader from '_creep/roles/upgrader.js';
-import roleWorker from '_creep/roles/worker.js';
 import roleMiner from '_creep/roles/miner.js';
 import roleClaimer from '_creep/roles/claimer.js';
 import roleReserver from '_creep/roles/reserver.js';
-import roleBasicUpgrader from '_creep/roles/basicUpgrader.js';
 import roleBasicHarvester from '_creep/roles/basicHarvester.js';
 import roleOuterHarvester from '_creep/roles/outerHarvester.js';
 
@@ -26,7 +23,7 @@ import roleOuterAttacker from '_creep/roles/outerAttacker.js';
 import roleSkGuard from '_creep/roles/skGuard.js';
 import roleSkStrongholdAttacker from '_creep/roles/skStrongholdAttacker';
 
-import newWorker from './develope/worker';
+import roleWorker from './develope/worker';
 
 const roles: {[roleName: string]: (CreepRole | CreepRoleOld)} = {
   carrier: roleCarrier,
@@ -34,13 +31,10 @@ const roles: {[roleName: string]: (CreepRole | CreepRoleOld)} = {
   digger: roleDigger,
   diggerLink: roleDiggerLink,
   recycler: roleRecycler,
-  upgrader: roleUpgrader,
-  worker: roleWorker,
+
   miner: roleMiner,
   claimer: roleClaimer,
   reserver: roleReserver,
-  basic_upgrader: roleBasicUpgrader,
-  basicUpgrader: roleBasicUpgrader,
   basic_harvester: roleBasicHarvester,
   basicHarvester: roleBasicHarvester,
   outer_harvester: roleOuterHarvester,
@@ -51,7 +45,9 @@ const roles: {[roleName: string]: (CreepRole | CreepRoleOld)} = {
   outerAttacker: roleOuterAttacker,
   skGuard: roleSkGuard,
   skStrongholdAttacker: roleSkStrongholdAttacker,
-  newWorker: newWorker,
+
+  worker: roleWorker,
+  newWorker: roleWorker,
 };
 
 Creep.prototype.work = function() {

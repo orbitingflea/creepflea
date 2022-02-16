@@ -34,6 +34,7 @@ let centerPos: RoomPosition | null;
 let centerLink: StructureLink | null;
 
 let emergency: string;
+let containerNearController: StructureContainer | null;
 
 export default function developeRoomConfigList(_roomName: string, _opts?: DevelopeOpts): [CreepConfigPreset[], (() => void)[]] {
   roomName = _roomName;
@@ -51,7 +52,7 @@ export default function developeRoomConfigList(_roomName: string, _opts?: Develo
     return [[], []];
   }
   opts = _opts || {};
-  nickName = opts.nickName || roomName;
+  // nickName = opts.nickName || roomName;
   conf = [];
   funcList = [];
 
@@ -78,6 +79,7 @@ export default function developeRoomConfigList(_roomName: string, _opts?: Develo
 function main() {
   nickName = opts.nickName || roomName;
   energyLimit = room.energyCapacityAvailable;
+  containerNearController = null;
 
   funcList.push(((roomName: string) => () => {
     let room = Game.rooms[roomName];
@@ -138,7 +140,7 @@ function main() {
     harvestPart(sources[i], i);
   }
   upgraderPart();
-  workerPart();
+  workerPart(containerNearController);
   minerPart();
 }
 
@@ -352,18 +354,23 @@ function upgraderWithoutContainer(useStrong: boolean) {
   let body = designBalanceWorker(energyLimit, repeatLimit);
   let upgrader: CreepConfigPresetIncomplete = {
     name: `Upgrader_${nickName}`,
-    role: 'basicUpgrader',
+    role: 'newWorker',
     body,
     require: 1,
     args: {
-      sourceId: room.storage!.id,
-      controllerId: room.controller!.id
+      sources: room.storage!.id,
+      tasks: {
+        id: room.controller!.id,
+        action: 'upgrade',
+        priority: 0,
+      } as WorkerTask
     }
   };
   conf.push(upgrader);
 }
 
 function upgraderWithContainer(container: StructureContainer, useStrong: boolean) {
+  containerNearController = container;
   let body = bodyWCM(6, 2, 3);
   if (bodyCost(body) > energyLimit) {
     body = bodyWCM(2, 1, 1);
@@ -373,12 +380,16 @@ function upgraderWithContainer(container: StructureContainer, useStrong: boolean
   }
   let upgrader: CreepConfigPresetIncomplete = {
     name: `Upgrader_${nickName}`,
-    role: 'upgrader',
+    role: 'worker',
     body,
     require: 1,
     args: {
-      containerId: container.id,
-      controllerId: room.controller!.id
+      sources: container.id,
+      tasks: {
+        id: room.controller!.id,
+        action: 'upgrade',
+        priority: 0,
+      } as WorkerTask
     }
   };
   conf.push(upgrader);
@@ -421,23 +432,25 @@ function upgraderThroughput(body: BodyPartConstant[]): number {
   return capacity / period;
 }
 
-function workerPart() {
+function workerPart(container?: StructureContainer | null) {
   let body = designBalanceWorker(energyLimit);
   let threshold = opts.workerSpawnThreshold || 100000;
+  let sources = [room.storage!.id] as Id<RoomObject>[];
+  if (container) sources.push(container.id);
   let worker: CreepConfigPresetIncomplete = {
     name: `Worker_${nickName}`,
     role: 'newWorker',
     body,
     require: room.storage!.store[RESOURCE_ENERGY] >= threshold ? 1 : 0,
-    args: ((roomName: string) => () => {
+    args: ((roomName: string, sources: Id<RoomObject>[]) => () => {
       let room = Game.rooms[roomName];
       if (!room) return null;
       let doUpgrade = room.controller!.level < 8;
       return {
-        sources: room.storage!.id,
+        sources: sources,
         tasks: taskCommon.GetWorkerTasks(room, doUpgrade)
       }
-    })(roomName)
+    })(roomName, sources)
   };
   conf.push(worker);
 }

@@ -28,21 +28,21 @@ export default function ConfigList() {
     // ---------
     // SK Mining
 
-    // confs.push({
-    //     name: 'StrongholdAttacker_E36S45',
-    //     role: 'skStrongholdAttacker',
-    //     body: BodyRepeat([
-    //         {type: TOUGH, num: 10},
-    //         {type: MOVE, num: 10},
-    //         {type: RANGED_ATTACK, num: 10},
-    //         {type: HEAL, num: 20},
-    //     ]),
-    //     require: 0,
-    //     args: {
-    //         roomName: 'E36S45',
-    //     },
-    //     spawn: ['Spawn1', 'Spawn1b', 'Spawn1c'],
-    // });
+    confs.push({
+        name: 'StrongholdAttacker_E36S45',
+        role: 'skStrongholdAttacker',
+        body: BodyRepeat([
+            {type: TOUGH, num: 10},
+            {type: MOVE, num: 10},
+            {type: RANGED_ATTACK, num: 10},
+            {type: HEAL, num: 20},
+        ]),
+        require: 0,
+        args: {
+            roomName: 'E36S45',
+        },
+        spawn: ['Spawn1', 'Spawn1b', 'Spawn1c'],
+    });
 
     confs.push({
         name: 'SKGuard_E36S45',
