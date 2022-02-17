@@ -1,7 +1,7 @@
 import { BodyWCM, BodyRepeat } from 'util.js';
 import { id as idRoom2 } from './room2.js';
 import { id as idRoom4 } from './room4.js';
-import { RoomDanger, GetStrongholdContainers } from 'skRoom.js';
+import { GetStrongholdContainers } from 'skRoom.js';
 import taskCommon from 'task.common.js';
 
 const bodyOuterCarrier = BodyWCM(1, 21, 11);
@@ -67,7 +67,7 @@ export default function ConfigList() {
             {type: MOVE, num: 25},
             {type: HEAL, num: 5},
             {type: RANGED_ATTACK, num: 20}]),
-        require: RoomDanger('E36S45') ? 0 : 1,
+        require: roomDanger('E36S45') ? 0 : 1,
         args: {
             roomName: 'E36S45',
             hurtTolerance: 15
@@ -83,7 +83,7 @@ export default function ConfigList() {
             {type: ATTACK, num: 20},
             {type: MOVE, num: 20},
         ]),
-        require: RoomDanger('E36S45') ? 0 : room_sk && (
+        require: roomDanger('E36S45') ? 0 : room_sk && (
             room_sk.functionalStructures.some(s => s.structureType !== STRUCTURE_KEEPER_LAIR &&
                 s.owner && s.owner.username === 'Invader')
         ) ? 1 : 0,
@@ -99,7 +99,7 @@ export default function ConfigList() {
         name: 'OuterDigger_E36S45',
         role: 'outerDigger',
         body: bodyOuterDigger,
-        require: RoomDanger('E36S45') ? 0 : 1,
+        require: roomDanger('E36S45') ? 0 : 1,
         args: {
             roomName: 'E36S45',
             workingPosition: [33, 37],
@@ -115,7 +115,7 @@ export default function ConfigList() {
         name: 'OuterCarrier_E36S45',
         role: 'outerCarrier',
         body: bodyOuterCarrier,
-        require: RoomDanger('E36S45') ? 0 : 1,
+        require: roomDanger('E36S45') ? 0 : 1,
         args: {
             roomName: 'E36S45',
             resourcePosition: [33, 37],
@@ -131,7 +131,7 @@ export default function ConfigList() {
         name: 'OuterDigger_E36S45b',
         role: 'outerDigger',
         body: bodyOuterDigger,
-        require: RoomDanger('E36S45') ? 0 : 1,
+        require: roomDanger('E36S45') ? 0 : 1,
         args: {
             roomName: 'E36S45',
             workingPosition: [11, 43],
@@ -147,7 +147,7 @@ export default function ConfigList() {
         name: 'OuterCarrier_E36S45b',
         role: 'outerCarrier',
         body: bodyOuterCarrier,
-        require: RoomDanger('E36S45') ? 0 : 2,
+        require: roomDanger('E36S45') ? 0 : 2,
         args: {
             roomName: 'E36S45',
             resourcePosition: [11, 43],
@@ -163,7 +163,7 @@ export default function ConfigList() {
         name: 'OuterDigger_E36S45c',
         role: 'outerDigger',
         body: bodyOuterDigger,
-        require: RoomDanger('E36S45') ? 0 : 1,
+        require: roomDanger('E36S45') ? 0 : 1,
         args: {
             roomName: 'E36S45',
             workingPosition: [42, 4],
@@ -179,7 +179,7 @@ export default function ConfigList() {
         name: 'OuterCarrier_E36S45c',
         role: 'outerCarrier',
         body: bodyOuterCarrier,
-        require: RoomDanger('E36S45') ? 0 : 2,
+        require: roomDanger('E36S45') ? 0 : 2,
         args: {
             roomName: 'E36S45',
             resourcePosition: [42, 4],

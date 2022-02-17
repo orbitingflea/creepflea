@@ -10,7 +10,7 @@ export default function dfaSourceWork<ArgType>(
     work: (creep: Creep, args: ArgType, moveOnly: boolean) => number,
     prepare?: (creep: Creep, args: ArgType) => number,
     wait?: (creep: Creep, args: ArgType, moveOnly: boolean) => number,
-    // death?: (creep: Creep, args: ArgType, moveOnly: boolean) => number,
+    death?: (creep: Creep, args: ArgType) => number,
   }
 ): CreepRole {
   return ((args: ArgType) => (creep: Creep) => {
@@ -29,28 +29,54 @@ export default function dfaSourceWork<ArgType>(
       }
     }
 
+    if (data.death && creep.memory.dying) {
+      data.death(creep, args);
+      return;
+    }
+
     let func = [
       data.source,
       data.work,
     ];
     let state = creep.memory.working || 0;
     let ret = func[state](creep, args, moveOnly);
-    if (ret === OK) {
+    switch (ret) {
+    case OK:
       return;
-    } else if (ret === NOTHING_TO_DO) {
-    } else if (ret === COMPLETE_WITHOUT_MOVE) {
+    case NOTHING_TO_DO:
+      break;
+    case COMPLETE_WITHOUT_MOVE:
       moveOnly = true;
+      break;
+    case GIVE_UP:
+      creep.memory.dying = 1;
+      if (data.death) {
+        data.death(creep, args);
+        return;
+      }
+      break;
     }
 
     // change state, run new state
     let ret2 = func[1 ^ state](creep, args, moveOnly);
-    if (ret2 === OK) {
+    switch (ret2) {
+    case OK:
       creep.memory.working = 1 ^ state;
-    } else if (ret2 === COMPLETE_WITHOUT_MOVE) {
-      creep.memory.working = state;
-    } else if (ret2 === NOTHING_TO_DO) {
+      break;
+    case NOTHING_TO_DO:
       creep.memory.working = 1;
       if (data.wait) data.wait(creep, args, moveOnly);
+      break;
+    case COMPLETE_WITHOUT_MOVE:
+      creep.memory.working = state;
+      break;
+    case GIVE_UP:
+      creep.memory.dying = 1;
+      if (data.death) {
+        data.death(creep, args);
+        return;
+      }
+      break;
     }
   }) as CreepRole;
 }

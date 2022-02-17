@@ -11,4 +11,5 @@ interface CreepMemory {
   configName: string;
   ready?: boolean;
   working?: number;
+  dying?: number;
 }

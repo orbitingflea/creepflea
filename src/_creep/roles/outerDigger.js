@@ -9,7 +9,7 @@
 
 import util from 'util.js';
 import creepCommon from 'creep.common.js';
-import { RoomDanger, GetDangerZone, IsDangerZoneActive } from 'skRoom.js';
+import { GetDangerZone, IsDangerZoneActive } from 'skRoom.js';
 
 // const skSafeRange = 5;
 const skWaitRange = 7;
@@ -49,7 +49,7 @@ export default (args) => ({
         // 大撤退
 
         const room = Game.rooms[args.roomName];
-        if (RoomDanger(args.roomName)) {
+        if (roomDanger(args.roomName)) {
             creep.memory.retreat = true;
             Retreat(creep, args.retreatRoom);
             return false;

@@ -10,15 +10,6 @@ function GetCollapseTime(obj) {
     return -1;
 }
 
-/**
- * global.roomDanger, defined by ts service 'dangerInfo'
- */
-export function RoomDanger(roomName) {
-    return roomDanger(roomName);
-}
-
-
-
 export function GetStrongholdContainers(room) {
     return room.functionalStructures.filter(
         s => {

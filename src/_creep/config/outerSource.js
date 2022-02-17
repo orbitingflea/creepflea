@@ -4,7 +4,6 @@ import { UpdateStructureStatus } from 'CarrierSystem.js';
 import taskCommon from 'task.common.js';
 import { id as idRoom1 } from './room1.js';
 import { id as idRoom3 } from './room3.js';
-import { RoomDanger } from 'skRoom.js';
 
 const bodyOuterWorker = BodyWCM(10, 8, 18);
 const bodyOuterDigger = BodyWCM(6, 1, 3);
@@ -91,7 +90,7 @@ export default function ConfigList() {
                 (!room.controller.reservation ||
                  room.controller.reservation.username !== 'orbitingflea' ||
                  room.controller.reservation.ticksToEnd < 1000) &&
-                !RoomDanger(roomName) ? 1 : 0,
+                !roomDanger(roomName) ? 1 : 0,
             args: { roomName: roomName },
             spawn: spawn,
         };
@@ -115,7 +114,7 @@ export default function ConfigList() {
             name: 'OuterDigger_' + customName,
             role: 'outerDigger',
             body: bodyOuterDigger,
-            require: !RoomDanger(info.roomName) ? 1 : 0,
+            require: !roomDanger(info.roomName) ? 1 : 0,
             args: {
                 roomName: info.roomName,
                 workingPosition: info.workingPosition,
@@ -130,7 +129,7 @@ export default function ConfigList() {
             name: 'OuterCarrier_' + customName,
             role: 'outerCarrier',
             body: info.bodyCarrier || bodyOuterCarrier,
-            require: RoomDanger(info.roomName) ? 0 : info.requireCarrier != null ? info.requireCarrier : 1,
+            require: roomDanger(info.roomName) ? 0 : info.requireCarrier != null ? info.requireCarrier : 1,
             args: {
                 roomName: info.roomName,
                 resourcePosition: info.workingPosition,

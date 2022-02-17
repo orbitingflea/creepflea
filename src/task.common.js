@@ -33,12 +33,12 @@ export default {
     GetRecyclerTargets: function(room) {
         const droppedList = room.find(FIND_DROPPED_RESOURCES, {
             filter: (obj) => {
-                return (obj.amount >= 100 || obj.resourceType != RESOURCE_ENERGY);
+                return (obj.amount >= 100 || obj.resourceType !== RESOURCE_ENERGY);
             }
         });
         const tombList = room.find(FIND_TOMBSTONES, {
             filter: (tomb) => {
-                return tomb.store.getUsedCapacity() > 0;
+                return tomb.store[RESOURCE_ENERGY] >= 50 || tomb.store.getUsedCapacity() - tomb.store[RESOURCE_ENERGY] > 0;
             }
         });
         const ruinList = room.find(FIND_RUINS, {

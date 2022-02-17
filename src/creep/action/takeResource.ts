@@ -106,7 +106,7 @@ function takeResourceFromSource(creep: Creep, source: RoomObject, resource: Reso
 }
 
 Creep.prototype._takeResource = function(from: BlindObject[], resource: ResourceConstant | 'all', moveOnly: boolean): number {
-  if (this.store.getFreeCapacity() === 0) {
+  if (this.store.getFreeCapacity() === 0 && !moveOnly) {
     return NOTHING_TO_DO;
   }
 

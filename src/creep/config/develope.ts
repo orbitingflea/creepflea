@@ -363,8 +363,13 @@ function upgraderWithoutContainer(useStrong: boolean) {
         id: room.controller!.id,
         action: 'upgrade',
         priority: 0,
-      } as WorkerTask
-    }
+      } as WorkerTask,
+      deathBehavior: {
+        id: room.storage!.id,
+        action: 'save',
+        threshold: 50,
+      }
+    } as WorkerArgs
   };
   conf.push(upgrader);
 }
@@ -389,7 +394,12 @@ function upgraderWithContainer(container: StructureContainer, useStrong: boolean
         id: room.controller!.id,
         action: 'upgrade',
         priority: 0,
-      } as WorkerTask
+      } as WorkerTask,
+      deathBehavior: {
+        id: container.id,
+        action: 'save',
+        threshold: 3,
+      }
     }
   };
   conf.push(upgrader);
@@ -448,8 +458,13 @@ function workerPart(container?: StructureContainer | null) {
       let doUpgrade = room.controller!.level < 8;
       return {
         sources: sources,
-        tasks: taskCommon.GetWorkerTasks(room, doUpgrade)
-      }
+        tasks: taskCommon.GetWorkerTasks(room, doUpgrade),
+        deathBehavior: {
+          id: room.storage!.id,
+          action: 'save',
+          threshold: 50,
+        }
+      } as WorkerArgs
     })(roomName, sources)
   };
   conf.push(worker);

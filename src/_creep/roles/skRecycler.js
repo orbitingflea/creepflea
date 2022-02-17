@@ -12,7 +12,6 @@
  const skWaitRange = 7;
 
  import { GetDanger } from './outerDigger.js';
- import { RoomDanger } from 'skRoom.js';
 
  export default (args) => ({
      // args.roomName, args.sourceIdList, args.targetId
@@ -31,7 +30,7 @@
              creep.memory.quickFinish = true;
          }
 
-         if (RoomDanger(args.roomName)) {
+         if (roomDanger(args.roomName)) {
              creep.memory.retreat = true;
              return true;
          }
@@ -109,7 +108,7 @@
              creep.memory.quickFinish = true;
          }
 
-         if (RoomDanger(args.roomName)) {
+         if (roomDanger(args.roomName)) {
              creep.memory.retreat = true;
          } else {
              creep.memory.retreat = false;
