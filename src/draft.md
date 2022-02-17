@@ -23,3 +23,7 @@ CreepCache 和 RoomObjectCache 这个划分很奇怪，应该把后者改为 Str
 ## Carrier
 
 重写 carrier 系统和 carrier 角色。角色可以仿照 worker 的成功案例。
+
+## driveTo 性能问题
+
+未知。

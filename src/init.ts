@@ -21,9 +21,13 @@ import 'creep/action/load';
 
 global.tickEndHook.push(() => {
   for (let name in Memory.rooms) {
-    if (roomDanger(name) && !Memory.rooms[name]._spawnedDefender) {
-      Memory.rooms[name]._spawnedDefender = true;
-      creepManager.addTmpRequire('OuterDefender_' + name, 1);
+    if (roomDanger(name)) {
+      if (!Memory.rooms[name]._spawnedDefender) {
+        Memory.rooms[name]._spawnedDefender = true;
+        creepManager.addTmpRequire('OuterDefender_' + name, 1);
+      }
+    } else {
+      delete Memory.rooms[name]._spawnedDefender;
     }
   }
 })

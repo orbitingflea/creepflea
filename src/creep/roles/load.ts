@@ -22,6 +22,7 @@ import roleOuterAttacker from '_creep/roles/outerAttacker.js';
 
 import roleSkGuard from '_creep/roles/skGuard.js';
 import roleSkStrongholdAttacker from '_creep/roles/skStrongholdAttacker';
+import roleSkRecycler from '_creep/roles/skRecycler';
 
 import roleWorker from './develope/worker';
 
@@ -43,8 +44,10 @@ const roles: {[roleName: string]: (CreepRole | CreepRoleOld)} = {
   outerCarrier: roleOuterCarrier,
   outerDefender: roleOuterDefender,
   outerAttacker: roleOuterAttacker,
+
   skGuard: roleSkGuard,
   skStrongholdAttacker: roleSkStrongholdAttacker,
+  skRecycler: roleSkRecycler,
 
   worker: roleWorker,
   newWorker: roleWorker,

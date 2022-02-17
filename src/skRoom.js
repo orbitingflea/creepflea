@@ -21,7 +21,12 @@ export function RoomDanger(roomName) {
 
 export function GetStrongholdContainers(room) {
     return room.functionalStructures.filter(
-        s => (structure.structureType == STRUCTURE_CONTAINER && structure.store.getUsedCapacity() > 0 && GetCollapseTime(structure) >= 0)
+        s => {
+            if (!(s.structureType == STRUCTURE_CONTAINER && s.store.getUsedCapacity() > 0 && GetCollapseTime(s) >= 0)) return false;
+            let ramp = s.pos.lookFor(LOOK_STRUCTURES).filter(t => t.structureType === STRUCTURE_RAMPART && !t.my);
+            if (ramp.length > 0) return false;
+            return true;
+        }
     ).map((obj) => obj.id);
 }
 

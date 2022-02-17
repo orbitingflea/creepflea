@@ -1,7 +1,8 @@
 import { BodyWCM, BodyRepeat } from 'util.js';
 import { id as idRoom2 } from './room2.js';
 import { id as idRoom4 } from './room4.js';
-import { RoomDanger } from 'skRoom.js';
+import { RoomDanger, GetStrongholdContainers } from 'skRoom.js';
+import taskCommon from 'task.common.js';
 
 const bodyOuterCarrier = BodyWCM(1, 21, 11);
 const bodyOuterDigger = BodyWCM(12, 2, 7);
@@ -28,6 +29,8 @@ export default function ConfigList() {
     // ---------
     // SK Mining
 
+    const room_sk = Game.rooms['E36S45'];
+
     confs.push({
         name: 'StrongholdAttacker_E36S45',
         role: 'skStrongholdAttacker',
@@ -42,6 +45,19 @@ export default function ConfigList() {
             roomName: 'E36S45',
         },
         spawn: ['Spawn1', 'Spawn1b', 'Spawn1c'],
+    });
+
+    confs.push({
+        name: 'SkRecycler_E36S45',
+        role: 'skRecycler',
+        body: BodyWCM(0, 10, 5),
+        require: 0,
+        args: {
+            roomName: 'E36S45',
+            sourceIdList: room_sk ? taskCommon.GetRecyclerTargets(room_sk).concat(GetStrongholdContainers(room_sk)) : [],
+            targetId: idRoom4.storage,
+        },
+        spawn: ['Spawn4', 'Spawn4b']
     });
 
     confs.push({
@@ -60,7 +76,6 @@ export default function ConfigList() {
         liveThreshold: 200,
     });
 
-    const room_sk = Game.rooms['E36S45'];
     confs.push({
         name: 'OuterAttacker_E36S45',
         role: 'outerAttacker',
