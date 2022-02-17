@@ -15,7 +15,6 @@ function sourceMode(creep: Creep, args: WorkerArgs, moveOnly: boolean) {
 }
 
 function workMode(creep: Creep, args: WorkerArgs, moveOnly: boolean) {
-  //console.log(`[DEBUG] worker ${creep.name}: ${JSON.stringify(args.tasks)}`);
   let ret = creep.runWorkerTasks(args.tasks, moveOnly);
   return ret;
 }

@@ -30,7 +30,7 @@ export function getRepairerTasks(room: Room): WorkerTask[] {
     }
   }
 
-  const structures = room.functionalStructures.concat(room.roads);
+  const structures = room.functionalStructures;
   if (structures.some(s => s.hits < MIN_TRIGGER_OTHER * s.hitsMax)) {
     for (let structure of structures) {
       if (structure.hits < MAX_TRIGGER_OTHER * structure.hitsMax) structure.cache.needRepair = true;

@@ -94,12 +94,12 @@ Creep.prototype._drive = function(destination: Destination, opts: FindPathMyOpts
   }
 
   removePathPrefix(result.path, this.pos);
-  if (result.incomplete) {
-    console.log(`[WARN] ${this.name} drive: incomplete path
-  - drive from ${this.pos} to ${destination.pos}, opts: ${JSON.stringify(opts)}
-  - dest: ${JSON.stringify(destination)}
-  - path: ${JSON.stringify(result.path)}`);
-  }
+  // if (result.incomplete) {
+  //   console.log(`[WARN] ${this.name} drive: incomplete path
+  // - drive from ${this.pos} to ${destination.pos}, opts: ${JSON.stringify(opts)}
+  // - dest: ${JSON.stringify(destination)}
+  // - path: ${JSON.stringify(result.path)}`);
+  // }
   if (result.path.length === 0) {
     return ERR_NO_PATH;
   }
@@ -124,12 +124,12 @@ Creep.prototype.driveTo = function(destination: RoomPosition | RoomObject, opts:
     let cpuStart = Game.cpu.getUsed();
     let foo = this._drive(dest, findPathOpts);
     const THRESHOLD = 0.5;
-    if (Game.cpu.getUsed() - cpuStart >= THRESHOLD) {
-      console.log(`[WARN] driveTo too slow, used ${Game.cpu.getUsed() - cpuStart} CPU
-  - creep: ${this.name}
-  - destination: ${JSON.stringify(dest)}
-  - findPathOpts: ${JSON.stringify(findPathOpts)}`);
-    }
+  //   if (Game.cpu.getUsed() - cpuStart >= THRESHOLD) {
+  //     console.log(`[WARN] driveTo too slow, used ${Game.cpu.getUsed() - cpuStart} CPU
+  // - creep: ${this.name}
+  // - destination: ${JSON.stringify(dest)}
+  // - findPathOpts: ${JSON.stringify(findPathOpts)}`);
+  //   }
     return foo;
   }
 }

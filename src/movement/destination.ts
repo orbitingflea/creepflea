@@ -69,10 +69,10 @@ export function findPathOffRoad(origin: RoomPosition, dest: Destination, opts: F
     }
   }
   // fail
-  console.log(`[WARN] findPathOffRoad failed,
-- origin: ${origin},
-- dest: ${JSON.stringify(dest)},
-- cannot find park point.`);
+//   console.log(`[WARN] findPathOffRoad failed,
+// - origin: ${origin},
+// - dest: ${JSON.stringify(dest)},
+// - cannot find park point.`);
   return {
     path: [],
     incomplete: true,
