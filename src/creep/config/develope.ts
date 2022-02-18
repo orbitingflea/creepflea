@@ -503,10 +503,11 @@ function minerPart() {
     name: `Miner_${nickName}`,
     role: 'miner',
     body,
-    require: ((mineralId: Id<Mineral>) => () => {
-      let mineral = Game.getObjectById(mineralId);
-      return mineral && mineral.mineralAmount > 0 ? 1 : 0;
-    })(mineral.id),
+    // require: ((mineralId: Id<Mineral>) => () => {
+    //   let mineral = Game.getObjectById(mineralId);
+    //   return mineral && mineral.mineralAmount > 0 ? 1 : 0;
+    // })(mineral.id),
+    require: 0,  // paused
     args: {
       containerId: container.id,
       sourceId: mineral.id

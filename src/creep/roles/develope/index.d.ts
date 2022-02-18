@@ -16,6 +16,10 @@ interface CarrierArgs {
   deathBehavior?: DeathBehavior;
 }
 
+interface Creep {
+  _thisTickTakeResource?: ResourceConstant | 'all';
+}
+
 interface CreepCache {
 
 }

@@ -147,7 +147,7 @@ export default function ConfigList() {
         name: 'OuterCarrier_E36S45b',
         role: 'outerCarrier',
         body: bodyOuterCarrier,
-        require: roomDanger('E36S45') ? 0 : 2,
+        require: roomDanger('E36S45') ? 0 : 1,
         args: {
             roomName: 'E36S45',
             resourcePosition: [11, 43],
@@ -179,7 +179,7 @@ export default function ConfigList() {
         name: 'OuterCarrier_E36S45c',
         role: 'outerCarrier',
         body: bodyOuterCarrier,
-        require: roomDanger('E36S45') ? 0 : 2,
+        require: roomDanger('E36S45') ? 0 : 1,
         args: {
             roomName: 'E36S45',
             resourcePosition: [42, 4],
@@ -196,7 +196,6 @@ export default function ConfigList() {
     // add spawn info
     const spawnList = ['Spawn1', 'Spawn1b', 'Spawn1c'];
     for (let i = 0; i < confs.length; i++) {
-        // confs[i].name = confs[i].name + commonSuffix;
         if (confs[i].spawn == null) confs[i].spawn = spawnList;
     }
     return confs;
