@@ -108,6 +108,14 @@ Room.prototype.structuresOfType = function(type: StructureConstant): Structure[]
   return res as Structure[];
 }
 
+Room.prototype.structuresOfTypes = function(...types: StructureConstant[]): Structure[] {
+  let ret: Structure[] = [];
+  for (let type of types) {
+    ret = ret.concat(this.structuresOfType(type));
+  }
+  return ret;
+}
+
 Object.defineProperty(Room.prototype, 'roads', {
   configurable: true,
   get: function(): StructureRoad[] {

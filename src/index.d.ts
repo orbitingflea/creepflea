@@ -21,6 +21,8 @@ declare global {
 
   interface RoomObjectCache {
     isContainerNearController?: boolean;
+    isEnergySource?: boolean;
+    isEnergySink?: boolean;
   }
 
   interface RoomObject {

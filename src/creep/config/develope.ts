@@ -12,8 +12,9 @@
  * - 开采模块：针对每个 source 的建筑结构来安排。
  */
 
-import { UpdateStructureStatus } from 'CarrierSystem.js';
+// import { UpdateStructureStatus } from 'CarrierSystem.js';
 import taskCommon from 'task.common';
+import { addStorageDemand, getDemands } from 'modules/demand/main';
 import {
   designCarrier,
   designBalanceWorker,
@@ -81,11 +82,6 @@ function main() {
   energyLimit = room.energyCapacityAvailable;
   containerNearController = null;
 
-  funcList.push(((roomName: string) => () => {
-    let room = Game.rooms[roomName];
-    if (room) UpdateStructureStatus(room);
-  })(roomName));
-
   emergency = '';
   let emergencyThreshold = opts.energyEmergencyThreshold || 10000;
   if (room.storage!.store[RESOURCE_ENERGY] < emergencyThreshold) {
@@ -110,12 +106,20 @@ function main() {
     require: emergency === 'carrier' ? 1 : 0,
     args: ((roomName: string) => () => {
       let room = Game.rooms[roomName];
+      let [sources, sinks] = addStorageDemand(
+        room,
+        {},
+        {energy: room.structuresOfTypes(STRUCTURE_SPAWN, STRUCTURE_EXTENSION).filter(s => s.store!.getFreeCapacity(RESOURCE_ENERGY) > 0)}
+      );
       return {
-        sourceId: room.storage!.id,
-        targetIdList: room.functionalStructures.filter(
-          (structure) => (structure.hasCache && structure.cache.needEnergy)
-        ).map((obj) => obj.id)
-      }
+        sources,
+        sinks,
+        deathBehavior: {
+          action: 'save',
+          threshold: 20,
+          saveId: room.storage!.id
+        }
+      } as CarrierArgs
     })(roomName)
   };
   conf.push(emergencyCarrier);
@@ -160,12 +164,16 @@ function carrierPart() {
     require: 1,
     args: ((roomName: string) => () => {
       let room = Game.rooms[roomName];
+      let [sources, sinks] = getDemands(room);
       return {
-        sourceId: room.storage!.id,
-        targetIdList: room.functionalStructures.filter(
-          (structure) => (structure.hasCache && structure.cache.needEnergy)
-        ).map((obj) => obj.id)
-      }
+        sources,
+        sinks,
+        deathBehavior: {
+          action: 'save',
+          saveId: room.storage!.id,
+          threshold: 50,
+        }
+      } as CarrierArgs
     })(roomName),
     liveThreshold: 50
   };
@@ -192,7 +200,7 @@ function carrierPart() {
     name: `Recycler_${nickName}`,
     role: 'recycler',
     body: smallCarrierBody,
-    require: 1,
+    require: 0,  // deprecated
     args: {
       targetId: room.storage!.id,
       sourceIdList: taskCommon.GetRecyclerTargets(room),
@@ -318,9 +326,14 @@ function harvestPart(source: Source, label: number) {
           let resList = container.pos.lookFor(LOOK_RESOURCES).filter(r => r.resourceType === RESOURCE_ENERGY && r.amount >= threshold);
           let fromId = resList.length > 0 ? resList[0].id : containerId;
           return {
-            sourceId: fromId,
-            targetIdList: [container.room.storage!.id]
-          }
+            sources: {energy: fromId},
+            sinks: {energy: room.storage!},
+            deathBehavior: {
+              action: 'save',
+              saveId: room.storage!.id,
+              threshold: 50,
+            }
+          } as CarrierArgs
         })(container.id)
       };
       conf.push(carrier);
@@ -354,7 +367,7 @@ function upgraderWithoutContainer(useStrong: boolean) {
   let body = designBalanceWorker(energyLimit, repeatLimit);
   let upgrader: CreepConfigPresetIncomplete = {
     name: `Upgrader_${nickName}`,
-    role: 'newWorker',
+    role: 'worker',
     body,
     require: 1,
     args: {
@@ -365,7 +378,7 @@ function upgraderWithoutContainer(useStrong: boolean) {
         priority: 0,
       } as WorkerTask,
       deathBehavior: {
-        id: room.storage!.id,
+        saveId: room.storage!.id,
         action: 'save',
         threshold: 50,
       }
@@ -396,14 +409,15 @@ function upgraderWithContainer(container: StructureContainer, useStrong: boolean
         priority: 0,
       } as WorkerTask,
       deathBehavior: {
-        id: container.id,
+        saveId: container.id,
         action: 'save',
         threshold: 3,
       }
     }
   };
   conf.push(upgrader);
-  container.cache.isContainerNearController = true;
+  // container.cache.isContainerNearController = true;
+  container.cache.isEnergySink = true;
 
   let dist = room.storage!.pos.getRangeTo(container) + 1;
   let needCapacity = dist * 2 * upgraderThroughput(body);
@@ -422,9 +436,14 @@ function upgraderWithContainer(container: StructureContainer, useStrong: boolean
       }
     })(),
     args: {
-      sourceId: room.storage!.id,
-      targetIdList: [container.id]
-    },
+      sources: {energy: room.storage!.id},
+      sinks: {energy: container.id},
+      deathBehavior: {
+        action: 'save',
+        saveId: container.id,
+        threshold: 20,
+      }
+    } as CarrierArgs,
     priority: -1
   };
   conf.push(carrier);
@@ -449,9 +468,11 @@ function workerPart(container?: StructureContainer | null) {
   if (container) sources.push(container.id);
   let worker: CreepConfigPresetIncomplete = {
     name: `Worker_${nickName}`,
-    role: 'newWorker',
+    role: 'worker',
     body,
-    require: room.storage!.store[RESOURCE_ENERGY] >= threshold ? 1 : 0,
+    require: room.storage!.store[RESOURCE_ENERGY] >= threshold &&
+        taskCommon.GetWorkerTasks(room, room.controller!.level < 8).length > 0
+        ? 1 : 0,
     args: ((roomName: string, sources: Id<RoomObject>[]) => () => {
       let room = Game.rooms[roomName];
       if (!room) return null;
@@ -460,7 +481,7 @@ function workerPart(container?: StructureContainer | null) {
         sources: sources,
         tasks: taskCommon.GetWorkerTasks(room, doUpgrade),
         deathBehavior: {
-          id: room.storage!.id,
+          saveId: room.storage!.id,
           action: 'save',
           threshold: 50,
         }

@@ -6,6 +6,7 @@ interface Room {
   mineral: Mineral | null;
   structures: Structure[];
   structuresOfType(type: StructureConstant): Structure[];
+  structuresOfTypes(...types: StructureConstant[]): Structure[];
   constructionSites: ConstructionSite[];
   functionalStructures: Structure[];
 

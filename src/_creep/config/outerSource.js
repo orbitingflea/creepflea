@@ -1,6 +1,5 @@
 // must spawn from a room with RCL >= 6
 import { BodyWCM, GetCreepCost } from 'util.js';
-import { UpdateStructureStatus } from 'CarrierSystem.js';
 import taskCommon from 'task.common.js';
 import { id as idRoom1 } from './room1.js';
 import { id as idRoom3 } from './room3.js';

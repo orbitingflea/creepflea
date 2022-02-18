@@ -3,7 +3,6 @@
  * 向下兼容 js 版本的 prepare-source-target-wait 模式，以及新版本的模式。
  */
 
-import roleCarrier from '_creep/roles/carrier.js';
 import roleCarrierCenter from '_creep/roles/carrierCenter.js';
 import roleDigger from '_creep/roles/digger.js';
 import roleDiggerLink from '_creep/roles/diggerLink.js';
@@ -25,9 +24,9 @@ import roleSkStrongholdAttacker from '_creep/roles/skStrongholdAttacker';
 import roleSkRecycler from '_creep/roles/skRecycler';
 
 import roleWorker from './develope/worker';
+import roleCarrier from './develope/carrier';
 
 const roles: {[roleName: string]: (CreepRole | CreepRoleOld)} = {
-  carrier: roleCarrier,
   carrierCenter: roleCarrierCenter,
   digger: roleDigger,
   diggerLink: roleDiggerLink,
@@ -50,14 +49,14 @@ const roles: {[roleName: string]: (CreepRole | CreepRoleOld)} = {
   skRecycler: roleSkRecycler,
 
   worker: roleWorker,
-  newWorker: roleWorker,
+  carrier: roleCarrier,
 };
 
 Creep.prototype.work = function() {
   if (this.spawning) return;
   const conf = creepManager.getConfigWork(this.memory.configName);
   if (!conf) {
-    console.log(`Creep ${this.name} 携带无效配置名称 ${this.memory.configName}.`);
+    // console.log(`Creep ${this.name} 携带无效配置名称 ${this.memory.configName}.`);
     this.say('找不到配置');
     return;
   }
