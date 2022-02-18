@@ -3,6 +3,6 @@ type Demand = {
 }
 
 interface RoomObjectCache {
-  needResourceIfBelow?: {[res in ResourceConstant]?: number}
-  giveResourceIfAbove?: {[res in ResourceConstant]?: number}
+  needResourceIfBelow?: {[res in ResourceConstant | 'all']?: number}
+  giveResourceIfAbove?: {[res in ResourceConstant | 'all']?: number}
 }

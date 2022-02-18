@@ -513,6 +513,7 @@ function minerPart() {
   };
   conf.push(miner);
 
-  setDemandGive(container, RESOURCE_ENERGY, 100);
-  setDemandGive(container, mineral.mineralType, 1000);
+  // setDemandGive(container, RESOURCE_ENERGY, 100);
+  // setDemandGive(container, mineral.mineralType, 1000);
+  setDemandGive(container, 'all', 1000);
 }

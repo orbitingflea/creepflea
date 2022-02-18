@@ -10,7 +10,7 @@ export function setDemandNeed(structure: Structure, res: ResourceConstant, thres
   structure.cache.needResourceIfBelow[res] = threshold;
 }
 
-export function setDemandGive(structure: Structure, res: ResourceConstant, threshold: number) {
+export function setDemandGive(structure: Structure, res: ResourceConstant | 'all', threshold: number) {
   if (!structure.cache.giveResourceIfAbove) {
     structure.cache.giveResourceIfAbove = {};
   }
@@ -81,10 +81,17 @@ export function getAllDemand(room: Room): [Demand, Demand] {
     if (s.hasCache && s.cache.giveResourceIfAbove) {
       const foo = s.cache.giveResourceIfAbove;
       for (let res in foo) {
-        const r = res as ResourceConstant;
-        if (foo[r] !== undefined && s.store![r] >= foo[r]!) {
-          if (!sources[r]) sources[r] = [];
-          sources[r]!.push(s);
+        if (res === 'all') {
+          if (foo.all !== undefined && s.store!.getUsedCapacity() > foo.all!) {
+            if (!sources.all) sources.all = [];
+            sources.all!.push(s);
+          }
+        } else {
+          const r = res as ResourceConstant;
+          if (foo[r] !== undefined && s.store![r] >= foo[r]!) {
+            if (!sources[r]) sources[r] = [];
+            sources[r]!.push(s);
+          }
         }
       }
     }
