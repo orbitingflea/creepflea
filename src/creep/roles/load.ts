@@ -11,7 +11,6 @@ import roleRecycler from '_creep/roles/recycler.js';
 import roleMiner from '_creep/roles/miner.js';
 import roleClaimer from '_creep/roles/claimer.js';
 import roleReserver from '_creep/roles/reserver.js';
-import roleBasicHarvester from '_creep/roles/basicHarvester.js';
 import roleOuterHarvester from '_creep/roles/outerHarvester.js';
 
 import roleOuterDigger from '_creep/roles/outerDigger.js';
@@ -35,9 +34,6 @@ const roles: {[roleName: string]: (CreepRole | CreepRoleOld)} = {
   miner: roleMiner,
   claimer: roleClaimer,
   reserver: roleReserver,
-  basic_harvester: roleBasicHarvester,
-  basicHarvester: roleBasicHarvester,
-  outer_harvester: roleOuterHarvester,
   outerHarvester: roleOuterHarvester,
   outerDigger: roleOuterDigger,
   outerCarrier: roleOuterCarrier,

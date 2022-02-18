@@ -1,16 +1,10 @@
 import { ensureArray } from "lib/utils";
 import dfaSourceWork from "../utils/dfaSourceWork";
+import { defaultDeathBehavior, deathMode } from '../utils/deathBehavior';
 
 function sourceMode(creep: Creep, args: CarrierArgs, moveOnly: boolean) {
-  // console.log(`room ${creep.room.name}`);
-  // for (let type in args.sources) {
-  //   console.log(`source type ${type}: ${ensureArray(args.sources[type as ResourceConstant | 'all']).length}`);
-  // }
-  // for (let type in args.sinks) {
-  //   console.log(`sink type ${type}: ${ensureArray(args.sinks[type as ResourceConstant | 'all']).length}`);
-  // }
-
-  if (args.deathBehavior && creep.ticksToLive! <= args.deathBehavior.threshold) {
+  let deathBehavior = args.deathBehavior || defaultDeathBehavior(creep);
+  if (creep.ticksToLive! <= deathBehavior.threshold) {
     return GIVE_UP;
   }
   // decide which resource to take
@@ -25,7 +19,8 @@ function sourceMode(creep: Creep, args: CarrierArgs, moveOnly: boolean) {
 }
 
 function workMode(creep: Creep, args: CarrierArgs, moveOnly: boolean) {
-  if (args.deathBehavior && creep.ticksToLive! <= args.deathBehavior.threshold) {
+  let deathBehavior = args.deathBehavior || defaultDeathBehavior(creep);
+  if (creep.ticksToLive! <= deathBehavior.threshold) {
     return GIVE_UP;
   }
   for (let res in creep.store) {
@@ -45,34 +40,6 @@ function workMode(creep: Creep, args: CarrierArgs, moveOnly: boolean) {
 }
 
 function waitMode(creep: Creep, args: CarrierArgs, moveOnly: boolean) {
-  creep.park();
-  return OK;
-}
-
-function deathMode(creep: Creep, args: CarrierArgs) {
-  let deathBehavior = args.deathBehavior!;
-  if (deathBehavior.action === 'save') {
-    let obj = Game.getObjectById(deathBehavior.saveId!);
-    if (obj) {
-      if (!creep.pos.isNearTo(obj)) {
-        creep.driveTo(obj, {range: 1});
-        return OK;
-      }
-      if (obj.store!.getFreeCapacity() === 0) {
-        creep.driveTo(obj, {range: 1, offRoad: true});
-        return OK;
-      }
-      for (let res in creep.store) {
-        if (creep.store[res as ResourceConstant] > 0) {
-          creep.transfer(obj, res as ResourceConstant);
-          return OK;
-        }
-      }
-      creep.suicide();
-      return OK;
-    }
-  }
-
   creep.park();
   return OK;
 }

@@ -244,12 +244,12 @@ function harvestPart(source: Source, label: number) {
     // basic mining
     let basicDigger: CreepConfigPresetIncomplete = {
       name: `Digger_${label}_${nickName}`,
-      role: 'basicHarvester',
+      role: 'carrier',
       body: fullstackBody,
       require: 1,
       args: {
-        sourceId: source.id,
-        targetId: room.storage!.id
+        sources: {energy: source.id},
+        sinks: {energy: room.storage!.id}
       }
     };
     conf.push(basicDigger);
