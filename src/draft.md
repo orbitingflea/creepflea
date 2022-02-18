@@ -22,7 +22,7 @@ CreepCache 和 RoomObjectCache 这个划分很奇怪，应该把后者改为 Str
 
 ## Carrier
 
-重写 carrier 系统和 carrier 角色。角色可以仿照 worker 的成功案例。
+TODO: carrier 现在在搬运非能量的时候还是会出现停顿的情况。不知道如何解决。或许是切换状态之后第二阶段的寻找目标 move 不到位。
 
 ## driveTo 性能问题
 
@@ -30,63 +30,3 @@ CreepCache 和 RoomObjectCache 这个划分很奇怪，应该把后者改为 Str
 
 已经有一些可以优化的地方：降低非 SK 场景的冗余过程；修改 cache 中路径存储的样式，允许用一条更长路径 + 一个指针，减少路径复制。
 
-calls		time		avg		function
-1268		360.6		0.284		Creep.work
-440		100.9		0.229		Creep.driveTo
-342		88.7		0.259		Creep._drive
-340		70.5		0.207		Creep.move
-309		52.5		0.170		Creep.harvest
-207		47.6		0.230		Creep.runWorkerTasks
-207		46.8		0.226		Creep._runWorkerTasks
-153		33.6		0.220		Creep.upgradeController
-75		17.5		0.233		Creep.transfer
-711		17.3		0.024		Room.structuresOfType
-412		15.9		0.039		RoomPosition.parkable:get
-1353		15.2		0.011		RoomPosition.findClosestByRange
-525		13.8		0.026		Room.functionalStructures:get
-1950		13.1		0.007		Room.find
-56		12.6		0.224		Creep.withdraw
-1365		11.9		0.009		Room._ensureScanInfo
-1764		10.6		0.006		RoomPosition.lookFor
-488		8.9		0.018		RoomPosition.matchDestination
-213		8.4		0.039		Room.roads:get
-144		8.3		0.058		Creep.park
-36		7.9		0.219		Creep.repair
-4289		6.8		0.002		Room.cache:get
-30		6.6		0.220		Creep.heal
-30		6.6		0.219		Creep.reserveController
-240		6.4		0.027		Room._scanDanger
-Avg: 18.26	Total: 511.31	Ticks: 28
-
-## 死亡处理
-
-角色濒临死亡的时候有几种处理方式？
-1. 搬运非贵重资源的：在时间恰好够的时候放弃手上任务，移动到storage，卸货，自杀
-2. 搬运贵重资源的：在自己生命不够的时候不要接任务。
-3. outer carrier 长途搬运者：在生命不够的时候进入紧急状态，在正常行为基础上，将会不执行等待操作。
-4.
-
-## Demand
-
-现在还不能做到精确补给，只能做到大量补给、大量拿取。在大部分 storage、terminal 以外情景都适用。
-
-当建筑需要能量或物资，可以挂在 s.demand 上（仅仅表示需要/不需要，不表示数量），这样 develope.ts 就会把 demand 信息发送给 carrier。
-
-或许能量用 demand 模式，别的用任务模式，会更好一些。
-
-
-Creep CarrierFromStorage_R2_35987648 携带无效配置名称 CarrierFromStorage_R2.
-[下午5:21:28][shard3]Creep Recycler_R4_35987754 携带无效配置名称 Recycler_R4.
-[下午5:21:28][shard3]Creep CarrierForUpgrader_R4_35987785 携带无效配置名称 CarrierForUpgrader_R4.
-[下午5:21:31][shard3]TypeError: Cannot read property 'push' of undefined
-    at addStorageDemand  (../src/modules/demand/main.ts:66:15)
-    at Object.emergencyCarrier.args  (../src/creep/config/develope.ts:109:29)
-    at generateConfigWork  (../src/creep/manager/main.ts:15:51)
-    at Object.runUpdate  (../src/creep/manager/main.ts:61:16)
-    at screepsProfiler.wrap  (../src/main.ts:42:17)
-    at Object.wrap  (../node_modules/screeps-profiler/screeps-profiler.js:337:11)
-    at ErrorMapper.wrapLoop  (../src/main.ts:28:11)
-    at Object.loop  (../src/utils/ErrorMapper.ts:74:8)
-[下午5:21:34][shard3]Creep CarrierCenter_R1_35986479 携带无效配置名称 CarrierCenter_R1.
-[下午5:21:34][shard3]Creep Digger_0_R1_35986602 携带无效配置名称 Digger_0_R1.
-[下午5:21:34][shard3]Creep Digger_1_R1_35986635 携带无效配置名称 Digger_1_R1.

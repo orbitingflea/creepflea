@@ -14,7 +14,7 @@
 
 // import { UpdateStructureStatus } from 'CarrierSystem.js';
 import taskCommon from 'task.common';
-import { addStorageDemand, getDemands } from 'modules/demand/main';
+import { addStorageDemand, getAllDemand, setDemandGive, setDemandNeed } from 'modules/demand/main';
 import {
   designCarrier,
   designBalanceWorker,
@@ -53,7 +53,6 @@ export default function developeRoomConfigList(_roomName: string, _opts?: Develo
     return [[], []];
   }
   opts = _opts || {};
-  // nickName = opts.nickName || roomName;
   conf = [];
   funcList = [];
 
@@ -164,7 +163,7 @@ function carrierPart() {
     require: 1,
     args: ((roomName: string) => () => {
       let room = Game.rooms[roomName];
-      let [sources, sinks] = getDemands(room);
+      let [sources, sinks] = getAllDemand(room);
       return {
         sources,
         sinks,
@@ -416,7 +415,6 @@ function upgraderWithContainer(container: StructureContainer, useStrong: boolean
     }
   };
   conf.push(upgrader);
-  // container.cache.isContainerNearController = true;
   container.cache.isEnergySink = true;
 
   let dist = room.storage!.pos.getRangeTo(container) + 1;
@@ -503,11 +501,10 @@ function minerPart() {
     name: `Miner_${nickName}`,
     role: 'miner',
     body,
-    // require: ((mineralId: Id<Mineral>) => () => {
-    //   let mineral = Game.getObjectById(mineralId);
-    //   return mineral && mineral.mineralAmount > 0 ? 1 : 0;
-    // })(mineral.id),
-    require: 0,  // paused
+    require: ((mineralId: Id<Mineral>) => () => {
+      let mineral = Game.getObjectById(mineralId);
+      return mineral && mineral.mineralAmount > 0 ? 1 : 0;
+    })(mineral.id),
     args: {
       containerId: container.id,
       sourceId: mineral.id
@@ -516,26 +513,6 @@ function minerPart() {
   };
   conf.push(miner);
 
-  let func = ((containerId: Id<StructureContainer>, roomName: string) => () => {
-    if (Game.time % 10 === 0) {
-      let container = Game.getObjectById(containerId);
-      let room = Game.rooms[roomName];
-      if (container && container.store.getUsedCapacity() >= 500) {
-        for (let resType in container.store) {
-          global.CarrierManager(roomName).NewTask(container.id, room.storage!.id, resType);
-        }
-      }
-    }
-  })(container.id, room.name);
-  funcList.push(func);
+  setDemandGive(container, RESOURCE_ENERGY, 100);
+  setDemandGive(container, mineral.mineralType, 1000);
 }
-
-/**
- * 怎么利用优先级来优雅地实现模块分离以及紧急情况处理？
- * 先看正常模块
- * 运输模块：CarrierFromStorage, CarrierCenter, Recycler
- * harvest 模块：Digger, {CarrierForDigger | linkfunc}
- * mining 模块
- * upgrader 模块
- *
- */

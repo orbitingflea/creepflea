@@ -3,11 +3,25 @@
  * 不包括垃圾回收、storage 和 terminal 的 demand。
  */
 
+export function setDemandNeed(structure: Structure, res: ResourceConstant, threshold: number) {
+  if (!structure.cache.needResourceIfBelow) {
+    structure.cache.needResourceIfBelow = {};
+  }
+  structure.cache.needResourceIfBelow[res] = threshold;
+}
+
+export function setDemandGive(structure: Structure, res: ResourceConstant, threshold: number) {
+  if (!structure.cache.giveResourceIfAbove) {
+    structure.cache.giveResourceIfAbove = {};
+  }
+  structure.cache.giveResourceIfAbove[res] = threshold;
+}
+
 const THRESHOLD_ENERGY_SINK = 0.7;
 const THRESHOLD_ENERGY_SOURCE = 0.3;
 const DROPPED_ENERGY_THRESHOLD = 100;
 
-export function getDemands(room: Room): [Demand, Demand] {
+export function getAllDemand(room: Room): [Demand, Demand] {
   let sources: Demand = {energy: [], all: []};
   let sinks: Demand = {energy: [], all: []};
 
@@ -48,6 +62,31 @@ export function getDemands(room: Room): [Demand, Demand] {
   for (let s of room.find(FIND_RUINS)) {
     if (s.store.getUsedCapacity() > 0) {
       sources.all!.push(s);
+    }
+  }
+
+  // --- manual tasks ---
+
+  for (let s of room.functionalStructures) {
+    if (s.hasCache && s.cache.needResourceIfBelow) {
+      const foo = s.cache.needResourceIfBelow;
+      for (let res in foo) {
+        const r = res as ResourceConstant;
+        if (foo[r] !== undefined && s.store![r] < foo[r]!) {
+          if (!sinks[r]) sinks[r] = [];
+          sinks[r]!.push(s);
+        }
+      }
+    }
+    if (s.hasCache && s.cache.giveResourceIfAbove) {
+      const foo = s.cache.giveResourceIfAbove;
+      for (let res in foo) {
+        const r = res as ResourceConstant;
+        if (foo[r] !== undefined && s.store![r] >= foo[r]!) {
+          if (!sources[r]) sources[r] = [];
+          sources[r]!.push(s);
+        }
+      }
     }
   }
 

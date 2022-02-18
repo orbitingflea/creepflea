@@ -18,3 +18,5 @@ import './dangerInfo/main';
 import './dangerInfo/lairRegion';
 
 import './memory/roomObject';
+
+import './instantStore/main';

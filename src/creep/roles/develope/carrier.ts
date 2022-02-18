@@ -12,9 +12,6 @@ function sourceMode(creep: Creep, args: CarrierArgs, moveOnly: boolean) {
     let source = ensureArray(args.sources[res as ResourceConstant | 'all']);
     if (source.length > 0) {
       let ret = creep.takeResource(source, res as ResourceConstant | 'all', moveOnly);
-      if (ret === COMPLETE_WITHOUT_MOVE) {
-        creep._thisTickTakeResource = res as ResourceConstant | 'all';
-      }
       return ret;
     }
   }
@@ -26,11 +23,7 @@ function workMode(creep: Creep, args: CarrierArgs, moveOnly: boolean) {
   if (creep.ticksToLive! <= deathBehavior.threshold) {
     return GIVE_UP;
   }
-  let resList = Object.keys(creep.store);
-  if (creep._thisTickTakeResource) {
-    resList.push(creep._thisTickTakeResource);
-  }
-  for (let res of resList) {
+  for (let res in creep.store) {
     let sink = ensureArray(args.sinks[res as ResourceConstant | 'all']);
     if (sink.length > 0) {
       return creep.giveResource(sink, res as ResourceConstant | 'all', moveOnly);

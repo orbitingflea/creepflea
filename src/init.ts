@@ -6,7 +6,6 @@
 import 'initHook';
 
 import 'carrierManager.js';
-// import '_creep/mountCreepRoles.js';
 import 'prototypes/prototypeMain.js';
 
 import 'service/load';
@@ -18,6 +17,8 @@ import 'movement/utils';
 import 'creep/manager/main';
 import 'creep/roles/load';
 import 'creep/action/load';
+
+import 'modules/console/main';
 
 global.tickEndHook.push(() => {
   for (let name in Memory.rooms) {

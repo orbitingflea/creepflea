@@ -2,9 +2,7 @@ type Demand = {
   [resourceType in ResourceConstant | 'all']?: RoomObject[];
 }
 
-interface Structure {
-  demand: Demand;
-}
-
-interface Room {
+interface RoomObjectCache {
+  needResourceIfBelow?: {[res in ResourceConstant]?: number}
+  giveResourceIfAbove?: {[res in ResourceConstant]?: number}
 }
