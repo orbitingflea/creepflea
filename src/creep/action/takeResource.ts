@@ -132,10 +132,10 @@ Creep.prototype._takeResource = function(from: BlindObject[], resource: Resource
         let res = takeResourceFromSource(this, source, resource);
         takenId = source.id;
         if (source instanceof Source) {
-          getFull = this.store.getFreeCapacity() < res * 2;
+          getFull = this.store.getFreeCapacity() < res;
         } else {
           const FULL_THRESHOLD = 0.95;
-          getFull = (this.store.getUsedCapacity() + res) >= FULL_THRESHOLD * this.store.getCapacity();
+          getFull = (this.store.getUsedCapacity()) >= FULL_THRESHOLD * this.store.getCapacity();
         }
         if (res === getSourceAmount(source, resource)) {
           runOut = true;

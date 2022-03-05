@@ -3,4 +3,5 @@ Object.assign(global, {
   COMPLETE_WITHOUT_MOVE: 2,
   ERR_NO_PARKABLE_POS: -20,
   GIVE_UP: 3,
+  BLOCKED: 4,
 });

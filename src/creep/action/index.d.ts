@@ -15,6 +15,9 @@ interface Creep {
     resource?: ResourceConstant | 'all',
     moveOnly?: boolean
   ): number;
+
+  takeResource2(sources: DemandItem[]): number;
+  giveResource2(sinks: DemandItem[]): number;
 }
 
 type WorkerTask = {
@@ -23,3 +26,10 @@ type WorkerTask = {
   action: 'repair' | 'build' | 'upgrade',
   priority: number,
 }
+
+type DemandItem = {
+  obj: RoomObject | {id: Id<RoomObject>};
+  roomName?: string;
+  resType: ResourceConstant;  // do not use 'all', use true 顺路捎带
+  amount: number;
+};

@@ -16,6 +16,18 @@ interface CarrierArgs {
   deathBehavior?: DeathBehavior;
 }
 
+type EnsureArray<T> = T | T[];
+
+interface CarrierArgs2 {
+  sources: EnsureArray<DemandItemP>;
+  sinks: EnsureArray<DemandItemP>;
+  deathBehavior?: DeathBehavior;
+}
+
+interface DemandItemP extends DemandItem {
+  priority?: number;
+}
+
 interface Creep {
   _thisTickTakeResource?: ResourceConstant | 'all';
 }
