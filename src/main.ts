@@ -53,8 +53,9 @@ export const loop = ErrorMapper.wrapLoop(() => {
       if (creep.memory.configName) {
         let workStart = Game.cpu.getUsed();
         creep.work();
-        if (creep.name.indexOf('E36S45') >= 0) {
-          // console.log(`[CPU-INFO] ${creep.name} work: ${Game.cpu.getUsed() - workStart}`);
+        let duration = Game.cpu.getUsed() - workStart;
+        if (duration > 0.5) {
+          console.log(`[CPU-INFO] ${creep.name} work: ${duration}`);
         }
       }
     }
@@ -96,18 +97,6 @@ export const loop = ErrorMapper.wrapLoop(() => {
         console.log(`[CPU-INFO] Spawn & CarrierManager & Market: ${Game.cpu.getUsed() - cpustart}`);
         cpustart = Game.cpu.getUsed();
     }
-
-    // if (Game.cpu.getUsed() >= 19) return;
-    // let factory = util.myRoom().find(FIND_MY_STRUCTURES, {
-    //     filter: (structure: Structure) => {
-    //         return structure.structureType == STRUCTURE_FACTORY;
-    //     }
-    // })[0] as StructureFactory;
-    // if (factory) {
-    //     if (factory.produce(RESOURCE_LEMERGIUM_BAR) != OK) {
-    //         factory.produce(RESOURCE_CELL);
-    //     }
-    // }
 
     runHook(global.tickEndHook);
   });

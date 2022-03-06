@@ -53,14 +53,12 @@ export default function dfaSourceWork2<ArgType>(
     let state = creep.memory.working || 0;
     let ret = RepeatCall(func[state], creep, args);
     if (ret === BLOCKED) {
-      creep.say(`block ${state}`);
       return;
     }
 
     // change state, run second state
     let ret2 = RepeatCall(func[1 ^ state], creep, args);
     if (ret2 === BLOCKED) {
-      creep.say(`block ${1 ^ state}`);
       creep.memory.working = 1 ^ state;
     } else {
       creep.memory.working = 1;
