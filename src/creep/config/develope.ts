@@ -14,7 +14,7 @@
 
 // import { UpdateStructureStatus } from 'CarrierSystem.js';
 import taskCommon from 'task.common';
-import { addStorageDemand, getAllDemand, setDemandGive, setDemandNeed } from 'modules/demand/main';
+import { addStorageDemand, getAllDemand, getAllDemand2, setDemandGive, setDemandNeed } from 'modules/demand/main';
 import {
   designCarrier,
   designBalanceWorker,
@@ -157,22 +157,27 @@ function carrierPart() {
   // CarrierFromStorage
   let carrierFromStorage: CreepConfigPresetIncomplete = {
     name: `CarrierFromStorage_${nickName}`,
-    role: 'carrier',
+    role: 'carrier2',
     body: bigCarrierBody,
     priority: 1,
     require: 1,
     args: ((roomName: string) => () => {
       let room = Game.rooms[roomName];
-      let [sources, sinks] = getAllDemand(room);
       return {
-        sources,
-        sinks,
+        get sources() {
+          let [sources, sinks] = getAllDemand2(room);
+          return sources;
+        },
+        get sinks() {
+          let [sources, sinks] = getAllDemand2(room);
+          return sinks;
+        },
         deathBehavior: {
           action: 'save',
           saveId: room.storage!.id,
           threshold: 50,
         }
-      } as CarrierArgs
+      } as CarrierArgs2
     })(roomName),
     liveThreshold: 50
   };
@@ -513,7 +518,5 @@ function minerPart() {
   };
   conf.push(miner);
 
-  // setDemandGive(container, RESOURCE_ENERGY, 100);
-  // setDemandGive(container, mineral.mineralType, 1000);
   setDemandGive(container, 'all', 1000);
 }

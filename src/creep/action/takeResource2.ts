@@ -11,8 +11,9 @@
 
 import { ensureArray } from "lib/utils";
 
-function getSourceAmount(source: DemandItem) {
-  let r = source.resType;
+function getSourceAmount(item: DemandItem) {
+  let r = item.resType;
+  let source = item.obj;
   if (source instanceof Structure || source instanceof Ruin || source instanceof Tombstone) {
     if (source.store === undefined) return 0;
     return source.store[r];
@@ -37,7 +38,7 @@ function getSourceAmount(source: DemandItem) {
 // return the predicted taken amount
 // does not perform validation check
 function takeResourceFromSource(creep: Creep, info: DemandItem): number {
-  let myFreeCap = creep.store.getFreeCapacity();
+  let myFreeCap = getFreeCapacity(creep.store);
   let resource = info.resType;
   if (!(info.obj instanceof RoomObject)) return 0;
   let source = info.obj;
@@ -69,7 +70,7 @@ function takeResourceFromSource(creep: Creep, info: DemandItem): number {
 }
 
 Creep.prototype.takeResource2 = function(sources: DemandItem[]): number {
-  if (this.store.getFreeCapacity() === 0) {
+  if (getFreeCapacity(this.store) === 0) {
     return NOTHING_TO_DO;
   }
 

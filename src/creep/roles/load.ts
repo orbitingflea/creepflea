@@ -24,6 +24,7 @@ import roleSkRecycler from '_creep/roles/skRecycler';
 
 import roleWorker from './develope/worker';
 import roleCarrier from './develope/carrier';
+import roleCarrier2 from './develope/carrier2';
 
 const roles: {[roleName: string]: (CreepRole | CreepRoleOld)} = {
   carrierCenter: roleCarrierCenter,
@@ -46,6 +47,7 @@ const roles: {[roleName: string]: (CreepRole | CreepRoleOld)} = {
 
   worker: roleWorker,
   carrier: roleCarrier,
+  carrier2: roleCarrier2,
 };
 
 Creep.prototype.work = function() {

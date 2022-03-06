@@ -83,3 +83,8 @@ TODO 不同种资源，尤其是 energy vs all 的衔接做得不好。
 
 已经有一些可以优化的地方：降低非 SK 场景的冗余过程；修改 cache 中路径存储的样式，允许用一条更长路径 + 一个指针，减少路径复制。
 
+"]
+[下午3:58:42][shard3]CarrierFromStorage_R4_36423889 state undefined, undefined
+[下午3:58:42][shard3]list: ["61efd02c638cf50074e1e8e9","6204cf07a5876d3c8a2b75c0","622337c140d11b1c6ccf79e9","61f00b9da49c319f96ce6e2e","61f013e99b3fe1462b22f65a","61f01d32ff61bc11f96acae0","61f2d119c266af9db9e1efc8","61f2d23a632080d97f143d42","61f2d327d248263156396a31","61f2d48784dbee4afff0ce27","61f2d5d17312ef4d9db35cee","61f7546540d48b7e174635e4","61f76978f8dbd1d2bdb7343b","6205bed774b79b28988c55bb","6223317ad5809d8531fa99cb","62233215cf799dea8a3c1780","622332ac14f31332b08e36ea","6223336b4f52c41444d7d9e9","622402ce1f14593c4f1cf4a0","6224038cd5809d6128facf6c","61f1318949d096420bd2d951"]
+[下午3:58:45][shard3]CarrierFromStorage_R4_36423889 state undefined, undefined
+[下午3:58:45][shard3]list: ["61efd02c638cf50074e1e8e9

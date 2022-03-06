@@ -13,7 +13,7 @@ import { ensureArray } from "lib/utils";
 // if invalid, return 0
 function getTargetFreeCapacity(target: RoomObject, resource: ResourceConstant): number {
   if (!(target instanceof Structure) || !target.store) return 0;
-  return target.store.getFreeCapacity(resource);
+  return getFreeCapacity(target.store, resource);
 }
 
 function getMyStore(creep: Creep, resource: ResourceConstant): number {
@@ -29,7 +29,7 @@ function giveResourceToTarget(creep: Creep, info: DemandItem): number {
 }
 
 Creep.prototype.giveResource2 = function(sinks: DemandItem[]): number {
-  if (this.store.getCapacity() === 0) {
+  if (getUsedCapacity(this.store) === 0) {
     return NOTHING_TO_DO;
   }
 
@@ -54,6 +54,7 @@ Creep.prototype.giveResource2 = function(sinks: DemandItem[]): number {
       if (this._worked) return BLOCKED;
       giveResourceToTarget(this, item);
       this._worked = true;
+      // this.say('trywk');
       return OK;
     }
   }

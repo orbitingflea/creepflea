@@ -15,11 +15,6 @@ function sourceMode(creep: Creep, args: CarrierArgs2) {
 }
 
 function workMode(creep: Creep, args: CarrierArgs2) {
-  let deathBehavior = args.deathBehavior || defaultDeathBehavior(creep);
-  if (creep.ticksToLive! <= deathBehavior.threshold) {
-    return GIVE_UP;
-  }
-
   let sinks = ensureArray(args.sinks).filter(item => creep.store[item.resType] > 0);
   if (sinks.length === 0) return NOTHING_TO_DO;
 
