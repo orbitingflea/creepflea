@@ -144,7 +144,7 @@ function main() {
   }
   upgraderPart();
   workerPart(containerNearController);
-  minerPart();
+  // minerPart();
 }
 
 

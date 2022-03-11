@@ -117,7 +117,7 @@ export function addStorageDemand(room: Room, sources: Demand, sinks: Demand): [D
 
 // ----- version 2 -----
 
-export function getAllDemand2(room: Room): [DemandItemP[], DemandItemP[]] {
+export function _getAllDemand2(room: Room): [DemandItemP[], DemandItemP[]] {
   let sources: DemandItemP[] = [];
   let sinks: DemandItemP[] = [];
 
@@ -199,6 +199,16 @@ export function getAllDemand2(room: Room): [DemandItemP[], DemandItemP[]] {
     adjustWithStorage(room, sources, sinks);
   }
   return [sources, sinks];
+}
+
+export function getAllDemand2(room: Room) {
+  let start = Game.cpu.getUsed();
+  let ret = _getAllDemand2(room);
+  let end = Game.cpu.getUsed();
+  if (end - start > 0.1) {
+    console.log(`getAllDemand2 for room ${room.name}: ${end - start}`);
+  }
+  return ret;
 }
 
 function adjustWithStorage(room: Room, sources: DemandItemP[], sinks: DemandItemP[]) {

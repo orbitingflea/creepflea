@@ -4,7 +4,7 @@ import { id as idRoom4 } from './room4.js';
 import { GetStrongholdContainers } from 'skRoom.js';
 import taskCommon from 'task.common.js';
 
-const bodyOuterCarrier = BodyWCM(1, 21, 11);
+const bodyOuterCarrier = BodyWCM(1, 32, 17);
 const bodyOuterDigger = BodyWCM(12, 2, 7);
 
 export default function ConfigList() {
@@ -23,7 +23,7 @@ export default function ConfigList() {
             targetId: idRoom2.storage,
             earlyStop: 200,
         },
-        spawn: ['Spawn1', 'Spawn1b', 'Spawn1c']
+        spawn: ['Spawn4', 'Spawn4b', 'Spawn4c']
     });
 
     // ---------
@@ -44,7 +44,7 @@ export default function ConfigList() {
         args: {
             roomName: 'E36S45',
         },
-        spawn: ['Spawn1', 'Spawn1b', 'Spawn1c'],
+        spawn: ['Spawn4', 'Spawn4b', 'Spawn4c']
     });
 
     confs.push({
@@ -57,7 +57,7 @@ export default function ConfigList() {
             sourceIdList: room_sk ? taskCommon.GetRecyclerTargets(room_sk).concat(GetStrongholdContainers(room_sk)) : [],
             targetId: idRoom4.storage,
         },
-        spawn: ['Spawn4', 'Spawn4b']
+        spawn: ['Spawn4', 'Spawn4b', 'Spawn4c']
     });
 
     confs.push({
@@ -72,8 +72,8 @@ export default function ConfigList() {
             roomName: 'E36S45',
             hurtTolerance: 15
         },
-        spawn: ['Spawn1', 'Spawn1b', 'Spawn1c'],
-        liveThreshold: 200,
+        spawn: ['Spawn4', 'Spawn4b', 'Spawn4c'],
+        liveThreshold: 100,
     });
 
     confs.push({
@@ -90,7 +90,7 @@ export default function ConfigList() {
         args: {
             roomName: 'E36S45'
         },
-        spawn: ['Spawn1', 'Spawn1b', 'Spawn1c'],
+        spawn: ['Spawn4', 'Spawn4b', 'Spawn4c'],
     });
 
     // --- 生产单位
@@ -106,7 +106,7 @@ export default function ConfigList() {
             sourceId: '5bbcaf169099fc012e63a233',
             retreatRoom: 'E37S45',
         },
-        spawn: ['Spawn4', 'Spawn4b'],
+        spawn: ['Spawn4', 'Spawn4b', 'Spawn4c'],
         liveThreshold: 20,
     };
     confs.push(conf);
@@ -122,7 +122,7 @@ export default function ConfigList() {
             targetId: idRoom4.storage,
             earlyStop: 100,
         },
-        spawn: ['Spawn4', 'Spawn4b'],
+        spawn: ['Spawn4', 'Spawn4b', 'Spawn4c'],
         liveThreshold: 100,
     };
     confs.push(conf);
@@ -138,7 +138,7 @@ export default function ConfigList() {
             sourceId: '5bbcaf169099fc012e63a235',
             retreatRoom: 'E37S45',
         },
-        spawn: ['Spawn4', 'Spawn4b'],
+        spawn: ['Spawn4', 'Spawn4b', 'Spawn4c'],
         liveThreshold: 20,
     };
     confs.push(conf);
@@ -154,7 +154,7 @@ export default function ConfigList() {
             targetId: idRoom4.storage,
             earlyStop: 100,
         },
-        spawn: ['Spawn4', 'Spawn4b'],
+        spawn: ['Spawn4', 'Spawn4b', 'Spawn4c'],
         liveThreshold: 100,
     };
     confs.push(conf);
@@ -170,7 +170,7 @@ export default function ConfigList() {
             sourceId: '5bbcaf169099fc012e63a22e',
             retreatRoom: 'E37S45',
         },
-        spawn: ['Spawn4', 'Spawn4b'],
+        spawn: ['Spawn4', 'Spawn4b', 'Spawn4c'],
         liveThreshold: 20,
     };
     confs.push(conf);
@@ -186,7 +186,7 @@ export default function ConfigList() {
             targetId: idRoom4.storage,
             earlyStop: 100,
         },
-        spawn: ['Spawn4', 'Spawn4b'],
+        spawn: ['Spawn4', 'Spawn4b', 'Spawn4c'],
         liveThreshold: 100,
     };
     confs.push(conf);
@@ -194,7 +194,7 @@ export default function ConfigList() {
     // ----------
 
     // add spawn info
-    const spawnList = ['Spawn1', 'Spawn1b', 'Spawn1c'];
+    const spawnList = ['Spawn4', 'Spawn4b', 'Spawn4c'];
     for (let i = 0; i < confs.length; i++) {
         if (confs[i].spawn == null) confs[i].spawn = spawnList;
     }
