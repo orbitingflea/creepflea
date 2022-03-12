@@ -1,6 +1,6 @@
 function SellPixels() {
     const threshold = 8500;
-    
+
     if (Game.resources.pixel == 0) {
         return;
     }

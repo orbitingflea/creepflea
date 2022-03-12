@@ -22,6 +22,8 @@ import {
   bodyCost,
   bodyWCM,
 } from './utils/design';
+import { isJSDocLink } from 'typescript';
+import { CarrierManagerSave } from 'carrierManager';
 
 let room: Room;
 let roomName: string;
@@ -145,6 +147,12 @@ function main() {
   upgraderPart();
   workerPart(containerNearController);
   // minerPart();
+
+  if (getFreeCapacity(room.storage!.store) < 100000) {
+    if (room.terminal && !CarrierManager(room.name).isSink(room.terminal)) {
+      global.fillTerminal(room.name);
+    }
+  }
 }
 
 

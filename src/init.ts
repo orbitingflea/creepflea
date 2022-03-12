@@ -19,6 +19,7 @@ import 'creep/roles/load';
 import 'creep/action/load';
 
 import 'modules/console/main';
+import 'modules/market/main';
 
 global.tickEndHook.push(() => {
   for (let name in Memory.rooms) {

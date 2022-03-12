@@ -170,6 +170,21 @@ class CarrierManager {
     RemoveAllTask() {
         this.taskList = [];
     }
+
+    isSink(object) {
+        for (let i = 0; i < this.taskList.length; i++) {
+            let task = this.taskList[i];
+            if (!task.isValid()) {
+                this.taskList.splice(i, 1);
+                i--;
+                continue;
+            }
+            if (task.toId === object.id) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 global.CarrierManagerTable = {};

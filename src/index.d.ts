@@ -70,4 +70,5 @@ declare global {
 
   let decodeRoomPosition: (code: string) => RoomPosition;
   const roomDanger: (roomName: string) => DangerInfo | null;
+  const CarrierManager: any;
 }
