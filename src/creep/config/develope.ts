@@ -146,7 +146,7 @@ function main() {
   }
   upgraderPart();
   workerPart(containerNearController);
-  // minerPart();
+  // minerPart();  // commented because now industry is not developed, mining is not needed
 
   if (getFreeCapacity(room.storage!.store) < 100000) {
     if (room.terminal && !CarrierManager(room.name).isSink(room.terminal)) {

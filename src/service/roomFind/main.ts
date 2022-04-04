@@ -3,7 +3,7 @@
  * 可以将 id list 存在缓存中，避免 Memory 解析开销。
  */
 
-const SCAN_INFO_TTL = 200;
+const SCAN_INFO_TTL = 20;
 
 Room.prototype._scan = function(): void {
   let structures = this.find(FIND_STRUCTURES);
