@@ -62,5 +62,5 @@ global.SellResource = function(targetRoom, resourceType, amount, price) {
 
 export default function MarketMain() {
     // sell pixels
-    SellPixels();
+    // SellPixels();
 }
