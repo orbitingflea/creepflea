@@ -3,6 +3,7 @@ interface DevelopeOpts {
   strongUpgraderThreshold?: number;
   workerSpawnThreshold?: number;
   energyEmergencyThreshold?: number;
+  weakUpgrader?: boolean;
 }
 
 interface CreepConfigPresetIncomplete {
@@ -10,7 +11,7 @@ interface CreepConfigPresetIncomplete {
   role: string;
   body: BodyPartConstant[];
   require: number | (() => number);
-  args: CreepConfigArgs | (() => CreepConfigArgs);
+  args: CreepRoleArgs | (() => CreepRoleArgs);
   spawn?: string[];
   liveThreshold?: number;
 

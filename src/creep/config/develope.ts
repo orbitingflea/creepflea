@@ -22,7 +22,6 @@ import {
   bodyCost,
   bodyWCM,
 } from './utils/design';
-import { isJSDocLink } from 'typescript';
 import { CarrierManagerSave } from 'carrierManager';
 
 let room: Room;
@@ -407,6 +406,10 @@ function upgraderWithContainer(container: StructureContainer, useStrong: boolean
     useStrong = false;
   } else if (useStrong) {
     body = designRepeatSequence(body, energyLimit);
+  }
+  if (opts.weakUpgrader) {
+    useStrong = false;
+    body = bodyWCM(2, 1, 1);
   }
   let upgrader: CreepConfigPresetIncomplete = {
     name: `Upgrader_${nickName}`,

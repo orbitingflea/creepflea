@@ -7,12 +7,40 @@
  * - 如果生命值低于 threshold_low，则进入 3 距离以外，用 HEAL 治疗自身
  *
  * 准备阶段完成之后一直处于这个房间之内
+ *
+ * TODO 在打击入侵者时，如果地方阵型长时间不动，则假设敌方一直不会移动，找到一个最有利于 ranged mass attack 的地方。
  */
 
 import util from 'util.js';
 import creepCommon from 'creep.common.js';
 
 const lairWaitRange = 5;
+
+function fight(creep, hostileCreeps) {
+    creep.heal(creep);
+    let closest = creep.pos.findClosestByRange(hostileCreeps);
+    if (closest) {
+        creep.driveTo(closest.pos, {
+            range: 1
+        });
+    }
+    let sum = 0;
+    for (let i = 0; i < hostileCreeps.length; i++) {
+        let dist = creep.pos.getRangeTo(hostileCreeps[i]);
+        if (dist === 1) {
+            sum += 12;
+        } else if (dist === 2) {
+            sum += 6;
+        } else if (dist === 3) {
+            sum += 3;
+        }
+    }
+    if (sum >= 12) {
+        creep.rangedMassAttack();
+    } else if (closest) {
+        creep.rangedAttack(closest);
+    }
+}
 
 export default (args) => ({
     // {roomName, hurtTolerance = 3}
@@ -46,14 +74,20 @@ export default (args) => ({
             return false;
         }
 
-        if (!creep.memory.target) {
-            hostileCreeps = room.hostileCreeps;
-            if (hostileCreeps.length > 0) {
-                let candidate = hostileCreeps.filter(c => c.getActiveBodyparts(HEAL) > 0);
-                target = creep.pos.findClosestByRange(candidate.length > 0 ? candidate : hostileCreeps);
-                creep.memory.target = target.id;
-            }
+        hostileCreeps = room.hostileCreeps;
+        if (hostileCreeps.length > 0) {
+            fight(creep, hostileCreeps);
+            return false;
         }
+
+        // if (!creep.memory.target) {
+        //     hostileCreeps = room.hostileCreeps;
+        //     if (hostileCreeps.length > 0) {
+        //         let candidate = hostileCreeps.filter(c => c.getActiveBodyparts(HEAL) > 0);
+        //         target = creep.pos.findClosestByRange(candidate.length > 0 ? candidate : hostileCreeps);
+        //         creep.memory.target = target.id;
+        //     }
+        // }
 
         // 特殊：寻找红旗，攻击 road
         if (!creep.memory.target) {
