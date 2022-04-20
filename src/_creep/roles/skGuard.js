@@ -16,15 +16,25 @@ import creepCommon from 'creep.common.js';
 
 const lairWaitRange = 5;
 
-function fight(creep, hostileCreeps) {
-    creep.heal(creep);
-    let closest = creep.pos.findClosestByRange(hostileCreeps);
-    if (closest) {
-        creep.driveTo(closest.pos, {
-            range: 1
-        });
+function getPosList(hostileCreeps) {
+    let posList = [];
+    for (let i = 0; i < hostileCreeps.length; i++) {
+        posList.push({x: hostileCreeps[i].pos.x, y: hostileCreeps[i].pos.y});
     }
+    // sort posList by x first, y second
+    posList.sort((a, b) => {
+        if (a.x === b.x) {
+            return a.y - b.y;
+        }
+        return a.x - b.x;
+    });
+    return posList;
+}
+
+function greedyAttack(creep, hostileCreeps) {
+    creep.heal(creep);
     let sum = 0;
+    let closest = creep.pos.findClosestByRange(hostileCreeps);
     for (let i = 0; i < hostileCreeps.length; i++) {
         let dist = creep.pos.getRangeTo(hostileCreeps[i]);
         if (dist === 1) {
@@ -39,6 +49,82 @@ function fight(creep, hostileCreeps) {
         creep.rangedMassAttack();
     } else if (closest) {
         creep.rangedAttack(closest);
+    }
+}
+
+function normalFight(creep, hostileCreeps) {
+    let closest = creep.pos.findClosestByRange(hostileCreeps);
+    if (closest) {
+        creep.driveTo(closest.pos, {
+            range: 1
+        });
+    }
+    greedyAttack(creep, hostileCreeps);
+}
+
+function benefit(x, y, hostileCreeps) {
+    if (x <= 0 || x >= 49 || y <= 0 || y >= 49) {
+        return -1e6;
+    }
+    let sum = 0;
+    for (let i = 0; i < hostileCreeps.length; i++) {
+        let x2 = hostileCreeps[i].pos.x;
+        let y2 = hostileCreeps[i].pos.y;
+        let dist = Math.max(Math.abs(x - x2), Math.abs(y - y2));
+        if (dist === 0) {
+            sum = -1e6;
+        } else if (dist === 1) {
+            sum += 12;
+        } else if (dist === 2) {
+            sum += 6;
+        } else if (dist === 3) {
+            sum += 3;
+        }
+    }
+    return sum;
+}
+
+function staticFight(creep, hostileCreeps) {
+    const D = 3;
+    let best = {
+        x: creep.pos.x,
+        y: creep.pos.y
+    };
+    let best_v = 0;
+    for (let dx = -D; dx <= D; dx++) {
+        for (let dy = -D; dy <= D; dy++) {
+            let x = creep.pos.x + dx;
+            let y = creep.pos.y + dy;
+            let sum = benefit(x, y, hostileCreeps);
+            if (sum > best_v) {
+                best_v = sum;
+                best.x = x;
+                best.y = y;
+            }
+        }
+    }
+    creep.driveTo(new RoomPosition(best.x, best.y, creep.room.name), {
+        range: 0
+    });
+    greedyAttack(creep, hostileCreeps);
+}
+
+function fight(creep, hostileCreeps) {
+    let posList = getPosList(hostileCreeps);
+    if (creep.cache.fightInfo && _.isEqual(
+        creep.cache.fightInfo,
+        {
+            creepPos: {x: creep.pos.x, y: creep.pos.y},
+            enemyPosList: posList
+        })
+    ) {
+        staticFight(creep, hostileCreeps);
+    } else {
+        normalFight(creep, hostileCreeps);
+    }
+    creep.cache.fightInfo = {
+        creepPos: {x: creep.pos.x, y: creep.pos.y},
+        enemyPosList: posList
     }
 }
 
